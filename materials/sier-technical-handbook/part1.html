@@ -793,8 +793,8 @@
     <section class="content-slide" aria-labelledby="s3-secret-title">
       <header class="content-slide__header">
         <p class="content-slide__kicker">Section 3 / Shared Secret</p>
-        <h1 id="s3-secret-title">共有シークレットはRFC上の認証・秘匿処理に使う</h1>
-        <p class="content-slide__lead">RFC 2865では、RADIUSクライアントとRADIUSサーバ間のトランザクションは共有シークレットで認証され、シークレット自体はネットワーク上に送信されない。</p>
+        <h1 id="s3-secret-title">共有シークレットはRADIUS間の応答確認とパスワード保護に使う</h1>
+        <p class="content-slide__lead">共有シークレットは、RADIUSクライアントとRADIUSサーバが正しい相手かを確認し、パスワードをそのまま送らないために使う。</p>
       </header>
       <div class="content-slide__body three-column">
         <article class="info-card icon-card">
@@ -2091,7 +2091,7 @@
       <header class="content-slide__header">
         <p class="content-slide__kicker">Section 7 / CSV Export</p>
         <h1 id="s7-csv-log-title">操作ログとRADIUS認証ログはCSVで出力して残す</h1>
-        <p class="content-slide__lead">運用管理では、管理者操作の履歴と認証履歴を後から追えることが重要である。RADIUS認証ログの詳細な切り分けはSection 6で扱い、ここではCSV出力による記録化と共有に絞る。</p>
+        <p class="content-slide__lead">運用管理では、ユーザ管理や証明書運用の操作履歴と認証履歴を後から追えることが重要である。RADIUS認証ログの詳細な切り分けはSection 6で扱い、ここではCSV出力による記録化と共有に絞る。</p>
       </header>
       <div class="content-slide__body three-column">
         <article class="info-card icon-card">
@@ -2100,9 +2100,9 @@
             操作ログ
           </h2>
           <ul>
-            <li>管理者操作の履歴閲覧に使う</li>
-            <li>設定変更や運用作業の後追いに使う</li>
-            <li>操作ログの集計通知と合わせて運用する</li>
+            <li>ユーザ登録 / 削除、パスワード変更 / リセット通知が出力される</li>
+            <li>ユーザ有効化 / 無効化、証明書発行 / 更新 / 失効が出力される</li>
+            <li>CSV出力と操作ログの集計通知を合わせて運用する</li>
           </ul>
         </article>
         <article class="info-card icon-card">
@@ -2136,8 +2136,8 @@
     <section class="content-slide" aria-labelledby="s7-mail-types-title">
       <header class="content-slide__header">
         <p class="content-slide__kicker">Section 7 / Notification Types</p>
-        <h1 id="s7-mail-types-title">通知メールは受信者目線で種類を区別する</h1>
-        <p class="content-slide__lead">通知メールは、送信操作を覚えるより、誰に何が届くかを押さえる。利用者・管理者・MSP側通知を、受信する可能性があるメールとして分類する。</p>
+        <h1 id="s7-mail-types-title">通知メールは宛先と運用起点で種類を区別する</h1>
+        <p class="content-slide__lead">通知メールは、誰に何が届くかに加え、どの運用をきっかけに送信されるかで整理する。利用者向け、管理者向け、MSP側運用をきっかけに送信される通知を分けて考える。</p>
       </header>
       <table class="matrix-table matrix-table--support">
         <thead>
@@ -2174,9 +2174,9 @@
             <td>管理者または通知メールアドレス宛に、1日分の操作ログ集計が届く。</td>
           </tr>
           <tr>
-            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-mail"></use></svg></span>MSP側通知</span></td>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-mail"></use></svg></span>MSP側運用通知</span></td>
             <td>MSP側の運用で送信される場合</td>
-            <td>納品通知や契約期限前の警告通知を受信する場合がある。MSPポータル操作は扱わない。</td>
+            <td>納品や契約管理の運用に応じて、納品通知や契約期限前警告が送信される場合がある。MSPポータル操作は扱わない。</td>
           </tr>
         </tbody>
       </table>
