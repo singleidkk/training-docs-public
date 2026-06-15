@@ -4,30 +4,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>理解度テスト | SingleID 技術説明ハンドブック</title>
-  <link rel="stylesheet" href="../../css/a4-portrait.css">
-  <link rel="stylesheet" href="../../css/material-nav.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/layout.css">
+  <link rel="stylesheet" href="../../css/components.css">
+  <link rel="stylesheet" href="../../css/print.css" media="print">
 </head>
 <body>
-  <main class="portrait-document a4-training-overview" aria-label="SingleID 技術説明ハンドブック 理解度テスト">
-    <article class="portrait-page a4-training-overview__content">
-      <header class="a4-training-overview__title">
-        <p class="a4-training-overview__label">Post Training Check</p>
-        <h1>理解度テスト</h1>
-        <p class="a4-training-overview__subtitle">トレーニング後または資料参照後に、SingleID、RADIUS、PKI、FortiGate連携の要点を自分の言葉で説明できるかを測る自己テスト。</p>
-      </header>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="back-link" href="index.html">← ハンドブック目次へ戻る</a>
+      <p class="eyebrow">Post Training Check</p>
+      <h1>理解度テスト</h1>
+      <p class="lead">トレーニング後または資料参照後に、SingleID、RADIUS、PKI、FortiGate連携の要点を自分の言葉で説明できるかを測る自己テスト。</p>
+    </div>
+  </header>
 
-      <section class="a4-training-overview__panel">
+  <main class="container assessment-document" aria-label="SingleID 技術説明ハンドブック 理解度テスト">
+    <section class="section">
+      <div class="case-panel assessment-panel">
         <h2>使い方</h2>
         <ul>
           <li>各設問に対して、自分の言葉で説明する。</li>
           <li>解答例と比べて、前提条件、調査対象の画面、切り分け順序が不足していないかを自己点検する。</li>
           <li>案件で使う場合は、機器バージョン、顧客環境、運用方針に合わせて「追加調査が必要な事項」を追記する。</li>
         </ul>
-      </section>
+      </div>
+    </section>
 
-      <section class="a4-training-overview__panel">
+    <section class="section">
+      <div class="case-panel assessment-panel">
         <h2>Part 1: SingleID 技術説明</h2>
-        <ol class="guide-companion__compact-list">
+        <ol class="assessment-list">
           <li>
             SingleIDクラウド、Microsoftクラウド、オンプレ機器、クライアント端末はどのように関係するか。
             <details>
@@ -85,11 +92,13 @@
             </details>
           </li>
         </ol>
-      </section>
+      </div>
+    </section>
 
-      <section class="a4-training-overview__panel">
+    <section class="section">
+      <div class="case-panel assessment-panel">
         <h2>Part 2: FortiGate 設定ガイド副読本</h2>
-        <ol class="guide-companion__compact-list">
+        <ol class="assessment-list">
           <li>
             SingleID側で作るグループと、FortiGate側で作るユーザグループは何が違うか。
             <details>
@@ -140,18 +149,21 @@
             </details>
           </li>
         </ol>
-      </section>
+      </div>
+    </section>
 
-      <section class="a4-training-overview__panel">
+    <section class="section">
+      <div class="case-panel assessment-panel">
         <h2>合格目安</h2>
         <p>各設問について、設定画面名だけでなく「何のための設定か」「どちら側の設定か」「失敗時にどの設定・ログを調査するか」を説明できれば、実案件のPoC検証や設計レビューに進める水準とする。</p>
-      </section>
+      </div>
+    </section>
 
-      <footer class="a4-training-overview__footer">
+    <footer class="section assessment-footer">
+      <div class="case-panel">
         <p>本テストは理解度を測るための補助資料であり、製品仕様の正本ではない。実案件では公開ドキュメントと利用環境の前提に従う。</p>
-      </footer>
-    </article>
+      </div>
+    </footer>
   </main>
-  <script src="../../js/material-nav.js" defer></script>
 </body>
 </html>

@@ -132,6 +132,74 @@
   font-size: 1.16rem;
 }
 
+.assessment-document .section {
+  padding: 36px 0;
+}
+
+.assessment-panel {
+  margin-bottom: 0;
+}
+
+.assessment-list {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  counter-reset: assessment-question;
+}
+
+.assessment-list > li {
+  position: relative;
+  margin-bottom: 16px;
+  padding: 18px 18px 18px 56px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  counter-increment: assessment-question;
+}
+
+.assessment-list > li::before {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  color: var(--color-white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  background: var(--color-primary);
+  border-radius: 999px;
+  content: counter(assessment-question);
+  place-items: center;
+}
+
+.assessment-list details {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.assessment-list summary {
+  color: var(--color-primary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.assessment-list details p {
+  margin: 12px 0 0;
+}
+
+.assessment-footer .case-panel {
+  color: var(--color-muted);
+  font-size: 0.94rem;
+  background: var(--color-surface);
+}
+
+.assessment-footer p {
+  margin-bottom: 0;
+}
+
 .case-flow {
   display: grid;
   margin: 18px 0;
