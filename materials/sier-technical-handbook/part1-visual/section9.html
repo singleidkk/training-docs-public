@@ -152,14 +152,6 @@
         <h1 id="section9-title">機器連携</h1>
         <p class="section-cover__lead">指定の設定ガイドを読む前提として、FortiGate、YAMAHA RTX、Buffalo AirStation Proで何をどの順番で設定し、どこを注意して読むかを学ぶ。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>図解版で見ること</h2>
-        <ul>
-          <li>通常版と同じスライド番号で対応</li>
-          <li>関係性、流れ、判断点を図で把握</li>
-          <li>詳細説明は通常版と補足資料で確認</li>
-        </ul>
-      </aside>
     </section>
     <p class="slide-footer">Section 9</p>
   </main>
@@ -175,10 +167,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section9-fortigate-flow.png" alt="FortiGate IKEv2 VPNでパスワードと証明書を併用する構成要素と認証フローの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>この手順書は、FortiGateのリモートアクセスVPNで、SingleIDのRADIUS認証とクライアント証明書認証を組み合わせる構成を扱う。</li><li>IKEv2 VPN、FortiClient、証明書、拡張RADIUSの対応関係を読む。</li><li>参照: https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 9 / 1</p>
@@ -195,10 +183,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section9-fortigate-notes.png" alt="FortiGate連携で前提条件、RADIUS識別、機器側設定、ログ確認を同じ粒度で確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>注意点は、前提条件、RADIUS識別、アクセス制御の3つに分けて読む。</li><li>GUI操作だけでなく、FortiGate CLIで変更する箇所も押さえる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 9 / 2</p>
@@ -215,10 +199,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section9-yamaha-flow.png" alt="YAMAHA RTXのL2TP IPsec VPNでパスワードとOTPを使う構成要素と認証フローの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>この手順書は、YAMAHA RTXのリモートアクセスVPNで、SingleIDのパスワード認証とワンタイムパスワード認証を使う構成を扱う。</li><li>Windows端末、PAP認証、拡張RADIUS、NAS-IP照合を対応づける。</li><li>参照: https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 9 / 3</p>
@@ -235,10 +215,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section9-yamaha-notes.png" alt="YAMAHA RTX連携で前提条件、RADIUS識別、機器側設定、ログ確認を同じ粒度で確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>注意点は、前提条件、RADIUS識別、アクセス制御の3つに分けて読む。</li><li>特にVPNクライアント条件とNAS-IP照合は、設計時に先に押さえる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 9 / 4</p>
@@ -255,10 +231,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section9-buffalo-flow.png" alt="Buffalo AirStation Proの無線LANでEAP TLS証明書認証を使う構成要素と認証フローの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>この手順書は、Buffalo AirStation Proの無線LANアクセスで、SingleIDのクライアント証明書認証（EAP-TLS）を使う構成を扱う。</li><li>SSID、WPA2/WPA3 Enterprise、拡張RADIUS、NAS-Identifierを対応づける。</li><li>参照: https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 9 / 5</p>
@@ -275,10 +247,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section9-buffalo-notes.png" alt="Buffalo AirStation Pro連携で前提条件、RADIUS識別、機器側設定、ログ確認を同じ粒度で確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>前提条件、RADIUS識別、アクセス制御の3つを設定ガイドの指定値に合わせる。</li><li>SSID側の設定差分が、SingleIDの認証失敗に見えることがある。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 9 / 6</p>

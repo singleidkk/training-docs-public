@@ -152,14 +152,6 @@
         <h1 id="section8-title">SingleIDの可用性</h1>
         <p class="section-cover__lead">前半ではSingleID側で可用性を高めるための取り組みを学ぶ。そのうえで、公式ブログを参考に、機器側でどこまで接続継続策を追加する必要があるかを判断する。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>図解版で見ること</h2>
-        <ul>
-          <li>通常版と同じスライド番号で対応</li>
-          <li>関係性、流れ、判断点を図で把握</li>
-          <li>詳細説明は通常版と補足資料で確認</li>
-        </ul>
-      </aside>
     </section>
     <p class="slide-footer">Section 8</p>
   </main>
@@ -175,10 +167,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section8-availability-platform.png" alt="SingleID認証基盤の冗長化、分散構成、死活監視、自動復旧を示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>SingleIDはAWSをベースにしたクラウドサービスとして、冗長化、分散構成、死活監視と自動復旧を組み合わせて可用性を確保する。</li><li>ここでは、障害を起こしにくくし、検知時に自動復旧する基盤を押さえる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 8 / 1</p>
@@ -195,10 +183,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section8-operations.png" alt="メトリクス監視、予兆検知、スケール計画、バックアップを継続する運用サイクルの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>SingleID側の可用性は、基盤を冗長化して終わりではない。</li><li>負荷増加や障害後の復旧に備え、メトリクス監視、スケール計画、バックアップを継続的に運用する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 8 / 2</p>
@@ -215,10 +199,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section8-sla-scope.png" alt="SLAを対象範囲、稼働率、適用除外、利用環境側要因に分けて読む図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>SLAは可用性基盤そのものの説明ではなく、サービスレベルの対象範囲と計算方法を読むためのもの。</li><li>SingleID側の認証サービスと、利用環境側の回線・機器・端末要因を分けて読む。</li><li>参照: https://www.singleid.jp/sla/</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 8 / 3</p>
@@ -235,10 +215,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section8-blog-reference.png" alt="通常構成、再認証抑制、必要時の追加策を段階的に検討する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>Buffalo AirStation Pro向け公式ブログでは、SingleID連携Wi-Fiでどこまで可用性を求めるかを段階的に示している。</li><li>まず通常構成と再認証抑制で足りるかを判断し、必要な場合だけ緊急SSID切替まで検討する。</li><li>参照: https://www.singleid.jp/buffalo-singleid-wifi-availability/</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 8 / 4</p>
@@ -255,10 +231,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section8-emergency-ssid.png" alt="Link Integrityで到達不可時だけ緊急用PSK SSIDへ切り替える流れの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>通常構成と再認証抑制だけでは接続継続要件を満たせない場合に、Link Integrityによる緊急SSID切替を検討する。</li><li>これは接続性を優先する追加策であり、標準構成として前提にしない。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 8 / 5</p>
@@ -275,10 +247,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section8-trade-off.png" alt="PSK方式、通常のSingleID連携、切替対応を運用負荷と接続継続性で整理する分布図" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>PSK方式は既存運用としては低負荷だが、認証強度や個人特定の面ではSingleID連携より弱い。</li><li>緊急SSIDなどの切替対応は、機器対応、自動切替可否、手動対応、復旧後の戻しまで含めて運用負荷の高い個別設計として扱う。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 8 / 6</p>

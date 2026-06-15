@@ -152,14 +152,6 @@
         <h1 id="section6-title">トラブルシューティング</h1>
         <p class="section-cover__lead">RADIUS認証ログの有無とエラー例を起点に、次に調査する対象を決める。SingleID側で止まったのか、機器側や経路側で止まったのかを切り分ける。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>図解版で見ること</h2>
-        <ul>
-          <li>通常版と同じスライド番号で対応</li>
-          <li>関係性、流れ、判断点を図で把握</li>
-          <li>詳細説明は通常版と補足資料で確認</li>
-        </ul>
-      </aside>
     </section>
     <p class="slide-footer">Section 6</p>
   </main>
@@ -175,10 +167,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-no-log.png" alt="RADIUS認証ログに表示されない場合に表示待ち、宛先、入口条件を確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>エラーメッセージがない場合は、SingleIDの認証判定以前で止まっている可能性がある。</li><li>表示待ち、宛先、入口条件から切り分ける。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 1</p>
@@ -195,10 +183,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-site-identification.png" alt="拡張RADIUSのNAS-IPまたはNAS-IDとRADIUSサイト設定を照合する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>拡張RADIUSでは、NAS-IP-AddressまたはNAS-Identifierでサイトを識別する。</li><li>サイト未一致のエラーは、機器が実際に送った値とRADIUSサイト設定を突き合わせる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 2</p>
@@ -215,10 +199,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-user-state.png" alt="ユーザ不存在または無効化のログからユーザ一覧で状態を照合する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>ユーザが存在しない、または無効化されている場合でも、試みた認証方式によってログ例が変わる。</li><li>ログ例から方式と状況を読み取り、ユーザ一覧で登録状態を照合する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 3</p>
@@ -235,10 +215,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-password-mismatch.png" alt="パスワード不一致の方式別ログから入力情報、TOTP、認証方式、共有シークレットを切り分ける図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>ユーザは存在していても、パスワードが一致しない場合は認証方式ごとに異なるログ例が出る。</li><li>ログ例を起点に、入力情報、認証方式、TOTP利用有無を切り分ける。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 4</p>
@@ -255,10 +231,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-eap-certificate.png" alt="EAPと証明書エラーを端末設定、サーバ証明書CA、クライアント証明書検証に分ける図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>EAP系の失敗は、ログ例から端末設定、サーバ証明書のCA、クライアント証明書の検証失敗に分ける。</li><li>証明書そのものだけでなく、端末側の検証設定も調査対象にする。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 5</p>
@@ -275,10 +247,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-device-logs.png" alt="Access-Accept後に機器ログ、戻り経路、機器側ポリシーを確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>RADIUS認証ログがAccess-Acceptでも、UDP応答が機器へ届いたか、途中経路でドロップされていないか、機器側で処理されたかは別問題である。</li><li>接続できない場合は、機器ログと経路上の制御を順に調査する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 6</p>
@@ -295,10 +263,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section6-inquiry-preparation.png" alt="RADIUS認証ログの有無から問い合わせ前に揃える情報と調査先を判断する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>まずRADIUS認証ログに認証イベントが出ているかを判定する。</li><li>ログが出ていればSingleID側で調査できる可能性が高く、Access-Accept後や機器側原因が明確な場合は機器側調査を優先する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 6 / 7</p>

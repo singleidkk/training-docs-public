@@ -152,14 +152,6 @@
         <h1 id="section4-title">PKI / 証明書</h1>
         <p class="section-cover__lead">証明書を使う理由、信頼の仕組み、証明書の種類、発行・配布・更新・失効の運用を、案件で決める順番に沿って学ぶ。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>図解版で見ること</h2>
-        <ul>
-          <li>通常版と同じスライド番号で対応</li>
-          <li>関係性、流れ、判断点を図で把握</li>
-          <li>詳細説明は通常版と補足資料で確認</li>
-        </ul>
-      </aside>
     </section>
     <p class="slide-footer">Section 4</p>
   </main>
@@ -175,10 +167,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-purpose.png" alt="IDとパスワードに端末証明書の確認を加えて認証判定する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書認証は、IDとパスワードに加えて、許可された証明書を持つ端末かどうかを判定するために使う。</li><li>まずは、証明書で何を防ぎ、どの運用を設計対象にするかを押さえる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 1</p>
@@ -195,10 +183,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-ca-chain-crl.png" alt="ルートCA、中間CA、証明書、CRLで信頼と失効を確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書認証では、提示された証明書だけでなく、どのCAで発行されたか、失効していないかを判定する。</li><li>ルートCA、中間CA、証明書、CRLの関係を先に押さえる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 2</p>
@@ -215,10 +199,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-types.png" alt="クライアント証明書、SCEP証明書、サーバ証明書を用途別に分ける図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書は、誰が提示するか、どの機器で使うか、どの管理方式で配布するかによって意味が変わる。</li><li>配布手順に入る前に、証明書の種類と用途を分けておく。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 3</p>
@@ -235,10 +215,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-issuance.png" alt="証明書発行前にプロファイル、対象ユーザ、運用条件を決める図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>クライアント証明書は、プロファイルに従って発行される。</li><li>配布作業に入る前に、どのユーザへ、どの有効期間・用途の証明書を発行するかを決めておく。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 4</p>
@@ -255,10 +231,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-distribution.png" alt="メール送信、管理者導入、Windows自動構成、Intune SCEPを比較する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書を発行しても、端末へ安全に導入できなければ認証では使えない。</li><li>複数デバイスへ同じ証明書を入れさせたくない場合は、配布方法も設計対象にする。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 5</p>
@@ -275,10 +247,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-lifecycle.png" alt="証明書の発行、配布、利用、更新、失効、CRL反映の流れを示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書は発行して終わりではない。</li><li>期限切れ前に更新し、端末へ再配布し、使わせない証明書は失効してCRL反映後に再接続できない状態へ戻す。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 6</p>
@@ -295,10 +263,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-design-check.png" alt="証明書設計で認証用途、種類と対象、配布管理、ライフサイクルを決める図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書設計では、証明書を発行できるかではなく、どの用途で、誰に、どの端末へ、どの運用で使わせるかを先に決める。</li><li>図解では、要素同士の関係と判断の順序を優先して見る。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 4 / 7</p>

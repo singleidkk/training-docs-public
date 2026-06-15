@@ -31,14 +31,14 @@
 
 .visual-edition-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 64mm;
-  gap: 7mm;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
   align-items: stretch;
 }
 
 .visual-diagram {
   position: relative;
-  min-height: 116mm;
+  min-height: 126mm;
   margin: 0;
   padding: 7mm;
   overflow: hidden;
@@ -135,34 +135,8 @@
   display: block;
   width: 100%;
   height: 100%;
-  max-height: 116mm;
+  max-height: 126mm;
   object-fit: contain;
-}
-
-.visual-notes {
-  padding: 6mm;
-  background: #ffffff;
-  border: 1px solid #d8e2ec;
-  border-radius: 4mm;
-  box-shadow: 0 8px 20px rgba(0, 59, 115, 0.06);
-}
-
-.visual-notes h2 {
-  margin: 0 0 4mm;
-  color: #003b73;
-  font-size: 1rem;
-}
-
-.visual-notes ul {
-  margin: 0;
-  padding-left: 1.2em;
-}
-
-.visual-notes li {
-  margin-bottom: 3mm;
-  color: #374151;
-  font-size: 0.86rem;
-  line-height: 1.55;
 }
 
 @media print {

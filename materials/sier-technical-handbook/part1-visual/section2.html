@@ -152,14 +152,6 @@
         <h1 id="section2-title">ID管理</h1>
         <p class="section-cover__lead">ユーザ、グループ、管理者、ユーザポータル、Entra IDのSCIM連携を、認証基盤の入口として学ぶ。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>図解版で見ること</h2>
-        <ul>
-          <li>通常版と同じスライド番号で対応</li>
-          <li>関係性、流れ、判断点を図で把握</li>
-          <li>詳細説明は通常版と補足資料で確認</li>
-        </ul>
-      </aside>
     </section>
     <p class="slide-footer">Section 2</p>
   </main>
@@ -175,10 +167,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-registration-methods.png" alt="個別登録、CSV一括登録、Entra ID SCIM、SCIM API連携を継続同期の有無で分ける図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>ユーザ登録方式は、初期投入だけでよいか、既存ID基盤と継続同期するかで選ぶ。</li><li>ユーザ名とメールアドレスの一意性、同期後の更新方法を方式ごとの判断材料にする。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 1</p>
@@ -195,10 +183,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-user-lifecycle.png" alt="ユーザ登録から棚卸までを運用ループとして示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>管理者ポータルのユーザ一覧では、登録から無効化、証明書、パスワード、一括登録、エクスポートまでを扱う。</li><li>案件では操作そのものより、運用の流れを決める。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 2</p>
@@ -215,10 +199,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-group-design.png" alt="ユーザ、グループ、VPNや無線LAN、アクセス許可の関係を示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>グループはユーザをまとめるだけでなく、VPNや無線LANで誰を許可するかを決める単位になる。</li><li>機器側ポリシーと対応づけて設計する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 3</p>
@@ -235,10 +215,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-responsibility.png" alt="管理者ポータルとユーザポータルで操作範囲が分かれていることを示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>ID管理では、管理側で行う操作と、ユーザ自身が実施できる操作が分かれている。</li><li>問い合わせや手順書の作成範囲にも影響する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 4</p>
@@ -255,10 +231,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-scim-flow.png" alt="Entra IDからSingleIDへのSCIM同期でSCIM APIエンドポイントURLとAPIキーを使う設定順序を示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>SCIM連携は、SingleIDへアカウント番号とEntra IDテナントIDを提供し、SingleIDから提供されるSCIM APIエンドポイントURLとAPIキーを使ってEntra ID側で設定する。</li><li>図解では、要素同士の関係と判断の順序を優先して見る。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 5</p>
@@ -275,10 +247,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-scim-cautions.png" alt="Entra ID SCIM連携前に確認するUPN、必須属性、割り当て、グループ構造を示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>Entra IDのSCIMプロビジョニングでは、同期キー、必須属性、割り当て、グループ構造を先に決める。</li><li>通知メールはSection 7の運用管理で扱う。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 6</p>
@@ -295,10 +263,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section2-design-points.png" alt="ID管理設計で決める登録方式、識別子、グループ、利用開始案内と後続設計への影響を示す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>ID管理は、ユーザをどう登録し、何を一意な識別子にし、どのグループを認証許可の単位にするかを先に決める。</li><li>利用開始時に何を案内するかを決めると、RADIUSや証明書の設計、展開手順がぶれにくくなる。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 2 / 7</p>

@@ -152,14 +152,6 @@
         <h1 id="section5-title">認証フロー</h1>
         <p class="section-cover__lead">VPN、無線LAN、ID / パスワード認証、証明書認証の流れを、SingleIDが認証時に何を判定するかに絞って学ぶ。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>図解版で見ること</h2>
-        <ul>
-          <li>通常版と同じスライド番号で対応</li>
-          <li>関係性、流れ、判断点を図で把握</li>
-          <li>詳細説明は通常版と補足資料で確認</li>
-        </ul>
-      </aside>
     </section>
     <p class="slide-footer">Section 5</p>
   </main>
@@ -175,10 +167,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section5-remote-access-vpn.png" alt="リモートアクセスVPNでVPN装置がRADIUSクライアントとして認証要求を送る流れの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>リモートアクセスVPNでは、端末の接続操作をVPN装置が受け、VPN装置がRADIUSクライアントとしてSingleIDへ認証要求を送る。</li><li>成功時のRADIUS応答で、Filter-IdやFortinet-Group-Nameなどのグループ情報を返す構成がある。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 5 / 1</p>
@@ -195,10 +183,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section5-wireless-lan.png" alt="無線LANでAPまたはコントローラがRADIUSクライアントとして認証要求を送る流れの図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>無線LANでは、端末のSSID接続を無線APやコントローラが受け、RADIUS認証の結果をもとに接続可否を判断する。</li><li>成功時のRADIUS応答で、VLAN ID情報を返す構成がある。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 5 / 2</p>
@@ -215,10 +199,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section5-authentication-decision.png" alt="RADIUS要求後に接続元、認証方式、ユーザ認証、アクセス制限を順に判定する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>VPNでも無線LANでも、RADIUS要求を受けた後は「接続元」「認証方式」「ユーザ認証」「アクセス制限」を順に判定する。</li><li>ログの読み方はトラブルシューティングで扱う。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 5 / 3</p>
@@ -235,10 +215,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section5-user-authentication.png" alt="ID、パスワード、TOTP、ユーザ状態、認証方式の一致を確認する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>ID / パスワード認証は、利用者本人を判定する処理である。</li><li>入力された認証情報、SingleID側のユーザ状態、機器が送るRADIUS認証方式が一致しているかを判定する。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 5 / 4</p>
@@ -255,10 +231,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section5-certificate-authentication.png" alt="クライアント証明書の形式、発行元CA、有効期限と失効、ユーザ紐づけを判定する図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>証明書認証は、端末が提示した証明書を、発行元、期限、失効状態、ユーザとの対応で判定する処理である。</li><li>端末への配布や更新設計ではなく、認証時にSingleID側で判定する観点に絞る。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 5 / 5</p>
@@ -275,10 +247,6 @@
         <figure class="visual-diagram">
           <img class="visual-diagram__image" src="../../../assets/part1-visual-section5-access-control.png" alt="Access-Acceptの認可情報をVPNポリシーや無線LANのVLAN制御へ渡す図解" loading="lazy" decoding="async">
         </figure>
-        <aside class="visual-notes">
-          <h2>図で読むポイント</h2>
-          <ul><li>Access-Acceptは単なる成功通知ではなく、機器側の接続制御に使う情報を含める場合がある。</li><li>SingleID側では誰を許可し、どの認可情報を返し、機器側でどう扱うかを対応づける。</li></ul>
-        </aside>
       </div>
     </section>
     <p class="slide-footer">Section 5 / 6</p>
