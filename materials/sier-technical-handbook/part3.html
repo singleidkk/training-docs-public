@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Part 3: 構築見積もり・設計観点</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--part3 guide-companion" aria-label="構築見積もり・設計観点">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+      <header class="a4-training-overview__title">
+        <p class="a4-training-overview__label">Part 3 / Design And Estimation</p>
+        <h1>構築見積もり・設計観点</h1>
+        <p class="a4-training-overview__subtitle">リモートアクセスVPNと無線LAN認証を中心に、SingleID側、ネットワーク機器側、証明書、ユーザ / グループ、ログ、運用引き継ぎの作業範囲を明確にする。金額算出そのものではなく、見積もり前に必要な情報と工数に影響する条件を判断するための副読本として使う。</p>
+      </header>
+
+      <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+        <h2>この資料の使い方</h2>
+        <p>第3部は、設定手順ではなく見積もりと設計の前提を明確にする資料である。案件ごとに対象機器、認証方式、証明書配布、ユーザ管理、テスト範囲、運用引き継ぎの条件が異なるため、最初に前提をそろえてから作業範囲を決める。</p>
+        <p class="a4-training-overview__note">参照する公開ドキュメント: SingleID 管理者ガイドのユーザ、RADIUS、証明書、RADIUS認証ログ。具体的な機器設定は各機器の設定ガイドに従う。</p>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>1. 見積もり前に決める項目</h2>
+        <p>見積もりでは、SingleIDの設定量だけでなく、既存環境の調査、ネットワーク機器の変更、証明書配布、利用者案内、テスト、切り戻し、運用引き継ぎまで含めて作業範囲を決める。先に確認すべきことは、技術要件、作業責任、変更作業の制約である。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>見積もりに必要な情報</th>
+              <th>決める内容</th>
+              <th>見積もりへの影響</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>利用シーン</td>
+              <td>リモートアクセスVPN、無線LAN認証、または両方を対象にするか。</td>
+              <td>対象機器、端末設定、証明書配布、テスト観点が変わる。</td>
+            </tr>
+            <tr>
+              <td>対象範囲</td>
+              <td>対象ユーザ数、端末数、拠点数、AP台数、VPN装置数、SSID / VLAN数。</td>
+              <td>設定作業、展開作業、テストケース、問い合わせ対応の量が変わる。</td>
+            </tr>
+            <tr>
+              <td>認証方式</td>
+              <td>ID / パスワード、ワンタイムパスワード、証明書、EAP-TLS、PEAPなど。</td>
+              <td>必要なSingleID設定、端末側設定、証明書運用、失敗時の切り分けが変わる。</td>
+            </tr>
+            <tr>
+              <td>ユーザ管理方式</td>
+              <td>個別登録、CSV一括登録、Entra IDのSCIMプロビジョニング、SCIM API連携（ベータ）を使うか。</td>
+              <td>初期登録作業、属性設計、グループ運用、変更管理の工数が変わる。</td>
+            </tr>
+            <tr>
+              <td>証明書配布方式</td>
+              <td>メール配布、管理者導入、Windows自動構成、Intune SCEP配布のどれを使うか。</td>
+              <td>端末作業、利用者案内、複数端末への導入制御、更新運用の工数が変わる。</td>
+            </tr>
+            <tr>
+              <td>作業条件</td>
+              <td>作業時間帯、リモート作業可否、変更申請、切り戻し条件、立ち会い要否。</td>
+              <td>夜間・休日作業、事前検証、手順書、作業報告の範囲が変わる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>2. リモートアクセスVPN案件の作業範囲</h2>
+        <p>VPN案件では、利用者がVPNクライアントからVPN装置へ接続し、VPN装置がRADIUSクライアントとしてSingleIDへ認証要求を送る。見積もりでは、SingleID側の認証条件だけでなく、VPN装置側のRADIUS設定、VPN設定、クライアント設定、接続後のポリシー制御まで作業範囲に含めるかを決める。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>作業領域</th>
+              <th>作業内容</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>既存VPN変更</td>
+              <td>既存VPN方式、認証方式、利用ユーザ、接続元、アドレスプール、ポリシーを一覧化する。</td>
+              <td>既存VPNを変更または再設定する場合、VPN装置の設定バックアップ、復元手順、再起動や通信断を含む切り戻し時間を工数に入れる。</td>
+            </tr>
+            <tr>
+              <td>SingleID側設定</td>
+              <td>ユーザ / グループ、RADIUSサーバ、RADIUSサイト、証明書、ログ確認を準備する。</td>
+              <td>標準RADIUSと拡張RADIUSのどちらを使うか、機器が識別属性を送信できるかを先に判定する。</td>
+            </tr>
+            <tr>
+              <td>VPN装置側設定</td>
+              <td>RADIUSサーバ、共有シークレット、ユーザグループ、VPN方式、証明書、ポリシーを設定する。</td>
+              <td>機器のファームウェア、ライセンス、VPNクライアント要件、公式設定ガイドの前提を満たすかを判定する。</td>
+            </tr>
+            <tr>
+              <td>端末側設定</td>
+              <td>VPNクライアント、接続先、証明書インストール、利用者手順を準備する。</td>
+              <td>端末OS、管理者権限、証明書ストア、配布方法によって作業量が変わる。</td>
+            </tr>
+            <tr>
+              <td>接続試験</td>
+              <td>成功、失敗、証明書なし、グループ未所属、パスワード不一致、ログ確認を実施する。</td>
+              <td>SingleIDのRADIUS認証ログとVPN装置側ログを同じ時刻で突き合わせる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>3. 無線LAN認証案件の作業範囲</h2>
+        <p>無線LAN認証案件では、APまたは無線LANコントローラがRADIUSクライアントになる。VPN案件よりも、SSID、VLAN、AP台数、拠点数、端末OS、証明書配布方法の影響が大きい。小規模なPoCと、多拠点展開では見積もりの前提が大きく変わる。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>作業領域</th>
+              <th>作業内容</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>無線設計確認</td>
+              <td>SSID、VLAN、認証方式、AP / コントローラ、既存ポリシー、ローミング要件を記録する。</td>
+              <td>既存無線設計が複雑な場合、RADIUS連携よりもネットワーク設計確認に工数がかかる。</td>
+            </tr>
+            <tr>
+              <td>SingleID側設定</td>
+              <td>RADIUSサイト、許可ユーザ / グループ、認証方式、証明書条件を設定する。</td>
+              <td>拡張RADIUSではNAS-IP-AddressやNAS-Identifierなど、サイト識別に使う属性を特定する。</td>
+            </tr>
+            <tr>
+              <td>AP / コントローラ設定</td>
+              <td>RADIUSサーバ、共有シークレット、SSID認証方式、VLAN割り当て、ログ確認を設定する。</td>
+              <td>機器ごとに属性の扱い、VLAN指定、ログ表示が異なる。設定ガイドや機器マニュアルの記載に従う。</td>
+            </tr>
+            <tr>
+              <td>端末展開</td>
+              <td>証明書、無線プロファイル、EAP設定、利用者向け手順を展開する。</td>
+              <td>IntuneやMDMを使えるか、手動設定が必要かで展開工数が大きく変わる。</td>
+            </tr>
+            <tr>
+              <td>接続試験</td>
+              <td>対象SSID、VLAN割り当て、証明書有無、グループ条件、端末OS別接続を試験範囲に入れるかを決める。</td>
+              <td>AP台数や拠点数が多い場合、代表拠点での試験と全拠点確認の範囲を分けて見積もる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>4. SingleID側作業</h2>
+        <p>SingleID側作業は、認証に必要な対象、条件、証明書、ログ取得を準備する作業である。設定量だけでなく、誰が運用するか、PoC環境と本番環境をどう分けるか、変更時にどの手順で試験するかまで含めて見積もる。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>作業項目</th>
+              <th>主な内容</th>
+              <th>工数に影響する点</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ユーザ / グループ</td>
+              <td>登録方式、グループ設計、アクセス許可単位、削除・無効化運用を決める。</td>
+              <td>手動登録、CSV、SCIMのどれを使うかで初期作業と運用作業が変わる。</td>
+            </tr>
+            <tr>
+              <td>RADIUS</td>
+              <td>標準 / 拡張RADIUS、RADIUSサイト、許可ルール、共有シークレット、サイト識別属性を設定する。</td>
+              <td>機器が送信する属性を確認できるか、複数拠点をどうまとめるかで設計工数が変わる。</td>
+            </tr>
+            <tr>
+              <td>証明書</td>
+              <td>証明書プロファイル、クライアント証明書、サーバ証明書、SCEP、失効、更新を設計する。</td>
+              <td>端末数、配布方式、複数端末導入を許容するか、更新案内を誰が行うかで工数が変わる。</td>
+            </tr>
+            <tr>
+              <td>ログ / 通知</td>
+              <td>RADIUS認証ログ、操作ログ、CSV出力、通知メール、問い合わせ時の確認手順を決める。</td>
+              <td>運用引き継ぎ資料や問い合わせ一次対応範囲を含めるかで工数が変わる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>5. ネットワーク機器側作業</h2>
+        <p>ネットワーク機器側作業は、RADIUS要求をSingleIDへ送る設定と、SingleIDから返った結果を使って接続を制御する設定である。SingleID側で認証が成功しても、機器側のグループ、VLAN、VPNポリシー、ファイアウォールポリシーが不適切であれば接続できない。</p>
+        <ul class="guide-companion__compact-list">
+          <li>RADIUSサーバ設定: 宛先、ポート、共有シークレット、タイムアウト、再送回数、プライマリ / セカンダリの扱いを設計値として記録する。</li>
+          <li>識別属性: 拡張RADIUSを使う場合、NAS-IP-AddressやNAS-Identifierなど、サイト識別に使う属性を機器が送信できるかを判定する。</li>
+          <li>VPN / SSID設定: VPN方式、SSID認証方式、EAP設定、証明書検証、VLAN割り当て、グループ連携を設計値として記録する。</li>
+          <li>ポリシー設定: VPNグループ、アドレスプール、ファイアウォールポリシー、SSID / VLAN / ACLの適用範囲を設計値として記録する。</li>
+          <li>ログ確認: SingleIDのRADIUS認証ログと、機器側ログを同じ時刻・同じユーザで突き合わせる。</li>
+        </ul>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>6. 証明書配布・運用設計</h2>
+        <p>証明書を使う案件では、発行よりも配布と運用が工数に影響しやすい。特に、同じ証明書を複数デバイスへ入れさせたくない要件がある場合、メール配布だけでは制御しにくい。配布方式ごとに、導入作業、記録方法、再発行、更新、失効の運用を決める。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>配布方式</th>
+              <th>向いている場面</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>メール配布</td>
+              <td>少数利用者のPoCや、利用者自身が端末へ証明書を導入できる場合。</td>
+              <td>複数デバイスへの導入を止めにくい。利用者手順と問い合わせ窓口を準備する。</td>
+            </tr>
+            <tr>
+              <td>管理者導入</td>
+              <td>証明書導入先を管理者が確認し、端末単位で記録したい場合。</td>
+              <td>導入後にインストール日時を更新し、メモ機能へ端末情報を記録する運用を検討する。</td>
+            </tr>
+            <tr>
+              <td>Windows自動構成</td>
+              <td>Windows端末で証明書導入を標準化したい場合。</td>
+              <td>自動構成で記録される情報、対象端末、利用者権限、失敗時の調査手順を記録する。</td>
+            </tr>
+            <tr>
+              <td>Intune SCEP</td>
+              <td>Intune管理デバイスへ証明書を配布し、端末管理と連動させたい場合。</td>
+              <td>Intune側の構成プロファイル、SCEP連携、対象グループ、端末登録状態を設計値として記録する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>7. ユーザ / グループ設計</h2>
+        <p>ユーザ / グループ設計では、誰を登録するかだけでなく、アクセス許可の単位、変更運用、退職・異動時の無効化、SCIM連携時の属性管理を決める。ユーザ名とメールアドレスは重複不可であるため、命名規則と変更可否を早い段階で決める。</p>
+        <ul class="guide-companion__compact-list">
+          <li>ユーザ登録方式: 個別登録、CSV一括登録、Entra IDのSCIMプロビジョニング、SCIM API連携（ベータ）の使い分けを決める。</li>
+          <li>グループ設計: VPN利用者、無線LAN利用者、拠点、部門、権限など、どの単位でアクセス許可を管理するかを決める。</li>
+          <li>属性設計: ユーザ名、メールアドレス、姓名、グループ名、Entra ID側UPNの扱いを設計値として記録する。</li>
+          <li>変更運用: 追加、異動、退職、端末交換、証明書再発行時に誰が何を変更するかを決める。</li>
+          <li>通知運用: ユーザ登録通知、証明書発行通知、パスワード案内が不要なタイミングでは、詳細設定で制御する通知を決める。</li>
+        </ul>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>8. ログ確認・運用引き継ぎ</h2>
+        <p>構築見積もりでは、接続試験だけでなく、運用開始後に誰がどのログを調査するかも含める。SingleID側ではRADIUS認証ログや操作ログを取得でき、CSV出力を使って後追い調査や共有に使える。機器側ログは、Access-Accept後の接続制御、VLAN割り当て、VPNポリシー適用の調査に必要である。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>確認対象</th>
+              <th>利用目的</th>
+              <th>引き継ぎで決めること</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RADIUS認証ログ</td>
+              <td>認証要求がSingleIDへ届いたか、Access-Accept / Reject、エラー例、NAS-IP / NAS-IDを判定する。</td>
+              <td>確認画面、CSV出力、問い合わせ時に必要なユーザ名・時刻・機器ログの集め方を決める。</td>
+            </tr>
+            <tr>
+              <td>操作ログ</td>
+              <td>管理者操作の履歴を取得する。</td>
+              <td>誰が調査するか、操作ログの集計通知を使うか、共有範囲をどうするかを決める。</td>
+            </tr>
+            <tr>
+              <td>機器側ログ</td>
+              <td>RADIUS応答を受け取ったか、属性をどう解釈したか、接続制御で拒否していないかを判定する。</td>
+              <td>機器側のログ取得手順、ベンダー問い合わせに必要な情報、保管期間を決める。</td>
+            </tr>
+            <tr>
+              <td>運用手順</td>
+              <td>通常時の追加・削除、証明書更新、障害時の切り分け、サポート問い合わせを標準化する。</td>
+              <td>運用引き継ぎ資料、FAQ、一次対応範囲、エスカレーション条件を決める。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>9. 工数に影響する要素</h2>
+        <p>工数は、SingleIDの設定画面の数だけでは決まらない。既存環境の複雑さ、端末展開、証明書運用、作業時間帯、テスト範囲、運用引き継ぎの深さが大きく影響する。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>要素</th>
+              <th>工数が増える条件</th>
+              <th>見積もり時の確認</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>対象規模</td>
+              <td>ユーザ数、端末数、AP台数、拠点数、VPN装置数が多い。</td>
+              <td>代表検証と全数確認の範囲を分ける。</td>
+            </tr>
+            <tr>
+              <td>既存環境</td>
+              <td>既存VPN、SSID、VLAN、ポリシーが複雑、または資料化されていない。</td>
+              <td>事前調査と設計確認の工数を分けて見積もる。</td>
+            </tr>
+            <tr>
+              <td>証明書</td>
+              <td>端末単位管理、SCEP、更新、失効、複数デバイス制御が必要。</td>
+              <td>発行だけでなく配布・更新・失効・問い合わせ対応を含める。</td>
+            </tr>
+            <tr>
+              <td>端末展開</td>
+              <td>OSが複数、MDMがない、利用者手動作業が多い。</td>
+              <td>手順書、サンプル端末検証、利用者案内、失敗時対応を含める。</td>
+            </tr>
+            <tr>
+              <td>変更作業</td>
+              <td>夜間・休日、停止時間制約、承認フロー、切り戻し手順が必要。</td>
+              <td>作業計画、事前レビュー、立ち会い、作業報告を含める。</td>
+            </tr>
+            <tr>
+              <td>運用引き継ぎ</td>
+              <td>運用担当がSingleIDやRADIUSに不慣れで、ログ確認や問い合わせ判断の説明が必要。</td>
+              <td>運用資料、FAQ、ログ確認演習、問い合わせテンプレートを含める。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>10. よくある見積もり漏れ</h2>
+        <ul class="guide-companion__compact-list">
+          <li>既存VPN、既存SSID、既存ポリシーの調査時間を入れていない。</li>
+          <li>証明書の発行だけを見積もり、配布、インストール支援、更新、失効、再発行を入れていない。</li>
+          <li>ユーザ / グループの命名規則、SCIM連携、グループ変更運用を確認していない。</li>
+          <li>APやVPN装置のファームウェア、ライセンス、機器側ログ取得方法を確認していない。</li>
+          <li>失敗時の切り分けテスト、ログ突き合わせ、サポート問い合わせ時の情報確認を含めていない。</li>
+          <li>PoC環境で通った設定を本番環境へそのまま移せる前提で見積もっている。</li>
+          <li>利用者案内、管理者向け手順、問い合わせ一次対応、運用引き継ぎ資料を含めていない。</li>
+          <li>切り戻し手順、変更申請、作業時間帯、立ち会い、作業報告を含めていない。</li>
+        </ul>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <section class="a4-training-overview__panel">
+        <h2>11. PoCから本番移行時の注意点</h2>
+        <p>PoC環境と本番環境は別環境として扱う。PoCは提案前検証、設定確認、認証確認、構成確認に使う環境であり、本番移行では設定を作り直す前提で計画する。PoCで確認した内容は、手順、パラメータ、設計判断、テスト結果として本番設計へ反映する。</p>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>移行時の観点</th>
+              <th>本番設計で決める内容</th>
+              <th>注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>環境差分</td>
+              <td>ログイン入口、RADIUS情報、証明書、ユーザ / グループ、通知設定の違いを設計値として記録する。</td>
+              <td>PoCの設定値をそのまま使える前提にしない。</td>
+            </tr>
+            <tr>
+              <td>証明書</td>
+              <td>本番用の証明書発行、配布、失効、更新運用を改めて設計する。</td>
+              <td>PoC証明書を本番端末へ展開しない。</td>
+            </tr>
+            <tr>
+              <td>機器設定</td>
+              <td>本番機器のファームウェア、既存設定、変更可能時間、設定バックアップ取得方法、復元手順を一覧化する。</td>
+              <td>PoC機器と本番機器の差分がある場合、再検証と切り戻し時間を見積もる。</td>
+            </tr>
+            <tr>
+              <td>受け入れ条件</td>
+              <td>成功条件、失敗時ログ、対象ユーザ、対象端末、代表拠点、運用引き継ぎ完了条件を決める。</td>
+              <td>接続成功だけで完了にせず、運用開始後の確認方法まで含める。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <footer class="a4-training-overview__footer">
+        <p>第3部は見積もり書のテンプレートではなく、見積もり前の技術確認観点を示す資料である。個別案件では、役割分担、既存環境、検証範囲、ドキュメント作成範囲に合わせて調整する。</p>
+      </footer>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

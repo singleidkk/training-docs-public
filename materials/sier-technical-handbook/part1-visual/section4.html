@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Part 1 図解版 Section 4: PKI / 証明書</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/a4-landscape.css">
+  <link rel="stylesheet" href="../../../css/diagrams.css">
+  <link rel="stylesheet" href="../../../css/visual-edition.css">
+  <link rel="stylesheet" href="../../../css/material-nav.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-users" viewBox="0 0 24 24" data-source="lucide:users">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <circle cx="9" cy="7" r="4" />
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24" data-source="lucide:shield-check">
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <path d="m9 12 2 2 4-4" />
+    </symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24" data-source="lucide:triangle-alert">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24" data-source="lucide:user">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </symbol>
+    <symbol id="icon-key" viewBox="0 0 24 24" data-source="lucide:key-round">
+      <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+      <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-certificate" viewBox="0 0 24 24" data-source="lucide:file-badge">
+      <path d="M13 22h5a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.3" />
+      <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+      <path d="m7.69 16.479 1.29 4.88a.5.5 0 0 1-.698.591l-1.843-.849a1 1 0 0 0-.879.001l-1.846.85a.5.5 0 0 1-.692-.593l1.29-4.88" />
+      <circle cx="6" cy="14" r="3" />
+    </symbol>
+    <symbol id="icon-radius" viewBox="0 0 24 24" data-source="lucide:waypoints">
+      <path d="m10.586 5.414-5.172 5.172" />
+      <path d="m18.586 13.414-5.172 5.172" />
+      <path d="M6 12h12" />
+      <circle cx="12" cy="20" r="2" />
+      <circle cx="12" cy="4" r="2" />
+      <circle cx="20" cy="12" r="2" />
+      <circle cx="4" cy="12" r="2" />
+    </symbol>
+    <symbol id="icon-log" viewBox="0 0 24 24" data-source="lucide:logs">
+      <path d="M3 5h1" />
+      <path d="M3 12h1" />
+      <path d="M3 19h1" />
+      <path d="M8 5h1" />
+      <path d="M8 12h1" />
+      <path d="M8 19h1" />
+      <path d="M13 5h8" />
+      <path d="M13 12h8" />
+      <path d="M13 19h8" />
+    </symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24" data-source="lucide:mail">
+      <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+    </symbol>
+    <symbol id="icon-support" viewBox="0 0 24 24" data-source="lucide:life-buoy">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m4.93 4.93 4.24 4.24" />
+      <path d="m14.83 9.17 4.24-4.24" />
+      <path d="m14.83 14.83 4.24 4.24" />
+      <path d="m9.17 14.83-4.24 4.24" />
+      <circle cx="12" cy="12" r="4" />
+    </symbol>
+    <symbol id="icon-cloud" viewBox="0 0 24 24" data-source="lucide:cloud">
+      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+    </symbol>
+    <symbol id="icon-device" viewBox="0 0 24 24" data-source="lucide:monitor">
+      <rect width="20" height="14" x="2" y="3" rx="2" />
+      <line x1="8" x2="16" y1="21" y2="21" />
+      <line x1="12" x2="12" y1="17" y2="21" />
+    </symbol>
+    <symbol id="icon-sync" viewBox="0 0 24 24" data-source="lucide:refresh-cw">
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+      <path d="M8 16H3v5" />
+    </symbol>
+    <symbol id="icon-phone-cert" viewBox="0 0 24 24" data-source="lucide:smartphone">
+      <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+      <path d="M12 18h.01" />
+    </symbol>
+    <symbol id="icon-gear" viewBox="0 0 24 24" data-source="lucide:settings">
+      <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+      <circle cx="12" cy="12" r="3" />
+    </symbol>
+    <symbol id="icon-list" viewBox="0 0 24 24" data-source="lucide:list">
+      <path d="M3 5h.01" />
+      <path d="M3 12h.01" />
+      <path d="M3 19h.01" />
+      <path d="M8 5h13" />
+      <path d="M8 12h13" />
+      <path d="M8 19h13" />
+    </symbol>
+    <symbol id="icon-external-link" viewBox="0 0 24 24" data-source="lucide:external-link">
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </symbol>
+    <symbol id="icon-decision" viewBox="0 0 24 24" data-source="lucide:git-branch">
+      <path d="M15 6a9 9 0 0 0-9 9V3" />
+      <circle cx="18" cy="6" r="3" />
+      <circle cx="6" cy="18" r="3" />
+    </symbol>
+    <symbol id="icon-fallback" viewBox="0 0 24 24" data-source="lucide:undo-2">
+      <path d="M9 14 4 9l5-5" />
+      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+    </symbol>
+    <symbol id="icon-lab" viewBox="0 0 24 24" data-source="lucide:flask-conical">
+      <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" />
+      <path d="M6.453 15h11.094" />
+      <path d="M8.5 2h7" />
+    </symbol>
+    <symbol id="icon-building" viewBox="0 0 24 24" data-source="lucide:building-2">
+      <path d="M10 12h4" />
+      <path d="M10 8h4" />
+      <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+      <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" />
+      <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
+    </symbol>
+    <symbol id="icon-flow" viewBox="0 0 24 24" data-source="lucide:workflow">
+      <rect width="8" height="8" x="3" y="3" rx="2" />
+      <path d="M7 11v4a2 2 0 0 0 2 2h4" />
+      <rect width="8" height="8" x="13" y="13" rx="2" />
+    </symbol>
+    <symbol id="icon-network" viewBox="0 0 24 24" data-source="lucide:network">
+      <rect x="16" y="16" width="6" height="6" rx="1" />
+      <rect x="2" y="16" width="6" height="6" rx="1" />
+      <rect x="9" y="2" width="6" height="6" rx="1" />
+      <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+      <path d="M12 12V8" />
+    </symbol>
+  </svg>
+
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section4-title">
+      <div>
+        <p class="section-cover__meta">Part 1 Visual / Section 4</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+        <h1 id="section4-title">PKI / 証明書</h1>
+        <p class="section-cover__lead">証明書を使う理由、信頼の仕組み、証明書の種類、発行・配布・更新・失効の運用を、案件で決める順番に沿って学ぶ。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>図解版で見ること</h2>
+        <ul>
+          <li>通常版と同じスライド番号で対応</li>
+          <li>関係性、流れ、判断点を図で把握</li>
+          <li>詳細説明は通常版と補足資料で確認</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-1-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Purpose</p>
+        <h1 id="section-4-1-title">証明書は端末を認証条件に加える</h1>
+        <p class="content-slide__lead">証明書認証は、IDとパスワードに加えて、許可された証明書を持つ端末かどうかを判定するために使う。まずは、証明書で何を防ぎ、どの運用を設計対象にするかを押さえる。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-purpose.png" alt="IDとパスワードに端末証明書の確認を加えて認証判定する図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>証明書認証は、IDとパスワードに加えて、許可された証明書を持つ端末かどうかを判定するために使う。</li><li>まずは、証明書で何を防ぎ、どの運用を設計対象にするかを押さえる。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-2-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / CA Chain</p>
+        <h1 id="section-4-2-title">CAチェーンとCRLで信頼と失効を判定する</h1>
+        <p class="content-slide__lead">証明書認証では、提示された証明書だけでなく、どのCAで発行されたか、失効していないかを判定する。ルートCA、中間CA、証明書、CRLの関係を先に押さえる。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-ca-chain-crl.png" alt="ルートCA、中間CA、証明書、CRLで信頼と失効を確認する図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>証明書認証では、提示された証明書だけでなく、どのCAで発行されたか、失効していないかを判定する。</li><li>ルートCA、中間CA、証明書、CRLの関係を先に押さえる。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-3-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Certificate Types</p>
+        <h1 id="section-4-3-title">証明書の種類を用途で分ける</h1>
+        <p class="content-slide__lead">証明書は、誰が提示するか、どの機器で使うか、どの管理方式で配布するかによって意味が変わる。配布手順に入る前に、証明書の種類と用途を分けておく。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-types.png" alt="クライアント証明書、SCEP証明書、サーバ証明書を用途別に分ける図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>証明書は、誰が提示するか、どの機器で使うか、どの管理方式で配布するかによって意味が変わる。</li><li>配布手順に入る前に、証明書の種類と用途を分けておく。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-4-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Issuance</p>
+        <h1 id="section-4-4-title">証明書発行はプロファイルと対象者を先に決める</h1>
+        <p class="content-slide__lead">クライアント証明書は、プロファイルに従って発行される。配布作業に入る前に、どのユーザへ、どの有効期間・用途の証明書を発行するかを決めておく。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-issuance.png" alt="証明書発行前にプロファイル、対象ユーザ、運用条件を決める図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>クライアント証明書は、プロファイルに従って発行される。</li><li>配布作業に入る前に、どのユーザへ、どの有効期間・用途の証明書を発行するかを決めておく。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-5-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Distribution</p>
+        <h1 id="section-4-5-title">証明書配布は端末OSと運用負荷で決める</h1>
+        <p class="content-slide__lead">証明書を発行しても、端末へ安全に導入できなければ認証では使えない。複数デバイスへ同じ証明書を入れさせたくない場合は、配布方法も設計対象にする。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-distribution.png" alt="メール送信、管理者導入、Windows自動構成、Intune SCEPを比較する図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>証明書を発行しても、端末へ安全に導入できなければ認証では使えない。</li><li>複数デバイスへ同じ証明書を入れさせたくない場合は、配布方法も設計対象にする。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-6-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Lifecycle</p>
+        <h1 id="section-4-6-title">更新と失効はライフサイクル運用として設計する</h1>
+        <p class="content-slide__lead">証明書は発行して終わりではない。期限切れ前に更新し、端末へ再配布し、使わせない証明書は失効してCRL反映後に再接続できない状態へ戻す。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-lifecycle.png" alt="証明書の発行、配布、利用、更新、失効、CRL反映の流れを示す図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>証明書は発行して終わりではない。</li><li>期限切れ前に更新し、端末へ再配布し、使わせない証明書は失効してCRL反映後に再接続できない状態へ戻す。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-4-7-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Design Points</p>
+        <h1 id="section-4-7-title">証明書設計で最初に決めること</h1>
+        <p class="content-slide__lead">証明書設計では、証明書を発行できるかではなく、どの用途で、誰に、どの端末へ、どの運用で使わせるかを先に決める。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section4-certificate-design-check.png" alt="証明書設計で認証用途、種類と対象、配布管理、ライフサイクルを決める図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>証明書設計では、証明書を発行できるかではなく、どの用途で、誰に、どの端末へ、どの運用で使わせるかを先に決める。</li><li>図解では、要素同士の関係と判断の順序を優先して見る。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 7</p>
+  </main>
+
+  <nav class="visual-section-nav" aria-label="図解版セクション移動">
+    <a href="section3.html">← 前のセクション</a>
+    <a href="index.html">図解版トップ</a>
+    <a href="section5.html">次のセクション →</a>
+  </nav>
+
+  <script src="../../../js/material-nav.js" defer></script>
+</body>
+</html>

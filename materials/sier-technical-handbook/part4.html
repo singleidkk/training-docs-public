@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Part 4: FAQ・質疑応答</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--part4 guide-companion" aria-label="FAQ・質疑応答">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+        <header class="a4-training-overview__title">
+          <p class="a4-training-overview__label">Part 4 / FAQ And Q&amp;A</p>
+          <h1>FAQ・質疑応答</h1>
+          <p class="a4-training-overview__subtitle">Part 1〜3で扱った内容を、案件相談や資料利用後の振り返りで使いやすいFAQ形式にまとめる。詳細手順は公開ドキュメントや機器別設定ガイドを参照する。</p>
+        </header>
+
+        <section class="faq-section">
+          <h2>環境・移行に関するFAQ</h2>
+          <article class="faq-item">
+            <h3>Q1. PoC環境と本番環境は何が違いますか。</h3>
+            <p><strong>回答例:</strong> PoC環境と本番環境は別環境として扱います。PoC環境は検証、設定確認、認証確認、構成確認に使い、本番環境は実運用のユーザ、グループ、RADIUS、証明書、ログを管理する環境です。</p>
+            <p class="faq-note">説明時は、ログイン入口、アカウント、設定対象を混同しないようにします。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q2. PoCで作った設定を本番環境へそのまま移行できますか。</h3>
+            <p><strong>回答例:</strong> そのまま移行する前提にはしません。PoCで確認した構成、認証方式、ログ確認の観点は本番設計に活用できますが、本番環境では対象ユーザ、接続元、機器、証明書、通知設定を本番条件で再設定します。</p>
+            <p class="faq-note">PoCの目的は「本番設定を作ること」ではなく、本番設計の判断材料を得ることです。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q3. 本番設計前に最低限そろえる情報は何ですか。</h3>
+            <p><strong>回答例:</strong> 利用シーン、対象ユーザ数、対象端末、拠点、機器、認証方式、証明書配布方式、RADIUSサイトの識別方式、作業時間帯、問い合わせ窓口をそろえます。</p>
+            <p class="faq-note">見積もりヒアリングシートとSingleID設定情報シートを併用すると、確認漏れを減らせます。</p>
+          </article>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">RADIUS And Authentication</p>
+          <h1>RADIUS・認証に関するFAQ</h1>
+          <p class="a4-training-overview__subtitle">標準RADIUSと拡張RADIUSの選定、RADIUSサイト、認証方式、応答属性について回答例として使える形にする。</p>
+        </header>
+
+        <section class="faq-section">
+          <article class="faq-item">
+            <h3>Q4. 標準RADIUSと拡張RADIUSはどう選べばよいですか。</h3>
+            <p><strong>回答例:</strong> 機器がNAS-IP-AddressまたはNAS-Identifierなどの識別属性を送信できるなら、拡張RADIUSを基本に考えます。識別属性を使えない機器、または属性値で機器を識別できない構成では、接続元IP / DDNSで識別する標準RADIUSを検討します。</p>
+            <p class="faq-note">標準RADIUSサイトと拡張RADIUSサイトは合計10サイトまでです。サイトを機器単位で作るのか、用途単位で作るのかを先に決めます。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q5. RADIUSサイトでは何を設定しますか。</h3>
+            <p><strong>回答例:</strong> どの機器または拠点からの認証要求を、どの許可ルールで判定するかを設定します。VPN用、無線LAN用など、用途に応じてサイトを分けると説明しやすくなります。</p>
+            <p class="faq-note">拡張RADIUSでは、機器が送るNAS-IP-AddressまたはNAS-Identifierの属性値を確認して設定します。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q6. SingleIDのRADIUS応答は成功 / 失敗だけですか。</h3>
+            <p><strong>回答例:</strong> 構成によっては、Access-Accept時に機器側の制御に使う情報を返します。VPNではFilter-IdやFortinet-Group-Nameなどのグループ情報、無線LANではVLAN IDなどを使う場合があります。</p>
+            <p class="faq-note">具体的な属性名と動作は、機器仕様と設定ガイドで確認します。</p>
+          </article>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Certificates And Devices</p>
+          <h1>証明書・端末に関するFAQ</h1>
+          <p class="a4-training-overview__subtitle">証明書の発行、配布、更新、失効、Intune SCEP連携について、設計時に説明しやすい回答例として使える形にする。</p>
+        </header>
+
+        <section class="faq-section">
+          <article class="faq-item">
+            <h3>Q7. 証明書は誰が発行・配布・更新しますか。</h3>
+            <p><strong>回答例:</strong> クライアント証明書はSingleID側で発行します。配布はメール配布、管理者導入、Windows自動構成、Intune SCEP配布などから選びます。更新と失効は、端末交換、退職、紛失、期限切れを含めて運用として設計します。</p>
+            <p class="faq-note">証明書の有効期限はデフォルト10年です。案件ごとに更新運用を確認します。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q8. 同じ証明書を複数デバイスへ入れさせたくない場合はどうしますか。</h3>
+            <p><strong>回答例:</strong> メール配布だけでは、利用者が複数デバイスへインストールすることを止めにくいです。管理者が導入してインストール日時を更新する、メモ機能に端末情報を記録する、Windows自動構成やIntune SCEPで管理端末へ配布する、といった方法を検討します。</p>
+            <p class="faq-note">Windows自動構成では、メモ欄にコンピュータ名が記録される運用を前提にできます。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q9. Intune SCEP連携では何を確認しますか。</h3>
+            <p><strong>回答例:</strong> Intuneで管理されている端末へSCEPで証明書を配布するか、対象端末・対象ユーザ・割り当てグループ・証明書プロファイル・接続試験の範囲を確認します。</p>
+            <p class="faq-note">SCEPは証明書配布の方式です。認証方式やRADIUSサイトの許可条件とは分けて設計します。</p>
+          </article>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Logs And Troubleshooting</p>
+          <h1>ログ・トラブルシューティングに関するFAQ</h1>
+          <p class="a4-training-overview__subtitle">認証に失敗したときは、RADIUS認証ログに出ているかどうかで切り分けの入口を変える。</p>
+        </header>
+
+        <section class="faq-section">
+          <article class="faq-item">
+            <h3>Q10. 認証失敗時はどのログを見ますか。</h3>
+            <p><strong>回答例:</strong> まずSingleIDのRADIUS認証ログを確認します。ログに記録があれば、ユーザ名、時刻、NAS-IP / NAS-ID、認証方式、エラーメッセージ、Access-Accept / Access-Rejectを見ます。</p>
+            <p class="faq-note">ログ表示まで時間がかかる場合があるため、発生直後だけで判断しないようにします。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q11. RADIUS認証ログに記録がない場合は何を疑いますか。</h3>
+            <p><strong>回答例:</strong> SingleIDへ認証要求が届いていない可能性を疑います。機器側のRADIUSサーバ設定、宛先IP、UDPポート、共有シークレット、NAT、FW、ACL、ルーティング、戻り経路を確認します。</p>
+            <p class="faq-note">この場合は、SingleID側の認証判定以前で止まっている可能性があります。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q12. Access-Acceptが出ているのに接続できない場合はどうしますか。</h3>
+            <p><strong>回答例:</strong> SingleID側の認証判定は成功しています。機器側がAccess-Acceptを受け取ったか、途中経路でUDP応答が落ちていないか、受信属性、VPNグループ、VLAN、SSID、ポリシーを機器側ログで確認します。</p>
+            <p class="faq-note">Access-Accept後の接続制御は、機器側設定とネットワーク経路の確認が中心になります。</p>
+          </article>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Expansion And Preparation</p>
+          <h1>展開・事前確認に関するFAQ</h1>
+          <p class="a4-training-overview__subtitle">Wi-Fi展開、FortiGate以外の機器、説明会前・資料利用前にそろえる情報を回答例として扱う。</p>
+        </header>
+
+        <section class="faq-section">
+          <article class="faq-item">
+            <h3>Q13. Wi-Fi認証へ展開する場合に何を追加確認しますか。</h3>
+            <p><strong>回答例:</strong> SSID、VLAN、AP / コントローラ、拠点数、既存認証方式、端末OS、証明書配布方法を確認します。EAP-TLS、PEAP、EAP-TTLS-PAPなど、機器と端末が対応する認証方式も確認します。</p>
+            <p class="faq-note">無線APによっては、許可ルールと一緒にVLAN IDを設定する構成があります。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q14. FortiGate以外の機器へ展開できますか。</h3>
+            <p><strong>回答例:</strong> RADIUSに対応する機器であれば展開できる可能性があります。ただし、認証方式、識別属性、応答属性、証明書、ログの扱いは機器ごとに異なります。</p>
+            <p class="faq-note">未検証機器は、PoCでRADIUS要求、NAS-IP-Address / NAS-Identifier、認証方式、応答属性、ログを検証してから採用可否を決めます。</p>
+          </article>
+
+          <article class="faq-item">
+            <h3>Q15. 説明会前・資料利用前に何を準備すればよいですか。</h3>
+            <p><strong>回答例:</strong> SingleIDのログイン可否、対象機器、ファームウェア、設定ガイド対象バージョン、RADIUS設定、VPN / 無線LAN設定、対象ユーザ、対象端末、認証方式、証明書配布方式、機器ログを準備します。</p>
+            <p class="faq-note">設定情報シートと見積もりヒアリングシートを先に埋めると、質問の前提がそろいやすくなります。</p>
+          </article>
+        </section>
+      </section>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

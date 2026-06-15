@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Part 1 図解版 Section 3: RADIUS 基礎</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/a4-landscape.css">
+  <link rel="stylesheet" href="../../../css/diagrams.css">
+  <link rel="stylesheet" href="../../../css/visual-edition.css">
+  <link rel="stylesheet" href="../../../css/material-nav.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-users" viewBox="0 0 24 24" data-source="lucide:users">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <circle cx="9" cy="7" r="4" />
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24" data-source="lucide:shield-check">
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <path d="m9 12 2 2 4-4" />
+    </symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24" data-source="lucide:triangle-alert">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24" data-source="lucide:user">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </symbol>
+    <symbol id="icon-key" viewBox="0 0 24 24" data-source="lucide:key-round">
+      <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+      <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-certificate" viewBox="0 0 24 24" data-source="lucide:file-badge">
+      <path d="M13 22h5a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.3" />
+      <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+      <path d="m7.69 16.479 1.29 4.88a.5.5 0 0 1-.698.591l-1.843-.849a1 1 0 0 0-.879.001l-1.846.85a.5.5 0 0 1-.692-.593l1.29-4.88" />
+      <circle cx="6" cy="14" r="3" />
+    </symbol>
+    <symbol id="icon-radius" viewBox="0 0 24 24" data-source="lucide:waypoints">
+      <path d="m10.586 5.414-5.172 5.172" />
+      <path d="m18.586 13.414-5.172 5.172" />
+      <path d="M6 12h12" />
+      <circle cx="12" cy="20" r="2" />
+      <circle cx="12" cy="4" r="2" />
+      <circle cx="20" cy="12" r="2" />
+      <circle cx="4" cy="12" r="2" />
+    </symbol>
+    <symbol id="icon-log" viewBox="0 0 24 24" data-source="lucide:logs">
+      <path d="M3 5h1" />
+      <path d="M3 12h1" />
+      <path d="M3 19h1" />
+      <path d="M8 5h1" />
+      <path d="M8 12h1" />
+      <path d="M8 19h1" />
+      <path d="M13 5h8" />
+      <path d="M13 12h8" />
+      <path d="M13 19h8" />
+    </symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24" data-source="lucide:mail">
+      <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+    </symbol>
+    <symbol id="icon-support" viewBox="0 0 24 24" data-source="lucide:life-buoy">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m4.93 4.93 4.24 4.24" />
+      <path d="m14.83 9.17 4.24-4.24" />
+      <path d="m14.83 14.83 4.24 4.24" />
+      <path d="m9.17 14.83-4.24 4.24" />
+      <circle cx="12" cy="12" r="4" />
+    </symbol>
+    <symbol id="icon-cloud" viewBox="0 0 24 24" data-source="lucide:cloud">
+      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+    </symbol>
+    <symbol id="icon-device" viewBox="0 0 24 24" data-source="lucide:monitor">
+      <rect width="20" height="14" x="2" y="3" rx="2" />
+      <line x1="8" x2="16" y1="21" y2="21" />
+      <line x1="12" x2="12" y1="17" y2="21" />
+    </symbol>
+    <symbol id="icon-sync" viewBox="0 0 24 24" data-source="lucide:refresh-cw">
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+      <path d="M8 16H3v5" />
+    </symbol>
+    <symbol id="icon-phone-cert" viewBox="0 0 24 24" data-source="lucide:smartphone">
+      <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+      <path d="M12 18h.01" />
+    </symbol>
+    <symbol id="icon-gear" viewBox="0 0 24 24" data-source="lucide:settings">
+      <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+      <circle cx="12" cy="12" r="3" />
+    </symbol>
+    <symbol id="icon-list" viewBox="0 0 24 24" data-source="lucide:list">
+      <path d="M3 5h.01" />
+      <path d="M3 12h.01" />
+      <path d="M3 19h.01" />
+      <path d="M8 5h13" />
+      <path d="M8 12h13" />
+      <path d="M8 19h13" />
+    </symbol>
+    <symbol id="icon-external-link" viewBox="0 0 24 24" data-source="lucide:external-link">
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </symbol>
+    <symbol id="icon-decision" viewBox="0 0 24 24" data-source="lucide:git-branch">
+      <path d="M15 6a9 9 0 0 0-9 9V3" />
+      <circle cx="18" cy="6" r="3" />
+      <circle cx="6" cy="18" r="3" />
+    </symbol>
+    <symbol id="icon-fallback" viewBox="0 0 24 24" data-source="lucide:undo-2">
+      <path d="M9 14 4 9l5-5" />
+      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+    </symbol>
+    <symbol id="icon-lab" viewBox="0 0 24 24" data-source="lucide:flask-conical">
+      <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" />
+      <path d="M6.453 15h11.094" />
+      <path d="M8.5 2h7" />
+    </symbol>
+    <symbol id="icon-building" viewBox="0 0 24 24" data-source="lucide:building-2">
+      <path d="M10 12h4" />
+      <path d="M10 8h4" />
+      <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+      <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" />
+      <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
+    </symbol>
+    <symbol id="icon-flow" viewBox="0 0 24 24" data-source="lucide:workflow">
+      <rect width="8" height="8" x="3" y="3" rx="2" />
+      <path d="M7 11v4a2 2 0 0 0 2 2h4" />
+      <rect width="8" height="8" x="13" y="13" rx="2" />
+    </symbol>
+    <symbol id="icon-network" viewBox="0 0 24 24" data-source="lucide:network">
+      <rect x="16" y="16" width="6" height="6" rx="1" />
+      <rect x="2" y="16" width="6" height="6" rx="1" />
+      <rect x="9" y="2" width="6" height="6" rx="1" />
+      <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+      <path d="M12 12V8" />
+    </symbol>
+  </svg>
+
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section3-title">
+      <div>
+        <p class="section-cover__meta">Part 1 Visual / Section 3</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+        <h1 id="section3-title">RADIUS 基礎</h1>
+        <p class="section-cover__lead">RADIUSクライアントとRADIUSサーバの関係を押さえ、SingleID側とネットワーク機器側で何を設定するのかを理解する。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>図解版で見ること</h2>
+        <ul>
+          <li>通常版と同じスライド番号で対応</li>
+          <li>関係性、流れ、判断点を図で把握</li>
+          <li>詳細説明は通常版と補足資料で確認</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-1-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Request Flow</p>
+        <h1 id="section-3-1-title">RADIUSの基本フロー</h1>
+        <p class="content-slide__lead">VPN装置や無線APはRADIUSクライアントとして接続要求を受け、SingleIDへ認証判断を問い合わせる。SingleIDはRADIUS、PKI、IdPを組み合わせ、認証・認可・ログの観点で判定する。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-radius-basic-flow.png" alt="RADIUSクライアントからSingleID RADIUSへ認証要求を送り結果を返す基本フローの図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>VPN装置や無線APはRADIUSクライアントとして接続要求を受け、SingleIDへ認証判断を問い合わせる。</li><li>SingleIDはRADIUS、PKI、IdPを組み合わせ、認証・認可・ログの観点で判定する。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-2-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Authentication Methods</p>
+        <h1 id="section-3-2-title">SingleIDのクラウドRADIUSで扱う認証方式</h1>
+        <p class="content-slide__lead">RADIUS設計では、機器が送る認証方式とSingleID側で利用する認証要素が一致しているかを判定する。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-radius-auth-methods.png" alt="RADIUS認証方式とSingleID側の認証要素を対応づける図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>RADIUS設計では、機器が送る認証方式とSingleID側で利用する認証要素が一致しているかを判定する。</li><li>図解では、要素同士の関係と判断の順序を優先して見る。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-3-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Shared Secret</p>
+        <h1 id="section-3-3-title">共有シークレットはRFC上の認証・秘匿処理に使う</h1>
+        <p class="content-slide__lead">RFC 2865では、RADIUSクライアントとRADIUSサーバ間のトランザクションは共有シークレットで認証され、シークレット自体はネットワーク上に送信されない。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-shared-secret.png" alt="RADIUSクライアントとRADIUSサーバが共有シークレットを使う関係を示す図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>RFC 2865では、RADIUSクライアントとRADIUSサーバ間のトランザクションは共有シークレットで認証され、シークレット自体はネットワーク上に送信されない。</li><li>図解では、要素同士の関係と判断の順序を優先して見る。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-4-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Standard vs Advanced</p>
+        <h1 id="section-3-4-title">標準RADIUSと拡張RADIUSは接続元の識別方法が違う</h1>
+        <p class="content-slide__lead">まず仕様として、標準RADIUSはグローバルIPアドレスまたはホスト名、拡張RADIUSはNAS-IP-AddressまたはNAS-Identifierで接続元を識別する。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-standard-vs-advanced-radius.png" alt="標準RADIUSと拡張RADIUSの接続元識別方法と認証ポートの違いを比較する図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>まず仕様として、標準RADIUSはグローバルIPアドレスまたはホスト名、拡張RADIUSはNAS-IP-AddressまたはNAS-Identifierで接続元を識別する。</li><li>認証ポートは、標準RADIUSがUDP 1812 / 10002〜10010、拡張RADIUSがUDP 20000〜29999の範囲から割り当てられる専用ポートを使う。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-5-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Selection Policy</p>
+        <h1 id="section-3-5-title">運用方針は拡張RADIUSを基本にする</h1>
+        <p class="content-slide__lead">設計では、機器がNAS-IP-AddressまたはNAS-Identifierを送信できるなら拡張RADIUSを基本にする。標準RADIUSは、識別に使えるRADIUS属性を送れない場合の回避策として扱う。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-advanced-radius-policy.png" alt="NAS-IPまたはNAS-IDを送れる場合は拡張RADIUSを基本にする判断ツリーの図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>設計では、機器がNAS-IP-AddressまたはNAS-Identifierを送信できるなら拡張RADIUSを基本にする。</li><li>標準RADIUSは、識別に使えるRADIUS属性を送れない場合の回避策として扱う。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-6-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Site Settings</p>
+        <h1 id="section-3-6-title">RADIUSサイトは同一アクセスポリシーを割り当てる単位</h1>
+        <p class="content-slide__lead">標準RADIUSサイトと拡張RADIUSサイトは合計10個まで。1つのサイトで複数の送信元や属性値を扱い、同じ許可ルールを複数拠点や多数の機器へ割り当てやすくする。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-radius-site.png" alt="複数拠点や機器をRADIUSサイトにまとめ同じ許可ルールを割り当てる図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>標準RADIUSサイトと拡張RADIUSサイトは合計10個まで。</li><li>1つのサイトで複数の送信元や属性値を扱い、同じ許可ルールを複数拠点や多数の機器へ割り当てやすくする。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="section-3-7-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Design Points</p>
+        <h1 id="section-3-7-title">RADIUS設計で最初に判定する項目</h1>
+        <p class="content-slide__lead">案件では、まずNAS-IP-AddressまたはNAS-Identifierでサイト識別できる構成かを判定する。識別属性、反映待ち、ログの見方まで含めて設計する。</p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../../assets/part1-visual-section3-radius-design-check.png" alt="RADIUS設計で識別属性、種別、サイト、反映待ち、ログ確認を順に見る図解" loading="lazy" decoding="async">
+        </figure>
+        <aside class="visual-notes">
+          <h2>図で読むポイント</h2>
+          <ul><li>案件では、まずNAS-IP-AddressまたはNAS-Identifierでサイト識別できる構成かを判定する。</li><li>識別属性、反映待ち、ログの見方まで含めて設計する。</li></ul>
+        </aside>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 7</p>
+  </main>
+
+  <nav class="visual-section-nav" aria-label="図解版セクション移動">
+    <a href="section2.html">← 前のセクション</a>
+    <a href="index.html">図解版トップ</a>
+    <a href="section4.html">次のセクション →</a>
+  </nav>
+
+  <script src="../../../js/material-nav.js" defer></script>
+</body>
+</html>

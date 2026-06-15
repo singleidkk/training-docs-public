@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>時間に関する補足資料 | SingleID 技術説明ハンドブック</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document guide-companion" aria-label="時間に関する補足資料">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+        <header class="a4-training-overview__title">
+          <p class="a4-training-overview__label">Appendix / Time Reference</p>
+          <h1>時間に関する補足資料</h1>
+          <p class="a4-training-overview__subtitle">RADIUS、ログ、証明書、通知リンクで時間を見込む項目をまとめる。設計時は「すぐ反映される前提」にせず、待ち時間、有効期限、再送可能期間を作業手順に入れる。</p>
+        </header>
+
+        <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+          <h2>使い方</h2>
+          <ul class="guide-companion__compact-list">
+            <li>設定変更、ログ閲覧、証明書配布、証明書失効の作業計画で参照する。</li>
+            <li>個別手順の詳細は、SingleID公式ドキュメントの該当ページを正本とする。</li>
+            <li>案件説明では、待ち時間を「障害」ではなく「反映待ち」として切り分ける。</li>
+          </ul>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>1. RADIUSに関する時間</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>時間</th>
+                <th>作業時の見方</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RADIUSサイト設定の反映</td>
+                <td>最大15分</td>
+                <td>登録、編集、削除のあと、すぐに認証結果へ反映されない場合がある。</td>
+              </tr>
+              <tr>
+                <td>RADIUS認証ログの表示</td>
+                <td>認証実行後から5分程度かかる場合あり</td>
+                <td>認証直後にログがない場合は、発生時刻とユーザ名を控えてから少し待つ。</td>
+              </tr>
+              <tr>
+                <td>標準RADIUSでホスト名を使う場合の名前解決</td>
+                <td>5分ごと</td>
+                <td>DDNSやIP変更時は、最大5分間クラウドRADIUSへ到達できない可能性を見込む。</td>
+              </tr>
+              <tr>
+                <td>RADIUS認証ログの表示可能期間</td>
+                <td>少なくとも1か月分</td>
+                <td>長期保管や関係者共有が必要な場合は、CSV / Excelダウンロードも使う。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>2. 証明書・通知リンクに関する時間</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>時間</th>
+                <th>作業時の見方</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>パスワード設定リンク</td>
+                <td>有効期間1日</td>
+                <td>設定URLメール送信を使う場合、利用者には当日中の設定を案内する。</td>
+              </tr>
+              <tr>
+                <td>クライアント証明書 / サーバ証明書の有効期間</td>
+                <td>1年、5年、10年から選択。10年がデフォルト</td>
+                <td>有効期限を短くする場合は、更新作業と再配布の運用も決める。</td>
+              </tr>
+              <tr>
+                <td>証明書のダウンロード可能期間</td>
+                <td>発行から1か月間</td>
+                <td>発行後1か月を過ぎると、証明書をダウンロードできない。クライアント証明書のメール再送も発行から1か月まで。</td>
+              </tr>
+              <tr>
+                <td>証明書発行通知メールのダウンロードリンク</td>
+                <td>有効期間1週間</td>
+                <td>利用者へ案内する場合は、1週間以内にダウンロードするよう伝える。</td>
+              </tr>
+              <tr>
+                <td>証明書発行通知メールの再送可能期間</td>
+                <td>発行から1か月間</td>
+                <td>リンク期限切れ時は再送できるが、発行から1か月を過ぎると再送できない。</td>
+              </tr>
+              <tr>
+                <td>証明書失効リスト（CRL）の有効期間</td>
+                <td>10日間</td>
+                <td>機器側が古いCRLを使い続けないよう、定期取得の設計が必要になる。</td>
+              </tr>
+              <tr>
+                <td>クラウドRADIUSへの証明書失効反映</td>
+                <td>最大1時間</td>
+                <td>失効直後に認証へ反映されない場合がある。再接続不可テストは時間を置いて行う。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>3. 作業時に伝えるべき注意</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>場面</th>
+                <th>注意点</th>
+                <th>作業時の見方</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RADIUSサイトを登録・編集した直後</td>
+                <td>最大15分の反映待ちがある。</td>
+                <td>設定直後に失敗しても、設定ミスと決めつけず、反映待ちとログを分けて判定する。</td>
+              </tr>
+              <tr>
+                <td>認証ログがすぐ出ない</td>
+                <td>ログ表示まで5分程度かかる場合がある。</td>
+                <td>認証時刻、ユーザ名、機器側ログを控え、時間を置いてRADIUS認証ログを表示する。</td>
+              </tr>
+              <tr>
+                <td>DDNSや回線切替を使う</td>
+                <td>標準RADIUSでは名前解決の反映待ちを見込む。</td>
+                <td>IP変更直後は最大5分間到達不可になる可能性がある。</td>
+              </tr>
+              <tr>
+                <td>証明書をメール配布する</td>
+                <td>リンクは1週間、再送は発行から1か月。</td>
+                <td>利用者案内には、期限内にダウンロードすることを明記する。</td>
+              </tr>
+              <tr>
+                <td>証明書を失効する</td>
+                <td>クラウドRADIUSへの反映は最大1時間。</td>
+                <td>失効後の接続不可テストは、CRL反映時間を考慮して実施する。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>4. 参照元</h2>
+          <ul class="guide-companion__compact-list">
+            <li>RADIUS: <a href="https://pubdocs.singleid.jp/singleid-adminguide/radius/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-adminguide/radius/</a></li>
+            <li>RADIUS認証ログ: <a href="https://pubdocs.singleid.jp/singleid-adminguide/radius_authlog/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-adminguide/radius_authlog/</a></li>
+            <li>標準RADIUSサーバと拡張RADIUSサーバの選び方: <a href="https://pubdocs.singleid.jp/singleid-adminguide/radius_server_selection/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-adminguide/radius_server_selection/</a></li>
+            <li>証明書: <a href="https://pubdocs.singleid.jp/singleid-adminguide/pki/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-adminguide/pki/</a></li>
+            <li>プライベートPKI FAQ: <a href="https://pubdocs.singleid.jp/faq/pki/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/faq/pki/</a></li>
+          </ul>
+        </section>
+
+        <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+          <h2>作業時の使い方</h2>
+          <p>設定変更、ログ表示、証明書配布、証明書失効では、処理が即時に反映されない場合がある。作業手順や案件対応では、該当する待ち時間や有効期限をこの表から拾い、再実行する時刻、利用者への案内期限、問い合わせ前に待つ時間を明確にする。</p>
+        </section>
+      </section>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

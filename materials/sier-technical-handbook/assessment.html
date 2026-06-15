@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>理解度テスト | SingleID 技術説明ハンドブック</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document a4-training-overview" aria-label="SingleID 技術説明ハンドブック 理解度テスト">
+    <article class="portrait-page a4-training-overview__content">
+      <header class="a4-training-overview__title">
+        <p class="a4-training-overview__label">Post Training Check</p>
+        <h1>理解度テスト</h1>
+        <p class="a4-training-overview__subtitle">トレーニング後または資料参照後に、SingleID、RADIUS、PKI、FortiGate連携の要点を自分の言葉で説明できるかを測る自己テスト。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <h2>使い方</h2>
+        <ul>
+          <li>各設問に対して、自分の言葉で説明する。</li>
+          <li>解答例と比べて、前提条件、調査対象の画面、切り分け順序が不足していないかを自己点検する。</li>
+          <li>案件で使う場合は、機器バージョン、顧客環境、運用方針に合わせて「追加調査が必要な事項」を追記する。</li>
+        </ul>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>Part 1: SingleID 技術説明</h2>
+        <ol class="guide-companion__compact-list">
+          <li>
+            SingleIDクラウド、Microsoftクラウド、オンプレ機器、クライアント端末はどのように関係するか。
+            <details>
+              <summary>解答例</summary>
+              <p>SingleIDクラウドはRADIUS、LDAP、PKI、IdPを提供し、認証要求の受け口、ID情報、証明書、ログを扱う。MicrosoftクラウドはEntra IDによるSCIMプロビジョニングやIntuneによるSCEP証明書配布でSingleIDや端末運用と連携する。オンプレ機器はAPやVPNゲートウェイとしてRADIUSクライアントになり、SingleIDへ認証要求を送る。クライアント端末は無線LANやVPN接続を開始し、ID / パスワードやクライアント証明書を提示する。設計時は、ID同期、証明書配布、RADIUS認証、接続制御がどの要素間で行われるかを分けて説明する。</p>
+            </details>
+          </li>
+          <li>
+            PoC環境はどのような目的で使い、何に使うべきではないか。
+            <details>
+              <summary>解答例</summary>
+              <p>PoC環境は、提案前検証、設定試行、認証動作検証、ログの読み方の練習などの機能検証に使う環境である。本番環境とは分離されており、PoC環境をそのまま本番利用することはできない。本番よりサーバスペックが低いため、性能試験や負荷試験の評価環境として扱わない。SLAはなく、通知なしでメンテナンスされる場合がある。利用条件は原則10ユーザ、無償PoCは原則1か月で、超過や延長は応相談とする。ログイン入口も本番環境とPoC環境で異なるため、URLを取り違えない。</p>
+            </details>
+          </li>
+          <li>
+            標準RADIUSと拡張RADIUSは、どのように使い分けるか。
+            <details>
+              <summary>解答例</summary>
+              <p>識別属性を使える機器では拡張RADIUSを基本にする。拡張RADIUSは専用ポートと属性値でサイトを識別し、拠点や機器が増えても同じ考え方でRADIUSサイトを管理しやすい。標準RADIUSは、機器がNAS-Identifierなどの識別属性を送れない、属性値で機器や用途を識別できない、設定ガイドや検証で属性利用を判断できない場合の回避策として検討する。設計時は、機器が送るRADIUS属性と、SingleID側のRADIUSサイトで使う識別条件を先に決める。</p>
+            </details>
+          </li>
+          <li>
+            RADIUSの共有シークレットは何のために使われるか。
+            <details>
+              <summary>解答例</summary>
+              <p>共有シークレットは、RADIUSクライアントとRADIUSサーバの間で共有する秘密情報である。PAPではUser-Password属性の保護に使われ、Message-Authenticatorがある場合はパケットの完全性検証にも関係する。FortiGate連携ではSingleID側の拡張RADIUSサーバ登録時の値と、FortiGate側のRADIUSサーバ設定の値を一致させる必要がある。値が違うと、認証情報が正しくてもRADIUS要求や応答の処理に失敗するため、IP、ポート、共有シークレットをセットで管理する。</p>
+            </details>
+          </li>
+          <li>
+            クライアント証明書、中間CA、CRLの役割を説明する。
+            <details>
+              <summary>解答例</summary>
+              <p>クライアント証明書は、利用者や端末がVPNや無線LAN接続時に提示する証明書であり、端末や証明書を認証条件に加えるために使う。中間CAはクライアント証明書やサーバ証明書を発行したCAで、機器側が証明書チェーンを検証する基点になる。CRLは失効した証明書のシリアル番号リストで、端末紛失、退職、証明書再発行後に古い証明書を使わせないために使う。設計時は、中間CA、CRL、サーバ証明書、クライアント証明書を別々の設定として扱う。</p>
+            </details>
+          </li>
+          <li>
+            RADIUS認証ログに記録がない場合、最初に何を切り分けるか。
+            <details>
+              <summary>解答例</summary>
+              <p>RADIUS認証ログに記録がない場合は、まずSingleIDまで認証要求が届いていない可能性を疑う。機器側のRADIUSサーバ設定、宛先IP、UDPポート、共有シークレット、送信元IP、経路、NAT、FW、ACLを照合する。拡張RADIUSでは専用ポートへ送っているかも照合する。ログ表示まで時間がかかる場合もあるため、発生時刻とユーザ名をそろえて少し待つ。それでもログが出ない場合は、機器側ログとネットワーク経路を優先して切り分ける。</p>
+            </details>
+          </li>
+          <li>
+            Access-AcceptがSingleID側に出ているのに接続できない場合、どこを調査するか。
+            <details>
+              <summary>解答例</summary>
+              <p>Access-AcceptがSingleID側に出ている場合、SingleID側の認証判定は成功している。次に調査するのは、RADIUS応答がUDPで機器へ戻っているか、途中経路でドロップされていないか、機器側が応答属性を解釈できているかである。VPNならFortiGate側ログ、ユーザグループ、受け取った属性、ファイアウォールポリシー、アドレスプール、ルーティングを照合する。無線LANならVLAN、SSID、AP / コントローラ側ポリシーを照合する。SingleID側で接続制御後の原因は判断できないため、機器側調査を優先する。</p>
+            </details>
+          </li>
+          <li>
+            可用性対策で、緊急SSIDや代替認証を入れる場合の注意点は何か。
+            <details>
+              <summary>解答例</summary>
+              <p>緊急SSIDや代替認証は、クラウドRADIUSへ到達できないときの接続継続策として有効な場合がある。ただし、PSK運用では個人特定が難しくなり、証明書認証やグループ条件を使わない構成では認証強度が下がる場合がある。採用する場合は、通常時は無効化するか、利用条件、利用時間、パスワード変更、ログの見方、解除手順を決めておく。業務影響とセキュリティ要件を比較し、そこまでして接続を維持する必要があるか、採用しない判断も含めて検討する。</p>
+            </details>
+          </li>
+        </ol>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>Part 2: FortiGate 設定ガイド副読本</h2>
+        <ol class="guide-companion__compact-list">
+          <li>
+            SingleID側で作るグループと、FortiGate側で作るユーザグループは何が違うか。
+            <details>
+              <summary>解答例</summary>
+              <p>SingleID側のグループは、RADIUSサイトで「このユーザ群を許可する」という認証条件として使う。FortiGate側のユーザグループは、FortiGate内でRADIUSサーバを参照し、VPN設定へ紐づけるためのローカル設定である。同じ名前にしても同一オブジェクトではなく、同期もされない。切り分け時は、SingleID側でユーザが許可グループに入っているか、FortiGate側でVPNが正しいユーザグループを参照しているかを別々に照合する。</p>
+            </details>
+          </li>
+          <li>
+            FortiGateへ中間CA証明書を追加する目的は何か。
+            <details>
+              <summary>解答例</summary>
+              <p>FortiGateへ中間CA証明書を追加する目的は、VPN接続時に端末が提示するクライアント証明書の発行元をFortiGateが検証できるようにすることである。FortiGateは証明書を持っている端末を無条件に信用するのではなく、指定した中間CAで発行された証明書かを判定する。ここで入れるのはSingleIDの中間CA証明書であり、ルートCA証明書ではない。ルートCAを入れると信頼範囲が広がりすぎる可能性があるため、ガイドの指定どおり中間CAを使う。</p>
+            </details>
+          </li>
+          <li>
+            FortiGateへCRLを設定する目的は何か。
+            <details>
+              <summary>解答例</summary>
+              <p>CRLは、失効した証明書をFortiGateが拒否できるようにするために設定する。退職、端末紛失、証明書再発行などで証明書を失効しても、FortiGateがCRLを取得できなければ失効状態を反映できない。設計時は、SingleIDの中間CA側CRL URLを使うこと、FortiGateからそのURLへ到達できること、更新間隔を設定することを決める。失効後に再接続できない状態まで運用手順に含める。</p>
+            </details>
+          </li>
+          <li>
+            拡張RADIUSでFortiGate側にCLIの `radius-port` 設定が必要になる理由は何か。
+            <details>
+              <summary>解答例</summary>
+              <p>拡張RADIUSでは、SingleID側で顧客専用に割り当てられたRADIUSポートへFortiGateから認証要求を送る必要がある。FortiGateのGUIでRADIUSサーバIPと共有シークレットを登録しても、送信先ポートが拡張RADIUSの専用ポートになっていなければSingleID側の入口と一致しない。そのためCLIで `radius-port` を設定する。切り分け時は、IP、共有シークレット、専用ポート、UDP到達性をセットで照合する。</p>
+            </details>
+          </li>
+          <li>
+            FortiGateのホスト名とSingleIDのRADIUSサイト属性値を合わせる理由は何か。
+            <details>
+              <summary>解答例</summary>
+              <p>FortiGateはRADIUS要求でホスト名をNAS-Identifierとして送る。SingleID側のRADIUSサイトは、その属性値を使って「この要求はどのFortiGate、どの用途から来たか」を識別する。FortiGateのホスト名とSingleID側のRADIUSサイト属性値が一致しないと、ユーザ名やパスワードが正しくてもサイト識別で止まる。設計時は、ホスト名変更の有無、表記揺れ、大文字小文字、部分一致の条件をRADIUSサイト設定へ反映する。</p>
+            </details>
+          </li>
+          <li>
+            `eap-cert-auth` を有効にする目的は何か。
+            <details>
+              <summary>解答例</summary>
+              <p>`eap-cert-auth` は、IKEv2 VPNでクライアント証明書認証とEAPによるユーザ名 / パスワード認証を併用するためのFortiGate側設定である。証明書で端末を判定し、EAP/RADIUSでユーザを判定する構成にするため、片方だけでは目的の認証条件にならない。このガイドのFortiGate v7.6.6前提では、ウィザード作成後に `disable` のため、CLIで `enable` へ変更する。接続失敗時は、証明書設定、EAP設定、ユーザグループ、RADIUS応答を分けて照合する。</p>
+            </details>
+          </li>
+          <li>
+            FortiClient側で証明書一覧にクライアント証明書が出ない場合、何を疑うか。
+            <details>
+              <summary>解答例</summary>
+              <p>このガイドの手順では、接続に使うWindowsユーザの「現在のユーザー」証明書ストアに、秘密鍵付きのクライアント証明書として正しくインポートされているかを照合する。別ユーザでインポートした、P12インポートに失敗した、秘密鍵がない、証明書ストアの場所が違う場合はFortiClientで選べない可能性がある。FortiClient側のVPN設定で、認証方法が証明書を使う設定になっているか、選択対象の証明書がクライアント認証用途として使えるかも照合する。ローカルコンピュータ証明書を使う設計では、秘密鍵へのアクセス権を調査する。</p>
+            </details>
+          </li>
+        </ol>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>合格目安</h2>
+        <p>各設問について、設定画面名だけでなく「何のための設定か」「どちら側の設定か」「失敗時にどの設定・ログを調査するか」を説明できれば、実案件のPoC検証や設計レビューに進める水準とする。</p>
+      </section>
+
+      <footer class="a4-training-overview__footer">
+        <p>本テストは理解度を測るための補助資料であり、製品仕様の正本ではない。実案件では公開ドキュメントと利用環境の前提に従う。</p>
+      </footer>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

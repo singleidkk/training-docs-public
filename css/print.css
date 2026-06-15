@@ -1,0 +1,38 @@
+@page {
+  size: A4;
+  margin: 14mm;
+}
+
+body {
+  color: #111827;
+  background: #ffffff;
+}
+
+.site-header,
+.page-header {
+  color: #111827;
+  background: #ffffff;
+  border-bottom: 2px solid #003b73;
+}
+
+.lead {
+  color: #374151;
+}
+
+.section {
+  break-inside: avoid;
+  padding: 12mm 0;
+}
+
+.part-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.part-card {
+  box-shadow: none;
+}
+
+.back-link {
+  display: none;
+}
+

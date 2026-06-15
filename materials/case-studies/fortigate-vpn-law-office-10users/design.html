@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>設計書 | FortiGate VPN / 10名規模 / 法律事務所</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/layout.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/print.css" media="print">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="back-link" href="index.html">← ケーストップへ戻る</a>
+      <p class="eyebrow">Case Study / Design</p>
+      <h1>設計書</h1>
+      <p class="lead">FortiGate IKEv2リモートアクセスVPNを、SingleID拡張RADIUSとクライアント証明書で強化するためのサンプル設計書です。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>1. 設計前提</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>対象</th><td>FortiGate IKEv2リモートアクセスVPNの認証強化。利用者10名がWindows端末からFortiClientで接続する。</td></tr>
+            <tr><th>認証方式</th><td>FortiGate側でクライアント証明書を検証し、SingleID拡張RADIUSでユーザ名 / パスワード認証とグループ許可を行う。</td></tr>
+            <tr><th>ID管理</th><td>Entra ID、AD、Intune、MDMは使わない。SingleIDへユーザをCSV一括登録し、以後の追加・停止もSingleID側で扱う。</td></tr>
+            <tr><th>構築方針</th><td>既存VPNをIKEv2 VPN構成へ再設定する。作業前にFortiGate設定バックアップを取得し、切り戻し時はバックアップをリストアする。</td></tr>
+            <tr><th>サンプル値</th><td>本ページのIPアドレス、FQDN、ポート、ユーザ名はサンプル値です。実案件では設定情報シートの確定値へ置き換える。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. ネットワーク設計</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>VPN接続先</th><td><code>vpn.example.invalid</code>。動的IP回線を想定し、DDNS FQDNでFortiGateのWAN側へ到達させる。</td></tr>
+            <tr><th>FortiGate WAN</th><td>インターフェース: <code>wan1</code>。グローバルIPは動的割り当て。DDNS更新により <code>vpn.example.invalid</code> へ紐づける。</td></tr>
+            <tr><th>FortiGate LAN</th><td>インターフェース: <code>internal</code>。LAN側IP: <code>192.168.10.1/24</code>。事務所LAN: <code>192.168.10.0/24</code>。</td></tr>
+            <tr><th>VPNクライアントIPプール</th><td>既存VPNで使っているアドレスプールを原則継続する。サンプル値: <code>192.168.100.10</code> 〜 <code>192.168.100.50</code>。既存値が事務所LANや他VPNと重複している場合だけ変更する。</td></tr>
+            <tr><th>許可宛先</th><td>ファイルサーバ <code>192.168.10.20</code>、業務PC <code>192.168.10.30</code>。必要な宛先だけをポリシーで許可する。</td></tr>
+            <tr><th>RADIUS通信</th><td>FortiGateからSingleID拡張RADIUSへUDP通信する。宛先IPと専用ポートはSingleID管理者ポータルの表示値を使う。認証ポートは設定情報シート上では <code>2xxxx/udp</code> として扱う。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. SingleID設定設計</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>ユーザ登録</th><td><code>user01</code> 〜 <code>user10</code> をCSVで一括登録する。メールアドレスは <code>user01@example.invalid</code> 〜 <code>user10@example.invalid</code> をサンプル値とする。</td></tr>
+            <tr><th>グループ</th><td>初期状態で用意されている <code>remote-access-users</code> を使い、VPN利用者10名を所属させる。</td></tr>
+            <tr><th>RADIUS種別</th><td>VPN用サイトは拡張RADIUSを使う。FortiGateから送信される <code>NAS-Identifier</code> でサイトを識別する。</td></tr>
+            <tr><th>RADIUSサイト</th><td>サイト名: <code>vpn-fortigate-law-office</code>。サーバ番号 / 認証ポート: 拡張RADIUSで割り当てられた専用ポート。共有シークレット: <code>sample-radius-secret-01</code>。</td></tr>
+            <tr><th>サイト識別</th><td>識別方式: <code>NAS-Identifier</code>。識別値: <code>fg-vpn-law-office</code>。FortiGateのホスト名も同じ値にする。</td></tr>
+            <tr><th>VPNアクセス設定</th><td>2要素認証（OTP）のみ許可: 無効。SingleID側ではパスワード認証とグループ許可を行い、クライアント証明書の検証はFortiGate側で行う。</td></tr>
+            <tr><th>許可ルール</th><td>ルール1: グループ <code>remote-access-users</code> を許可する。10名のVPN利用者はこのグループへ所属させる。</td></tr>
+            <tr><th>クライアント証明書</th><td>10名分を発行する。有効期限はデフォルト10年。配布方式はWindows自動構成とし、利用者が端末で自動構成を実行して証明書を導入する。</td></tr>
+            <tr><th>RADIUS認証ログ</th><td>認証成功、認証失敗、サイト識別エラー、ユーザ不存在、パスワード不一致を調査できるよう、RADIUS認証ログのCSVダウンロード手順を運用手順に含める。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. FortiGate設定設計</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>設定バックアップ</th><td>作業前にFortiGateの設定バックアップを取得する。切り戻し時はバックアップリストアと再起動時間を作業計画に含める。</td></tr>
+            <tr><th>インターフェース</th><td>WAN: <code>wan1</code>。LAN: <code>internal</code>。FortiClientの接続先は <code>vpn.example.invalid</code> とする。</td></tr>
+            <tr><th>VPN方式</th><td>IKEv2リモートアクセスVPNを新規構成する。既存VPNは流用せず、FortiGate設定バックアップを保存してから再設定する。</td></tr>
+            <tr><th>クライアント証明書検証</th><td>SingleIDの中間CA証明書をFortiGateへ登録し、VPN接続時に端末が提示するクライアント証明書をFortiGate側で検証する。</td></tr>
+            <tr><th>サーバ証明書</th><td>FortiGateがVPNサーバとして提示する証明書を登録する。証明書名は <code>vpn.example.invalid</code> に対応させる。</td></tr>
+            <tr><th>RADIUSサーバ</th><td>名前: <code>SingleID_RADIUS</code>。宛先: SingleID拡張RADIUSのサーバIP。認証ポート: <code>2xxxx/udp</code>。共有シークレット: <code>sample-radius-secret-01</code>。</td></tr>
+            <tr><th>NAS-Identifier</th><td>FortiGateのホスト名を <code>fg-vpn-law-office</code> にし、SingleIDのRADIUSサイト識別値と一致させる。</td></tr>
+            <tr><th>FortiGateユーザグループ</th><td>名前: <code>SingleID</code>。RADIUSサーバ <code>SingleID_RADIUS</code> を参照するリモートグループとして作成し、VPNフェーズ1インターフェースに割り当てる。</td></tr>
+            <tr><th>VPNアドレス割り当て</th><td>VPNクライアントIPプールは既存VPNの値を継続する。サンプル値: <code>192.168.100.10-192.168.100.50</code>。変更する場合は、端末接続後の到達先、ファイアウォールポリシー、ルートへの影響を設計書へ記載する。</td></tr>
+            <tr><th>VPNトランスポート</th><td>IKEv2のトランスポートは自動判定とする。利用ポートはUDP <code>500</code> とTCP <code>443</code>。このケースではFortiGate管理GUIのHTTPSポートを <code>10443</code> に変更し、IKE TCP <code>443</code> と分離する。</td></tr>
+            <tr><th>ポリシー</th><td>VPNクライアントIPプールから、許可宛先 <code>192.168.10.20</code>、<code>192.168.10.30</code> への通信を許可する。不要な宛先は許可しない。</td></tr>
+            <tr><th>ログ</th><td>FortiGateログで、RADIUS応答の受信、VPNグループ一致、ポリシー許可 / 拒否を記録する。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. 端末設定設計</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>対象端末</th><td>Windows端末10台。各利用者が個別に管理している端末へ設定する。</td></tr>
+            <tr><th>証明書導入方式</th><td>Windows自動構成を使う。利用者はSingleIDから届く証明書発行通知メールを起点に、自分のWindows端末で自動構成を実行する。</td></tr>
+            <tr><th>証明書インストール先</th><td>Windows自動構成により、利用者のWindows環境へクライアント証明書を導入する。導入後はSingleID側でインストール日時が更新され、メモ欄にコンピュータ名が記録される。</td></tr>
+            <tr><th>FortiClient VPN種別</th><td>VPN: IPsecVPN。接続名: <code>SingleID_Cert</code>。リモートGW: <code>vpn.example.invalid</code>。</td></tr>
+            <tr><th>FortiClient認証</th><td>認証方法: X.509証明書。クライアント証明書: インストール済みのクライアント証明書。認証（EAP）: ユーザ名入力。</td></tr>
+            <tr><th>FortiClient詳細</th><td>IKEバージョン: 2。Address Assignment: モードコンフィグ。Encapsulation: Auto。IKE UDP Port: <code>500</code>。IKE TCP Port: <code>443</code>。</td></tr>
+            <tr><th>VPN接続</th><td>VPN名称: <code>SingleID_Cert</code>。ユーザ名: <code>user01</code> などのSingleIDユーザ名。パスワード: SingleIDユーザのパスワード。クライアント証明書: インストール済み証明書。</td></tr>
+            <tr><th>端末側の合格条件</th><td>FortiClientの証明書一覧にクライアント証明書が表示される。接続時にユーザ名 / パスワードとクライアント証明書を指定できる。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. 試験設計</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>正常系</th><td><code>user01</code> で、クライアント証明書あり、正しいパスワード、許可グループ所属の状態でVPN接続できることを合格条件にする。</td></tr>
+            <tr><th>パスワード不一致</th><td>誤ったパスワードで接続し、SingleIDのRADIUS認証ログにAccess-Rejectまたはパスワード不一致系の失敗イベントが記録されることを合格条件にする。</td></tr>
+            <tr><th>グループ未所属</th><td>許可グループに所属していないユーザで接続し、SingleIDのRADIUS認証ログで許可ルール不一致として失敗することを合格条件にする。</td></tr>
+            <tr><th>証明書未導入</th><td>Windows自動構成を実行していない端末で接続し、FortiGate側でクライアント証明書検証に失敗することを合格条件にする。</td></tr>
+            <tr><th>証明書失効</th><td>対象証明書を失効し、FortiGateのCRL更新後にVPN接続できないことを合格条件にする。</td></tr>
+            <tr><th>ログ突き合わせ</th><td>SingleIDのRADIUS認証ログとFortiGateログを、同じ時刻、同じユーザ、同じ接続試行で突き合わせる。</td></tr>
+            <tr><th>トランスポート</th><td>FortiGate CLIの <code>diagnose vpn ike gateway list</code> で、接続中のセッションがUDPかTCPかを記録する。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>7. 運用設計</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>ユーザ追加</th><td>SingleIDへユーザを追加し、<code>remote-access-users</code> へ所属させ、クライアント証明書を発行する。利用者はWindows自動構成で端末へ証明書を導入する。</td></tr>
+            <tr><th>退職・利用停止</th><td>SingleIDユーザを無効化し、グループから除外し、該当クライアント証明書を失効する。</td></tr>
+            <tr><th>端末交換</th><td>旧端末で使っていた証明書を失効し、新端末向けにクライアント証明書を再発行する。</td></tr>
+            <tr><th>接続失敗時</th><td>最初にRADIUS認証ログの有無で分類する。Access-Accept後に接続できない場合は、FortiGate側の応答受信、VPNグループ、ファイアウォールポリシーを調査する。</td></tr>
+            <tr><th>問い合わせ時</th><td>ユーザ名、発生時刻、接続元、RADIUS認証ログの有無、FortiGateログ、端末側の証明書状態を集める。</td></tr>
+            <tr><th>作業範囲</th><td>FortiGateバックアップ、設定変更、代表ユーザ試験、利用者手順、初回接続支援、運用引き継ぎを販売店側の作業範囲に含める。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

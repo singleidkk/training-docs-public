@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>構成図 | FortiGate VPN / 10名規模 / 法律事務所</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/layout.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/print.css" media="print">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="back-link" href="index.html">← ケーストップへ戻る</a>
+      <p class="eyebrow">Case Study / Architecture Diagram</p>
+      <h1>構成図</h1>
+      <p class="lead">既存のFortiGate設定ファイルから、WAN / LAN、VPN、ポリシー、RADIUSに関わる値を抽出し、ネットワーク構成図と設計書へ記載する。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>ネットワーク構成図</h2>
+      <div class="case-panel">
+        <figure class="case-diagram-figure">
+          <img
+            class="case-diagram-image"
+            src="../../../assets/case-fortigate-vpn-law-office-10users-network-topology.png"
+            alt="SingleIDケーススタディ: FortiGateリモートアクセスVPNのネットワーク構成図"
+          >
+          <figcaption class="case-diagram-caption">FortiGate、事務所LAN、リモート端末、SingleID拡張RADIUSの接続関係を示す。</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>既存設定ファイルから抽出するネットワーク情報</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>WAN側</th><td>インターフェース名、IP取得方式、DDNS設定、管理GUIポート、既存VPNで使っている待受ポートを抽出する。</td></tr>
+            <tr><th>LAN側</th><td>インターフェース名、LAN側IP、事務所LANセグメント、社内サーバや業務端末の宛先アドレスを抽出する。</td></tr>
+            <tr><th>既存VPN</th><td>VPN方式、既存のVPNアドレスプール、ユーザグループ、フェーズ1/2、関連ポリシーを抽出する。</td></tr>
+            <tr><th>ファイアウォールポリシー</th><td>VPNクライアントから事務所LANへ許可している宛先、サービス、NAT有無、ログ取得設定を抽出する。</td></tr>
+            <tr><th>RADIUS / 認証</th><td>既存RADIUSサーバ、ローカルユーザ、ユーザグループ、認証に使っているオブジェクトを抽出する。</td></tr>
+            <tr><th>証明書</th><td>既存のCA証明書、サーバ証明書、CRL設定の有無を抽出する。SingleID連携で追加する証明書設定と重複する場合は、置き換え対象を設計書へ記載する。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>このケースで設計書へ記載する値</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>VPN接続先</th><td><code>vpn.example.invalid</code>。動的IP回線のため、FortiClientの接続先はDDNS FQDNとする。</td></tr>
+            <tr><th>FortiGateインターフェース</th><td>WAN: <code>wan1</code>。LAN: <code>internal</code>。事務所LAN: <code>192.168.10.0/24</code>。</td></tr>
+            <tr><th>VPNクライアントIPプール</th><td>既存VPNで使っているアドレスプールを原則継続する。このケースでは <code>192.168.100.10</code> 〜 <code>192.168.100.50</code> を既存値のサンプルとして扱う。既存値が事務所LANや他VPNと重複している場合だけ変更する。</td></tr>
+            <tr><th>許可宛先</th><td>ファイルサーバ <code>192.168.10.20</code>、業務PC <code>192.168.10.30</code>。必要な宛先だけをVPNポリシーに入れる。</td></tr>
+            <tr><th>SingleID拡張RADIUS</th><td>FortiGateからSingleID拡張RADIUSの専用ポートへUDP通信する。宛先IPとポートはSingleID管理者ポータルの表示値を使う。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

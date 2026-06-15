@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ヒアリングシート記入例 | FortiGate VPN / 10名規模 / 法律事務所</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/layout.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/print.css" media="print">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="back-link" href="index.html">← ケーストップへ戻る</a>
+      <p class="eyebrow">Case Study / Estimation Checksheet Example</p>
+      <h1>ヒアリングシート記入例</h1>
+      <p class="lead">構築見積もりヒアリングシートの項目に、このケースの前提値を赤字で記入した例です。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>使い方</h2>
+      <div class="case-panel">
+        <ul class="doc-list">
+          <li>赤字は、このケースで記入したサンプル値です。</li>
+          <li>未確定の項目は、空欄ではなく <span class="case-filled">設定ファイル解析後に確定</span> のように、次の作業で確定する条件を記入します。</li>
+          <li>この記入例は、見積もり前提、既存設定ファイルの入手、設計書へ転記する値を示すサンプルです。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>1. 案件の基本情報</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr>
+              <th>利用シーン</th>
+              <td>□ リモートアクセスVPN　□ 無線LAN認証　□ 両方　□ その他: __________<br><span class="case-filled">☑ リモートアクセスVPN</span></td>
+            </tr>
+            <tr>
+              <th>対象規模</th>
+              <td>ユーザ数: ______　端末数: ______　拠点数: ______　対象機器数: ______<br><span class="case-filled">ユーザ数: 10　端末数: 10　拠点数: 1　対象機器数: 1</span></td>
+            </tr>
+            <tr>
+              <th>対象機器</th>
+              <td>□ FortiGate　□ YAMAHA RTX　□ Buffalo AirStation Pro　□ その他: __________<br><span class="case-filled">☑ FortiGate</span></td>
+            </tr>
+            <tr>
+              <th>希望時期</th>
+              <td>利用開始希望日: ________　作業可能時間帯: __________________<br><span class="case-filled">利用開始希望日: 2026年8月　作業可能時間帯: 平日日中または事前調整</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. 既存環境</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr>
+              <th>領域</th>
+              <th>ヒアリング内容</th>
+              <th>メモ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>既存VPN</td>
+              <td>VPN方式: __________　認証方式: __________　既存ポリシー: □ あり　□ なし<br><span class="case-filled">VPN方式: SSL VPN　認証方式: ID / パスワード　既存ポリシー: ☑ あり</span></td>
+              <td><span class="case-filled">今回の対応では既存SSL VPNを停止し、IKEv2 VPNへ切り替える。作業前にFortiGate設定をバックアップし、問題時はバックアップから切り戻す。</span></td>
+            </tr>
+            <tr>
+              <td>既存無線LAN</td>
+              <td>SSID数: _____　VLAN: □ あり　□ なし　AP / コントローラ: __________<br><span class="case-filled">対象外</span></td>
+              <td><span class="case-filled">今回の見積もりには含めない。</span></td>
+            </tr>
+            <tr>
+              <td>ネットワーク</td>
+              <td>固定IP / DDNS: __________　NAT: □ あり　□ なし　FW / ACL変更: □ 必要　□ 不要<br><span class="case-filled">固定IP / DDNS: DDNS（vpn.example.invalid）　NAT: □ あり　☑ なし　FW / ACL変更: ☑ 必要</span></td>
+              <td><span class="case-filled">FortiGateがインターネット回線の終端。FortiGateからSingleID拡張RADIUSのサーバIP / 専用ポートへUDP通信できるようにする。</span></td>
+            </tr>
+            <tr>
+              <td>機器設定ファイル</td>
+              <td>提供可否: □ 可能　□ 不可　□ 要調整　対象機器: __________　マスキング: □ 済　□ 未<br><span class="case-filled">提供可否: ☑ 可能　対象機器: FortiGate　マスキング: ☑ 済</span></td>
+              <td><span class="case-filled">既存VPN、WAN / LANインターフェース、VPNアドレスプール、ポリシー、証明書、RADIUS関連設定を抽出し、構成図と設計書へ記載する。</span></td>
+            </tr>
+            <tr>
+              <td>ID管理</td>
+              <td>□ Active Directory　□ Microsoft Entra ID　□ その他IdP　□ ID管理なし<br><span class="case-filled">☑ ID管理なし</span></td>
+              <td><span class="case-filled">10名分のユーザリストをもとに、SingleIDへCSV一括登録する。</span></td>
+            </tr>
+            <tr>
+              <td>証明書</td>
+              <td>既存CA: □ あり　□ なし　端末証明書: □ あり　□ なし<br><span class="case-filled">既存CA: ☑ なし　端末証明書: ☑ なし</span></td>
+              <td><span class="case-filled">SingleIDでクライアント証明書を10名分発行し、Windows自動構成で利用者が端末へ導入する。</span></td>
+            </tr>
+            <tr>
+              <td>端末展開</td>
+              <td>
+                対象OS: □ Windows　□ macOS　□ iOS / iPadOS　□ Android　□ その他<br>
+                端末管理: □ MDM　□ 管理者　□ 利用者　□ 不明<br>
+                <span class="case-filled">対象OS: ☑ Windows　端末管理: ☑ 利用者</span>
+              </td>
+              <td><span class="case-filled">利用者がWindows自動構成を実行し、FortiClient設定とクライアント証明書を導入する。</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. 認証・ユーザ・証明書の前提</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr>
+              <th>領域</th>
+              <th>採用する方式</th>
+              <th>メモ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>認証方式</td>
+              <td>□ ID / パスワード　□ TOTP　□ 証明書　□ EAP-TLS / PEAP<br><span class="case-filled">☑ ID / パスワード　☑ 証明書</span></td>
+              <td><span class="case-filled">FortiGate VPNでID / パスワードとクライアント証明書を組み合わせる。</span></td>
+            </tr>
+            <tr>
+              <td>RADIUS</td>
+              <td>□ 拡張RADIUS　□ 標準RADIUS<br><span class="case-filled">☑ 拡張RADIUS</span></td>
+              <td><span class="case-filled">FortiGateのNAS-Identifierでサイトを識別する。</span></td>
+            </tr>
+            <tr>
+              <td>ユーザ管理</td>
+              <td>□ 個別登録　□ CSV一括登録<br><span class="case-filled">☑ CSV一括登録</span></td>
+              <td><span class="case-filled">ユーザ名は user01 〜 user10。</span></td>
+            </tr>
+            <tr>
+              <td>証明書配布</td>
+              <td>□ メール配布　□ 管理者導入　□ Windows自動構成　□ 不明<br><span class="case-filled">☑ Windows自動構成</span></td>
+              <td><span class="case-filled">利用者が端末ごとに自動構成を実行する。</span></td>
+            </tr>
+            <tr>
+              <td>運用体制</td>
+              <td>□ 自社で運用　□ 販売店が一部支援　□ 運用 / サポートを委託　□ 未定<br><span class="case-filled">☑ 運用 / サポートを委託</span></td>
+              <td><span class="case-filled">ユーザ追加 / 削除、証明書失効、RADIUS認証ログ調査、一次問い合わせ対応を委託範囲に含める。</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. 作業範囲と工数影響要素</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr>
+              <th>作業領域</th>
+              <th>ヒアリング内容</th>
+              <th>工数に入れる内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SingleID側作業</td>
+              <td><span class="case-filled">ユーザ / グループ登録、RADIUSサイト作成、許可ルール作成、証明書発行、RADIUS認証ログの取得。</span></td>
+              <td><span class="case-filled">PoC作業は含めず、本番環境の設定作業を見積もる。</span></td>
+            </tr>
+            <tr>
+              <td>機器側作業</td>
+              <td><span class="case-filled">FortiGateのRADIUS設定、IKEv2 VPN設定、ユーザ / グループ、ファイアウォールポリシー、接続試験。</span></td>
+              <td><span class="case-filled">FortiGate設定バックアップ、既存VPN再設定、切り戻し、FortiGate再起動を含む作業時間帯を見積もり条件に含める。</span></td>
+            </tr>
+            <tr>
+              <td>端末作業</td>
+              <td><span class="case-filled">FortiClient設定、Windows自動構成、代表端末での接続試験。</span></td>
+              <td><span class="case-filled">利用者向け手順、問い合わせ対応、代表端末での事前試験を工数に入れる。</span></td>
+            </tr>
+            <tr>
+              <td>接続試験</td>
+              <td><span class="case-filled">成功系、パスワード不一致、証明書なし、許可グループ外、Access-Accept後の機器側制御を試験する。</span></td>
+              <td><span class="case-filled">失敗系テストとログ突き合わせを省略しない。</span></td>
+            </tr>
+            <tr>
+              <td>運用 / サポート</td>
+              <td><span class="case-filled">ユーザ追加 / 削除、証明書失効、RADIUS認証ログ調査、問い合わせ一次対応。</span></td>
+              <td><span class="case-filled">委託範囲、対応時間、問い合わせ窓口、初期問い合わせ期間を見積もりに含める。</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. 本番作業前に確定する項目</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr>
+              <th>未確定項目</th>
+              <th>調査担当</th>
+              <th>決定者</th>
+              <th>期限</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>機器のファームウェア、設定ガイド適合、RADIUS属性の確定</td>
+              <td><span class="case-filled">販売店SE</span></td>
+              <td><span class="case-filled">顧客側機器担当者</span></td>
+              <td><span class="case-filled">本番設定前</span></td>
+            </tr>
+            <tr>
+              <td>対象ユーザ / グループ、証明書配布方式、端末展開方法の確定</td>
+              <td><span class="case-filled">販売店SE</span></td>
+              <td><span class="case-filled">顧客側業務担当者</span></td>
+              <td><span class="case-filled">本番設定前</span></td>
+            </tr>
+            <tr>
+              <td>作業時間帯、切り戻し条件、受け入れ条件、運用 / サポート範囲の確定</td>
+              <td><span class="case-filled">販売店SE</span></td>
+              <td><span class="case-filled">顧客側責任者</span></td>
+              <td><span class="case-filled">本番作業前</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>見積もり前の判断メモ</h2>
+      <div class="case-panel">
+        <p>□ 見積もり可能　□ 設定ファイル解析後に見積もり　□ 機器検証が必要　□ 要件再定義後に見積もり</p>
+        <p class="case-filled">☑ 設定ファイル解析後に見積もり</p>
+        <p>主な理由:</p>
+        <p class="case-filled">FortiGateのファームウェア、既存VPNの再設定範囲、設定バックアップ / リストア手順、NAS-Identifierの送信値、端末展開方法を本番設定前に確定する必要があるため。</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,2760 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Part 1: SingleID 技術説明</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/a4-landscape.css">
+  <link rel="stylesheet" href="../../css/diagrams.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-users" viewBox="0 0 24 24" data-source="lucide:users">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+      <circle cx="9" cy="7" r="4" />
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24" data-source="lucide:shield-check">
+      <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+      <path d="m9 12 2 2 4-4" />
+    </symbol>
+    <symbol id="icon-alert" viewBox="0 0 24 24" data-source="lucide:triangle-alert">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+      <path d="M12 9v4" />
+      <path d="M12 17h.01" />
+    </symbol>
+    <symbol id="icon-user" viewBox="0 0 24 24" data-source="lucide:user">
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </symbol>
+    <symbol id="icon-key" viewBox="0 0 24 24" data-source="lucide:key-round">
+      <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+      <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+    </symbol>
+    <symbol id="icon-certificate" viewBox="0 0 24 24" data-source="lucide:file-badge">
+      <path d="M13 22h5a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v3.3" />
+      <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+      <path d="m7.69 16.479 1.29 4.88a.5.5 0 0 1-.698.591l-1.843-.849a1 1 0 0 0-.879.001l-1.846.85a.5.5 0 0 1-.692-.593l1.29-4.88" />
+      <circle cx="6" cy="14" r="3" />
+    </symbol>
+    <symbol id="icon-radius" viewBox="0 0 24 24" data-source="lucide:waypoints">
+      <path d="m10.586 5.414-5.172 5.172" />
+      <path d="m18.586 13.414-5.172 5.172" />
+      <path d="M6 12h12" />
+      <circle cx="12" cy="20" r="2" />
+      <circle cx="12" cy="4" r="2" />
+      <circle cx="20" cy="12" r="2" />
+      <circle cx="4" cy="12" r="2" />
+    </symbol>
+    <symbol id="icon-log" viewBox="0 0 24 24" data-source="lucide:logs">
+      <path d="M3 5h1" />
+      <path d="M3 12h1" />
+      <path d="M3 19h1" />
+      <path d="M8 5h1" />
+      <path d="M8 12h1" />
+      <path d="M8 19h1" />
+      <path d="M13 5h8" />
+      <path d="M13 12h8" />
+      <path d="M13 19h8" />
+    </symbol>
+    <symbol id="icon-mail" viewBox="0 0 24 24" data-source="lucide:mail">
+      <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+    </symbol>
+    <symbol id="icon-support" viewBox="0 0 24 24" data-source="lucide:life-buoy">
+      <circle cx="12" cy="12" r="10" />
+      <path d="m4.93 4.93 4.24 4.24" />
+      <path d="m14.83 9.17 4.24-4.24" />
+      <path d="m14.83 14.83 4.24 4.24" />
+      <path d="m9.17 14.83-4.24 4.24" />
+      <circle cx="12" cy="12" r="4" />
+    </symbol>
+    <symbol id="icon-cloud" viewBox="0 0 24 24" data-source="lucide:cloud">
+      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+    </symbol>
+    <symbol id="icon-device" viewBox="0 0 24 24" data-source="lucide:monitor">
+      <rect width="20" height="14" x="2" y="3" rx="2" />
+      <line x1="8" x2="16" y1="21" y2="21" />
+      <line x1="12" x2="12" y1="17" y2="21" />
+    </symbol>
+    <symbol id="icon-sync" viewBox="0 0 24 24" data-source="lucide:refresh-cw">
+      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+      <path d="M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+      <path d="M8 16H3v5" />
+    </symbol>
+    <symbol id="icon-phone-cert" viewBox="0 0 24 24" data-source="lucide:smartphone">
+      <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+      <path d="M12 18h.01" />
+    </symbol>
+    <symbol id="icon-gear" viewBox="0 0 24 24" data-source="lucide:settings">
+      <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+      <circle cx="12" cy="12" r="3" />
+    </symbol>
+    <symbol id="icon-list" viewBox="0 0 24 24" data-source="lucide:list">
+      <path d="M3 5h.01" />
+      <path d="M3 12h.01" />
+      <path d="M3 19h.01" />
+      <path d="M8 5h13" />
+      <path d="M8 12h13" />
+      <path d="M8 19h13" />
+    </symbol>
+    <symbol id="icon-external-link" viewBox="0 0 24 24" data-source="lucide:external-link">
+      <path d="M15 3h6v6" />
+      <path d="M10 14 21 3" />
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+    </symbol>
+    <symbol id="icon-decision" viewBox="0 0 24 24" data-source="lucide:git-branch">
+      <path d="M15 6a9 9 0 0 0-9 9V3" />
+      <circle cx="18" cy="6" r="3" />
+      <circle cx="6" cy="18" r="3" />
+    </symbol>
+    <symbol id="icon-fallback" viewBox="0 0 24 24" data-source="lucide:undo-2">
+      <path d="M9 14 4 9l5-5" />
+      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+    </symbol>
+    <symbol id="icon-lab" viewBox="0 0 24 24" data-source="lucide:flask-conical">
+      <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" />
+      <path d="M6.453 15h11.094" />
+      <path d="M8.5 2h7" />
+    </symbol>
+    <symbol id="icon-building" viewBox="0 0 24 24" data-source="lucide:building-2">
+      <path d="M10 12h4" />
+      <path d="M10 8h4" />
+      <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+      <path d="M6 10H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2" />
+      <path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16" />
+    </symbol>
+    <symbol id="icon-flow" viewBox="0 0 24 24" data-source="lucide:workflow">
+      <rect width="8" height="8" x="3" y="3" rx="2" />
+      <path d="M7 11v4a2 2 0 0 0 2 2h4" />
+      <rect width="8" height="8" x="13" y="13" rx="2" />
+    </symbol>
+    <symbol id="icon-network" viewBox="0 0 24 24" data-source="lucide:network">
+      <rect x="16" y="16" width="6" height="6" rx="1" />
+      <rect x="2" y="16" width="6" height="6" rx="1" />
+      <rect x="9" y="2" width="6" height="6" rx="1" />
+      <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3" />
+      <path d="M12 12V8" />
+    </symbol>
+  </svg>
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="part1-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / 70 min</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+        <h1 id="part1-title">SingleID 技術説明</h1>
+        <p class="section-cover__lead">SingleIDを認証基盤として理解するために、アーキテクチャ、ID管理、RADIUS、PKI、認証フロー、トラブルシューティング、運用管理、可用性、機器連携を順番に学ぶ。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>このパートで扱うこと</h2>
+        <ul>
+          <li>SingleIDの全体像</li>
+          <li>ID管理、RADIUS、PKI</li>
+          <li>PKI / 証明書と認証フロー</li>
+          <li>トラブルシューティングと運用管理</li>
+          <li>可用性と機器連携</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">SingleID 技術説明ハンドブック</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section1-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 1</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+        <h1 id="section1-title">SingleID 基本アーキテクチャ</h1>
+        <p class="section-cover__lead">SingleID、Microsoftクラウド、オンプレ機器、接続端末の関係を俯瞰し、ポータル、PoC環境、外部システム連携の位置づけを押さえる。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>SingleIDに関わる要素の全体像</li>
+          <li>管理者ポータルとユーザポータル</li>
+          <li>PoC環境の位置づけ</li>
+          <li>Microsoftクラウド連携（Entra ID / Intune）</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s1-overview-map-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 1 / Architecture Map</p>
+        <h1 id="s1-overview-map-title">SingleIDに関わる要素を全体像で押さえる</h1>
+        <p class="content-slide__lead">SingleID、Microsoftクラウド、オンプレ機器、接続端末の関係を先に押さえる。各機能の詳細ではなく、どの要素がどの方向に連携するかを示す。</p>
+      </header>
+      <figure class="content-slide__body asset-diagram">
+        <img src="../../assets/singleid-architecture-map.svg" alt="Microsoftクラウド、SingleIDクラウド、クライアント端末、オンプレ機器の関係を示す全体図">
+      </figure>
+    </section>
+    <p class="slide-footer">Section 1 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s1-portals-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 1 / Portals</p>
+        <h1 id="s1-portals-title">ポータルを区別する</h1>
+        <p class="content-slide__lead">管理者が設定する画面と、ユーザ自身が操作する画面を分けて理解する。説明時はログイン入口、操作主体、できることを混同しない。</p>
+      </header>
+      <div class="content-slide__body two-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true">
+              <svg><use href="#icon-shield"></use></svg>
+            </span>
+            SingleID 管理者ポータル
+          </h2>
+          <ul class="icon-list">
+            <li>ユーザの登録、編集、削除、無効化、有効化</li>
+            <li>証明書の発行 / 失効、パスワード変更 / リセット</li>
+            <li>ユーザの一括登録、Entra ID (SCIM) 連携、エクスポート</li>
+            <li>グループの登録 / 削除、メンバー追加 / 削除</li>
+            <li>RADIUSの基本情報、簡易設定</li>
+            <li>証明書プロファイル、証明書情報、SCEP証明書配布</li>
+            <li>RADIUS認証ログ、操作ログの表示 / ダウンロード</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true">
+              <svg><use href="#icon-user"></use></svg>
+            </span>
+            ユーザポータル
+          </h2>
+          <ul class="icon-list">
+            <li>アカウント情報の閲覧</li>
+            <li>現在のパスワードを使ったパスワード変更</li>
+            <li>ワンタイムパスワード用トークンの設定</li>
+            <li>アクティブなログインセッションの閲覧</li>
+            <li>全てのアプリケーションからのログアウト</li>
+            <li>ログイン、ログアウト、ログイン状態の保存</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 1 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s1-env-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 1 / Environments</p>
+        <h1 id="s1-env-title">PoC環境は機能検証向けの環境として使う</h1>
+        <p class="content-slide__lead">PoC環境は、提案前検証や設定試行、認証動作検証のための環境。本番環境とは分離されており、そのまま本番利用することはできない。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-lab"></use></svg></span>
+            用途
+          </h2>
+          <ul>
+            <li>RADIUS設定の試行</li>
+            <li>機器連携の動作検証</li>
+            <li>証明書認証の動作検証</li>
+            <li>ログの読み方の練習</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            制約
+          </h2>
+          <ul>
+            <li>本番よりサーバスペックが低い</li>
+            <li>性能試験や負荷試験の評価環境として扱わない</li>
+            <li>PoC環境を本番環境として使わない</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>
+            サービスレベル
+          </h2>
+          <ul>
+            <li>SLAはない</li>
+            <li>通知なしでメンテナンスされる場合がある</li>
+            <li>本番移行時は本番環境で設定を作り直す</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            利用条件
+          </h2>
+          <ul>
+            <li>原則10ユーザまで</li>
+            <li>無償PoCは原則1か月</li>
+            <li>ユーザ数の追加や期間延長は応相談</li>
+          </ul>
+        </article>
+      </div>
+      <aside class="slide-note">
+        <strong>ログイン入口:</strong> 本番環境 <a href="https://www.singleid.jp/login/" target="_blank" rel="noopener noreferrer">https://www.singleid.jp/login/</a> / PoC環境 <a href="https://www.singleid.jp/poc-login/" target="_blank" rel="noopener noreferrer">https://www.singleid.jp/poc-login/</a>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 1 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s1-external-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 1 / External Systems</p>
+        <h1 id="s1-external-title">外部システム連携はIDと証明書配布を補完する</h1>
+        <p class="content-slide__lead">SingleID単体の画面操作だけでなく、既存のID基盤や端末管理とどうつなぐかを最初に決める。</p>
+      </header>
+      <div class="content-slide__body two-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>
+            Entra IDのSCIM連携
+          </h2>
+          <ul>
+            <li>Microsoft Entra IDをSCIMクライアントとして扱う</li>
+            <li>SCIM 2.0 over HTTPSでSingleID SCIMエンドポイントへ連携する</li>
+            <li>SingleIDのユーザ / グループ管理へ同期する構成として扱う</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-phone-cert"></use></svg></span>
+            IntuneのSCEP証明書配布
+          </h2>
+          <ul>
+            <li>Microsoft IntuneでSCEP証明書をデバイスへ配布する</li>
+            <li>Microsoft Entra IDのアプリ登録やSingleID SCEPサーバのエンドポイントが関係する</li>
+            <li>証明書配布方法を手動配布と分けて検討する</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 1 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section2-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 2</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+        <h1 id="section2-title">ID管理</h1>
+        <p class="section-cover__lead">ユーザ、グループ、管理者、ユーザポータル、Entra IDのSCIM連携を、認証基盤の入口として学ぶ。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>ユーザ管理の位置づけ</li>
+          <li>グループ管理の位置づけ</li>
+          <li>管理者とユーザの違い</li>
+          <li>管理側とユーザ側の操作範囲</li>
+          <li>パスワード・オーセンティケーター</li>
+          <li>Entra IDのSCIM連携</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-registration-method-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / Registration Methods</p>
+        <h1 id="s2-registration-method-title">ユーザ登録方式を使い分ける</h1>
+        <p class="content-slide__lead">ユーザ登録方式は、初期投入だけでよいか、既存ID基盤と継続同期するかで選ぶ。ユーザ名とメールアドレスの一意性、同期後の更新方法を方式ごとの判断材料にする。</p>
+      </header>
+      <div class="content-slide__body">
+        <table class="matrix-table matrix-table--method">
+          <thead>
+            <tr>
+              <th>方式</th>
+              <th>使う場面</th>
+              <th>設定時の前提</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>個別登録</span></td>
+              <td>PoC、少人数、検証用ユーザをすぐ作る場合</td>
+              <td>ユーザ一覧で1人ずつ登録する。ユーザ名とメールアドレスは重複不可。登録するユーザ名、メールアドレス、所属グループを先に決めておく。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>CSV一括登録</span></td>
+              <td>初期登録人数が多く、常時同期までは不要な場合</td>
+              <td>CSVで新規登録または既存ユーザ上書きを行う。アカウント番号、パスワードメール送信、グループ列の値で登録結果が変わる。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>Entra ID SCIM</span></td>
+              <td>Entra IDを正とし、ユーザ / グループを継続同期する場合</td>
+              <td>SingleID側ユーザ名はUPNの@より前になる。@より前は重複不可。必須属性、アプリ割り当て、ネストグループ非対応を前提にする。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>SCIM API連携（ベータ）</span></td>
+              <td>自社システムやID管理システムから自動連携したい場合</td>
+              <td>ベータ扱い。利用可否、連携元システム、実装範囲、エラー時の再実行方法は、案件ごとにSingleID側へ問い合わせる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-user-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / User Lifecycle</p>
+        <h1 id="s2-user-title">ユーザ管理はライフサイクルで考える</h1>
+        <p class="content-slide__lead">管理者ポータルのユーザ一覧では、登録から無効化、証明書、パスワード、一括登録、エクスポートまでを扱う。案件では操作そのものより、運用の流れを決める。</p>
+      </header>
+      <div class="content-slide__body lifecycle-diagram">
+        <div class="lifecycle-node lifecycle-node--primary">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+          <strong>登録 / 編集</strong>
+          <span>基本情報、組織情報、グループ</span>
+        </div>
+        <div class="lifecycle-node">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+          <strong>利用状態</strong>
+          <span>有効化、無効化、復帰</span>
+        </div>
+        <div class="lifecycle-node">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+          <strong>認証要素</strong>
+          <span>証明書、パスワード、TOTP</span>
+        </div>
+        <div class="lifecycle-node">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>
+          <strong>一括運用</strong>
+          <span>CSV登録、SCIM同期、変更反映</span>
+        </div>
+        <div class="lifecycle-node">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>
+          <strong>棚卸 / 出力</strong>
+          <span>エクスポート、不要IDの棚卸</span>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-group-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / Group Design</p>
+        <h1 id="s2-group-title">グループはアクセス許可の単位として設計する</h1>
+        <p class="content-slide__lead">グループはユーザをまとめるだけでなく、VPNや無線LANで誰を許可するかを決める単位になる。機器側ポリシーと対応づけて設計する。</p>
+      </header>
+      <div class="content-slide__body two-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            グループで行うこと
+          </h2>
+          <ul>
+            <li>グループを登録 / 削除する</li>
+            <li>ユーザをメンバーとして追加 / 削除する</li>
+            <li>用途ごとに認証対象を分ける</li>
+            <li>初期状態のグループを使うか削除するか判断する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>
+            設計時の注意
+          </h2>
+          <ul>
+            <li>階層化されたグループ構造は推奨しない</li>
+            <li>2バイト文字のグループ名は避ける</li>
+            <li>メンバー削除はユーザ削除ではない</li>
+            <li>機器側のポリシー名や用途と対応づける</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-responsibility-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / Responsibility</p>
+        <h1 id="s2-responsibility-title">管理側とユーザ側で操作範囲は分かれている</h1>
+        <p class="content-slide__lead">ID管理では、管理側で行う操作と、ユーザ自身が実施できる操作が分かれている。問い合わせや手順書の作成範囲にも影響する。</p>
+      </header>
+      <div class="content-slide__body">
+        <table class="matrix-table matrix-table--wide-topic">
+          <thead>
+            <tr>
+              <th>領域</th>
+              <th>管理側で決めること / 操作すること</th>
+              <th>ユーザ側でできること</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>アカウント</span></td>
+              <td>ユーザの登録、編集、削除、無効化、有効化</td>
+              <td>アカウント情報の閲覧</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>パスワード</span></td>
+              <td>ユーザのパスワードポリシー設定、パスワード変更、設定URLメール送信によるリセット</td>
+              <td>現在のパスワードを使った変更、セルフパスワードリセット</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-phone-cert"></use></svg></span>TOTP</span></td>
+              <td>利用可否、対象ユーザ、案内手順を決める</td>
+              <td>FreeOTP、Google Authenticator、Microsoft AuthenticatorなどでTOTPトークンを登録する</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>証明書</span></td>
+              <td>クライアント証明書を発行し、配布方法と失効運用を決める</td>
+              <td>配布された証明書を端末へ導入する</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>セッション</span></td>
+              <td>ログや設定から状況を読み取る</td>
+              <td>アクティブなログインセッションの閲覧、全セッションからログアウト</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-scim-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / Entra ID SCIM</p>
+        <h1 id="s2-scim-title">Entra IDのSCIM連携は設定順序で理解する</h1>
+        <p class="content-slide__lead">SCIM連携は、SingleIDへアカウント番号とEntra IDテナントIDを提供し、SingleIDから提供されるSCIM APIエンドポイントURLとAPIキーを使ってEntra ID側で設定する。</p>
+      </header>
+      <div class="content-slide__body process-diagram">
+        <article class="process-step">
+          <span class="process-step__number">1</span>
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>
+          <h2>SingleIDへ情報提供</h2>
+          <p>アカウント番号とMicrosoft Entra IDのテナントIDをSingleID側へ提供する。</p>
+        </article>
+        <article class="process-step">
+          <span class="process-step__number">2</span>
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>
+          <h2>接続情報を受け取る</h2>
+          <p>SingleIDからSCIM APIエンドポイントURLとAPIキーが提供される。</p>
+        </article>
+        <article class="process-step">
+          <span class="process-step__number">3</span>
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+          <h2>Entra IDアプリ作成</h2>
+          <p>ギャラリー以外のエンタープライズアプリを作成し、SCIM同期用にプロパティを設定する。</p>
+        </article>
+        <article class="process-step">
+          <span class="process-step__number">4</span>
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+          <h2>プロビジョニング</h2>
+          <p>SCIM APIエンドポイントURLとAPIキーを設定し、属性マッピングと接続テストの成功 / 失敗を記録する。</p>
+        </article>
+        <article class="process-step">
+          <span class="process-step__number">5</span>
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+          <h2>割り当てて開始</h2>
+          <p>同期対象のユーザ / グループを割り当て、少数ユーザで同期結果を見てから開始する。</p>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-scim-caution-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / Entra ID SCIM Cautions</p>
+        <h1 id="s2-scim-caution-title">Entra IDのSCIM連携前に決める項目</h1>
+        <p class="content-slide__lead">Entra IDのSCIMプロビジョニングでは、同期キー、必須属性、割り当て、グループ構造を先に決める。通知メールはSection 7の運用管理で扱う。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+            UPN運用
+          </h2>
+          <ul>
+            <li>UPNの@より前がSingleID側ユーザ名になる</li>
+            <li>@より前がテナント内で重複しないこと</li>
+            <li>同期開始後にUPNを変更しない運用にする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>
+            属性と割り当て
+          </h2>
+          <ul>
+            <li>userPrincipalName、givenName、surname、mailが空でないこと</li>
+            <li>割り当てられていないユーザ / グループは同期されない</li>
+            <li>最初は少数ユーザで接続テストを行う</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            グループ構造
+          </h2>
+          <ul>
+            <li>ネストグループは展開されない</li>
+            <li>同期されるのは割り当てたグループの直接メンバー</li>
+            <li>グループ同期には対応エディションが必要</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-mail"></use></svg></span>
+            通知設定
+          </h2>
+          <ul>
+            <li>同期開始前に通知メールを送るか決める</li>
+            <li>ユーザ登録通知は管理＞詳細設定の設定に従う</li>
+            <li>メール種別と制御箇所はSection 7で扱う</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s2-summary-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 2 / Design Points</p>
+        <h1 id="s2-summary-title">ID管理設計で最初に決める項目</h1>
+        <p class="content-slide__lead">ID管理は、ユーザをどう登録し、何を一意な識別子にし、どのグループを認証許可の単位にするかを先に決める。あわせて利用開始時に何を案内するかを決めると、RADIUSや証明書の設計、展開手順がぶれにくくなる。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>
+            登録方式
+          </h2>
+          <ul>
+            <li>個別登録 / CSV / Entra ID SCIMを選ぶ</li>
+            <li>SCIM API連携はベータとしてSingleID側へ利用可否を問い合わせる</li>
+            <li>どのシステムをIDの正とするかを決める</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+            識別子
+          </h2>
+          <ul>
+            <li>ユーザ名とメールアドレスは重複不可</li>
+            <li>Entra ID連携ではUPNの@より前が重複しないこと</li>
+            <li>SCIM同期開始後は対象ユーザのUPNを変更しない</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            グループ
+          </h2>
+          <ul>
+            <li>アクセス許可の単位として設計する</li>
+            <li>命名規則と管理責任を決める</li>
+            <li>SCIMでは割り当て対象と直接メンバーだけを同期対象にする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+            利用開始案内
+          </h2>
+          <ul>
+            <li>ユーザポータルで案内する操作を決める</li>
+            <li>パスワード設定、TOTP登録、証明書導入の案内範囲を決める</li>
+            <li>通知メールと問い合わせ先を事前に決める</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 2 / 7</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section3-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 3</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+        <h1 id="section3-title">RADIUS 基礎</h1>
+        <p class="section-cover__lead">RADIUSクライアントとRADIUSサーバの関係を押さえ、SingleID側とネットワーク機器側で何を設定するのかを理解する。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>RADIUSが解決する課題</li>
+          <li>Access-Request / Access-Accept / Access-Reject</li>
+          <li>シークレットの役割</li>
+          <li>拡張RADIUSを基本にした選定</li>
+          <li>RADIUS設計で決める項目</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-flow-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Request Flow</p>
+        <h1 id="s3-flow-title">RADIUSの基本フロー</h1>
+        <p class="content-slide__lead">VPN装置や無線APはRADIUSクライアントとして接続要求を受け、SingleIDへ認証判断を問い合わせる。SingleIDはRADIUS、PKI、IdPを組み合わせ、認証・認可・ログの観点で判定する。</p>
+      </header>
+      <div class="content-slide__body sequence-diagram sequence-diagram--singleid">
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+          <strong>利用者</strong>
+          <span>接続操作</span>
+        </div>
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+          <strong>RADIUSクライアント</strong>
+          <span>VPN装置 / 無線AP</span>
+        </div>
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+          <strong>SingleID</strong>
+          <span>RADIUS / PKI / IdP</span>
+        </div>
+
+        <div class="sequence-message sequence-message--right sequence-message--step1">
+          <span>接続要求</span>
+        </div>
+        <div class="sequence-message sequence-message--right sequence-message--step2">
+          <span>Access-Request</span>
+        </div>
+        <div class="sequence-message sequence-message--local sequence-message--step3">
+          <span>認証・認可・ログ</span>
+        </div>
+        <div class="sequence-message sequence-message--left sequence-message--step4">
+          <span>Access-Accept / Access-Reject</span>
+        </div>
+        <div class="sequence-message sequence-message--left sequence-message--step5">
+          <span>接続許可 / 拒否</span>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-auth-method-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Authentication Methods</p>
+        <h1 id="s3-auth-method-title">SingleIDのクラウドRADIUSで扱う認証方式</h1>
+        <p class="content-slide__lead">RADIUS設計では、機器が送る認証方式とSingleID側で利用する認証要素が一致しているかを判定する。</p>
+      </header>
+      <div class="content-slide__body two-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>
+            サポートされる認証方式
+          </h2>
+          <ul>
+            <li>PAP / CHAP / MSCHAPv2</li>
+            <li>EAP-TLS / EAP-TTLS-PAP / PEAP(MSCHAPv2)</li>
+            <li>MAC Authentication Bypass（認証スイッチ向け）</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-phone-cert"></use></svg></span>
+            TOTP利用時の注意
+          </h2>
+          <ul>
+            <li>ワンタイムパスワード認証は、VPNアクセスや管理者アクセスで使う</li>
+            <li>RADIUS連携では、PAPまたはEAP-TTLS-PAPを使える構成が前提になる</li>
+            <li>トークン登録や入力で手間取ると、機器側の認証待ち時間を超える場合がある</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-secret-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Shared Secret</p>
+        <h1 id="s3-secret-title">共有シークレットはRFC上の認証・秘匿処理に使う</h1>
+        <p class="content-slide__lead">RFC 2865では、RADIUSクライアントとRADIUSサーバ間のトランザクションは共有シークレットで認証され、シークレット自体はネットワーク上に送信されない。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            設定する場所
+          </h2>
+          <ul>
+            <li>SingleID側のRADIUS設定に登録する</li>
+            <li>ネットワーク機器側のRADIUSサーバ設定にも同じ値を設定する</li>
+            <li>宛先ホスト、認証ポート、シークレットを1組で機器へ設定する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>
+            シークレットの役割
+          </h2>
+          <ul>
+            <li>Response Authenticatorにより、応答元が共有シークレットを持つRADIUSサーバかを検証する</li>
+            <li>Message-Authenticatorにより、対応するパケットの改ざんを検出する</li>
+            <li>User-Password属性を使う方式では、その値をそのまま見えない形にできる</li>
+            <li>EAPを使う場合はMessage-Authenticatorでパケット整合性を検証する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>
+            誤解しないこと
+          </h2>
+          <ul>
+            <li>シークレット自体はネットワーク上に送信されない</li>
+            <li>通信全体を暗号化する仕組みではない</li>
+            <li>Message-Authenticatorがある場合、不一致のパケットは破棄される</li>
+            <li>User-Password属性を使いMessage-Authenticatorが無い場合、Access-Request全体のHMAC検証はなく、パスワード照合失敗として扱われる</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-server-selection-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Standard vs Advanced</p>
+        <h1 id="s3-server-selection-title">標準RADIUSと拡張RADIUSは接続元の識別方法が違う</h1>
+        <p class="content-slide__lead">まず仕様として、標準RADIUSはグローバルIPアドレスまたはホスト名、拡張RADIUSはNAS-IP-AddressまたはNAS-Identifierで接続元を識別する。</p>
+      </header>
+      <div class="content-slide__body">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>観点</th>
+              <th>標準RADIUSサーバ</th>
+              <th>拡張RADIUSサーバ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>識別方法</span></td>
+              <td>グローバルIPアドレスまたはホスト名</td>
+              <td>NAS-IP-AddressまたはNAS-Identifier</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>認証ポート</span></td>
+              <td>UDP1812、UDP10002〜10010の10ポート</td>
+              <td>UDP20000〜29999の範囲から専用ポートを1つ割り当て</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>シークレット</span></td>
+              <td>10サーバを使えるため、サイトごとにシークレットを分けられる</td>
+              <td>1サーバのため、設定できるシークレットは1つ</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>使う場面</span></td>
+              <td>識別属性を送れない、または属性で機器を識別できない構成</td>
+              <td>複数回線、共用グローバルIPv4、IPに依存したくない構成</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>機能面</span></td>
+              <td>送信元IPまたはホスト名で接続元を識別できる</td>
+              <td>IPアドレスに依存しにくく、RadSec利用も検討できる</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>注意点</span></td>
+              <td>IP変更やDDNSの反映待ちを考慮する</td>
+              <td>機器が送信する識別属性の値でサイトを識別できる構成にする</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-selection-policy-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Selection Policy</p>
+        <h1 id="s3-selection-policy-title">運用方針は拡張RADIUSを基本にする</h1>
+        <p class="content-slide__lead">設計では、機器がNAS-IP-AddressまたはNAS-Identifierを送信できるなら拡張RADIUSを基本にする。標準RADIUSは、識別に使えるRADIUS属性を送れない場合の回避策として扱う。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-external-link"></use></svg></span>
+            理由
+          </h2>
+          <ul>
+            <li>接続元識別をグローバルIPに依存させにくい</li>
+            <li>回線変更や回線追加の影響を受けにくい</li>
+            <li>複数機器の設計方針を揃えやすい</li>
+            <li>接続元の判定をシークレットではなく識別属性で分けられる</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            最初に判定すること
+          </h2>
+          <ul>
+            <li>設定ガイド掲載機器はガイド記載の識別属性を使う</li>
+            <li>未掲載機器は実ログからNAS-IP-Address / NAS-Identifierの値を読み取る</li>
+            <li>送信される値で機器や拠点を識別できるかを判定する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+            標準を使う場面
+          </h2>
+          <ul>
+            <li>識別に使えるRADIUS属性を送れない</li>
+            <li>送信元IPまたはホスト名で識別できる</li>
+            <li>IP変更やDDNSの反映待ちを許容できる</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-site-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Site Settings</p>
+        <h1 id="s3-site-title">RADIUSサイトは同一アクセスポリシーを割り当てる単位</h1>
+        <p class="content-slide__lead">標準RADIUSサイトと拡張RADIUSサイトは合計10個まで。1つのサイトで複数の送信元や属性値を扱い、同じ許可ルールを複数拠点や多数の機器へ割り当てやすくする。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            サイト
+          </h2>
+          <ul>
+            <li>標準と拡張を合計10サイトまで登録できる</li>
+            <li>サーバ、サーバ番号、認証ポートを選ぶ</li>
+            <li>標準はサーバごと、拡張は専用サーバでシークレットを共有する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+            接続元
+          </h2>
+          <ul>
+            <li>標準は複数のIP / ホスト名を設定できる</li>
+            <li>拡張は複数の属性値を設定できる</li>
+            <li>同じサイトにまとめると同一条件を適用しやすい</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-decision"></use></svg></span>
+            アクセスポリシー
+          </h2>
+          <ul>
+            <li>1サイトに最大30ルールを登録できる</li>
+            <li>ユーザ許可、グループ許可、MABなどを設定する</li>
+            <li>サイトを分けるのは条件を変えたい場合にする</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s3-summary-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 3 / Design Points</p>
+        <h1 id="s3-summary-title">RADIUS設計で最初に判定する項目</h1>
+        <p class="content-slide__lead">案件では、まずNAS-IP-AddressまたはNAS-Identifierでサイト識別できる構成かを判定する。識別属性、反映待ち、ログの見方まで含めて設計する。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            機器
+          </h2>
+          <ul>
+            <li>VPN装置 / 無線AP / スイッチ</li>
+            <li>送信できる認証方式</li>
+            <li>NAS-IP / NAS-IDの値</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-fallback"></use></svg></span>
+            回線
+          </h2>
+          <ul>
+            <li>固定IP / DDNS / 共用IPv4</li>
+            <li>複数回線や回線切替の有無</li>
+            <li>IP変更時の許容時間</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            認証対象
+          </h2>
+          <ul>
+            <li>ユーザ / グループ</li>
+            <li>パスワード / TOTP / 証明書</li>
+            <li>ポリシー適用先</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            ログ
+          </h2>
+          <ul>
+            <li>設定反映待ちを見込む</li>
+            <li>RADIUS認証ログは表示待ちも考慮する</li>
+            <li>機器側ログ</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 3 / 7</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section4-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 4</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+        <h1 id="section4-title">PKI / 証明書</h1>
+        <p class="section-cover__lead">証明書を使う理由、信頼の仕組み、証明書の種類、発行・配布・更新・失効の運用を、案件で決める順番に沿って学ぶ。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>証明書を使う目的</li>
+          <li>CAチェーンとCRLによる信頼判定</li>
+          <li>証明書の種類と用途</li>
+          <li>証明書の発行</li>
+          <li>証明書の配布とデバイス単位の管理</li>
+          <li>更新と失効のライフサイクル運用</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-purpose-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Purpose</p>
+        <h1 id="s4-purpose-title">証明書は端末を認証条件に加える</h1>
+        <p class="content-slide__lead">証明書認証は、IDとパスワードに加えて、許可された証明書を持つ端末かどうかを判定するために使う。まずは、証明書で何を防ぎ、どの運用を設計対象にするかを押さえる。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            なりすましを抑える
+          </h2>
+          <ul>
+            <li>パスワードを知っているだけでは通さない</li>
+            <li>発行済み証明書を持つ端末だけを通す</li>
+            <li>VPNや無線LANの認証強化に使う</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            端末を管理対象にする
+          </h2>
+          <ul>
+            <li>どの端末へ配布するかを決める</li>
+            <li>退職、紛失、端末交換時の失効を考える</li>
+            <li>手動配布かMDM配布かを選ぶ</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+            運用で成立させる
+          </h2>
+          <ul>
+            <li>発行対象と有効期間を決める</li>
+            <li>更新時期を把握できるようにする</li>
+            <li>失効後の再接続不可まで手順化する</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-chain-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / CA Chain</p>
+        <h1 id="s4-chain-title">CAチェーンとCRLで信頼と失効を判定する</h1>
+        <p class="content-slide__lead">証明書認証では、提示された証明書だけでなく、どのCAで発行されたか、失効していないかを判定する。ルートCA、中間CA、証明書、CRLの関係を先に押さえる。</p>
+      </header>
+      <div class="content-slide__body ca-hierarchy-diagram">
+        <svg class="ca-hierarchy-lines" viewBox="0 0 100 112" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M50 30 V38 M50 68 V75 M16.7 75 H83.3 M16.7 75 V82 M50 75 V82 M83.3 75 V82" />
+        </svg>
+        <article class="ca-hierarchy-node ca-hierarchy-node--root">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+          <strong>ルートCA</strong>
+          <span>信頼の起点。証明書チェーンを検証するときの基点として扱う。</span>
+        </article>
+        <article class="ca-hierarchy-node ca-hierarchy-node--intermediate">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+          <strong>中間CA</strong>
+          <span>契約組織専用のCA。他の契約組織とは共有しない。</span>
+        </article>
+        <article class="ca-hierarchy-node ca-hierarchy-node--leaf">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+          <strong>クライアント証明書</strong>
+          <span>発行枚数の制限なし。ユーザや端末に配布し、接続時に提示する。</span>
+        </article>
+        <article class="ca-hierarchy-node ca-hierarchy-node--leaf">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+          <strong>サーバ証明書（機器側）</strong>
+          <span>発行枚数の制限なし。VPN装置などで必要な場合に設定する。</span>
+        </article>
+        <article class="ca-hierarchy-node ca-hierarchy-node--leaf">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>
+          <strong>CRL</strong>
+          <span>中間CAに紐づく契約組織専用の証明書失効リスト。</span>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-cert-types-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Certificate Types</p>
+        <h1 id="s4-cert-types-title">証明書の種類を用途で分ける</h1>
+        <p class="content-slide__lead">証明書は、誰が提示するか、どの機器で使うか、どの管理方式で配布するかによって意味が変わる。配布手順に入る前に、証明書の種類と用途を分けておく。</p>
+      </header>
+      <div class="content-slide__body">
+        <table class="matrix-table matrix-table--method">
+          <thead>
+            <tr>
+              <th>方式</th>
+              <th>主な用途</th>
+              <th>扱い</th>
+              <th>設計で決めること</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>クライアント証明書</span></td>
+              <td>ユーザや端末がVPN / 無線LAN接続時に提示する。</td>
+              <td>管理者ポータルでユーザに発行し、証明書情報として管理する。</td>
+              <td>発行対象、プロファイル、有効期間、更新 / 失効時の扱いを決める。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-phone-cert"></use></svg></span>SCEP証明書</span></td>
+              <td>Intune管理デバイスへ配布するクライアント証明書として使う。</td>
+              <td>SingleID SCEPサーバとIntune構成プロファイルを組み合わせる。</td>
+              <td>Intune登録、Entra ID属性、CA証明書、SCEP URL、割り当てを決める。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>サーバ証明書</span></td>
+              <td>VPN装置など、機器側で証明書が必要な場合に使う。</td>
+              <td>クライアント証明書と同じCAで署名された証明書として発行する。</td>
+              <td>サーバ名、SANの種類、有効期間、装置側のインポート要件に合わせる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-issue-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Issuance</p>
+        <h1 id="s4-issue-title">証明書発行はプロファイルと対象者を先に決める</h1>
+        <p class="content-slide__lead">クライアント証明書は、プロファイルに従って発行される。配布作業に入る前に、どのユーザへ、どの有効期間・用途の証明書を発行するかを決めておく。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+            プロファイル
+          </h2>
+          <ul>
+            <li>有効期間を決める</li>
+            <li>拡張キー使用法（EKU）を用途に合わせる</li>
+            <li>サブジェクトの代替名を用途に合わせる</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            対象ユーザ
+          </h2>
+          <ul>
+            <li>発行対象ユーザを決める</li>
+            <li>利用用途と端末数を決める</li>
+            <li>グループや認証条件との関係を決める</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            発行情報
+          </h2>
+          <ul>
+            <li>ユーザにクライアント証明書を発行する</li>
+            <li>証明書情報として管理する</li>
+            <li>配布方式は次のスライドで決める</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-distribution-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Distribution</p>
+        <h1 id="s4-distribution-title">証明書配布は端末OSと運用負荷で決める</h1>
+        <p class="content-slide__lead">証明書を発行しても、端末へ安全に導入できなければ認証では使えない。複数デバイスへ同じ証明書を入れさせたくない場合は、配布方法も設計対象にする。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-mail"></use></svg></span>
+            メール送信
+          </h2>
+          <ul>
+            <li>ダウンロードリンクをメールで送信する</li>
+            <li>利用可能期間とリンク有効期間を案内する</li>
+            <li>複数デバイスへの導入を止めにくい点に注意する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            管理者導入
+          </h2>
+          <ul>
+            <li>管理者が証明書をダウンロードして対象PCへ導入する</li>
+            <li>インストール後にインストール日時を更新する</li>
+            <li>メモ機能にデバイス情報を記録する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            Windows自動構成
+          </h2>
+          <ul>
+            <li>Windows 10 / 11へ自動インストールする</li>
+            <li>インストール日時とコンピュータ名の記録に使える</li>
+            <li>実行後のリンク無効化に注意する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-phone-cert"></use></svg></span>
+            Intune配布
+          </h2>
+          <ul>
+            <li>管理対象デバイスへSCEP証明書を配布する</li>
+            <li>構成プロファイルで対象OS別に設定する</li>
+            <li>少数端末で先に検証する</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-renewal-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Lifecycle</p>
+        <h1 id="s4-renewal-title">更新と失効はライフサイクル運用として設計する</h1>
+        <p class="content-slide__lead">証明書は発行して終わりではない。期限切れ前に更新し、端末へ再配布し、使わせない証明書は失効してCRL反映後に再接続できない状態へ戻す。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            期限前検索
+          </h2>
+          <ul>
+            <li>1か月以内 / 3か月以内に期限切れの証明書を検索する</li>
+            <li>対象ユーザと端末を洗い出す</li>
+            <li>更新作業の案内時期を決める</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            更新発行と再配布
+          </h2>
+          <ul>
+            <li>既存証明書と同一情報で更新する</li>
+            <li>証明書のシリアル番号は変わる</li>
+            <li>端末へ新しい証明書を導入する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>
+            旧証明書の扱い
+          </h2>
+          <ul>
+            <li>既存証明書は更新だけでは失効されない</li>
+            <li>不要になった証明書の失効時期を決める</li>
+            <li>切替後に古い証明書を使わせない</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            失効と再接続不可
+          </h2>
+          <ul>
+            <li>紛失、退職、端末交換時に失効する</li>
+            <li>CRL反映までの時間差を考慮する</li>
+            <li>失効後は再接続不可の状態にする</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s4-summary-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 4 / Design Points</p>
+        <h1 id="s4-summary-title">証明書設計で最初に決めること</h1>
+        <p class="content-slide__lead">証明書設計では、証明書を発行できるかではなく、どの用途で、誰に、どの端末へ、どの運用で使わせるかを先に決める。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            認証用途
+          </h2>
+          <ul>
+            <li>VPN / 無線LAN / その他用途</li>
+            <li>ID / パスワードと併用するか</li>
+            <li>証明書だけで何を許可するか</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            種類と対象
+          </h2>
+          <ul>
+            <li>クライアント証明書 / SCEP証明書</li>
+            <li>サーバ証明書の要否</li>
+            <li>ユーザ数、端末台数、1人が使う端末数</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            配布管理
+          </h2>
+          <ul>
+            <li>メール配布 / 管理者導入</li>
+            <li>Windows自動構成</li>
+            <li>Intune SCEP配布と端末記録</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            ライフサイクル
+          </h2>
+          <ul>
+            <li>期限切れ前の更新計画</li>
+            <li>紛失 / 退職時の失効</li>
+            <li>CRL反映と再接続不可の判定</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 4 / 7</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section5-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 5</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-flow"></use></svg></span>
+        <h1 id="section5-title">認証フロー</h1>
+        <p class="section-cover__lead">VPN、無線LAN、ID / パスワード認証、証明書認証の流れを、SingleIDが認証時に何を判定するかに絞って学ぶ。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>VPN認証の基本フロー</li>
+          <li>無線LAN認証の基本フロー</li>
+          <li>ID / パスワード認証</li>
+          <li>証明書認証</li>
+          <li>認可情報と機器側制御</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s5-vpn-flow-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 5 / Remote Access VPN</p>
+        <h1 id="s5-vpn-flow-title">VPN認証はVPN装置がRADIUSクライアントになる</h1>
+        <p class="content-slide__lead">リモートアクセスVPNでは、端末の接続操作をVPN装置が受け、VPN装置がRADIUSクライアントとしてSingleIDへ認証要求を送る。成功時のRADIUS応答で、Filter-IdやFortinet-Group-Nameなどのグループ情報を返す構成がある。</p>
+      </header>
+      <div class="content-slide__body sequence-diagram sequence-diagram--singleid">
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+          <strong>利用者 / 端末</strong>
+          <span>VPN接続操作</span>
+        </div>
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+          <strong>VPN装置</strong>
+          <span>RADIUSクライアント</span>
+        </div>
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+          <strong>SingleID</strong>
+          <span>RADIUS / PKI / IdP</span>
+        </div>
+
+        <div class="sequence-message sequence-message--right sequence-message--step1">
+          <span>VPN接続要求</span>
+        </div>
+        <div class="sequence-message sequence-message--right sequence-message--step2">
+          <span>Access-Request</span>
+        </div>
+        <div class="sequence-message sequence-message--local sequence-message--step3">
+          <span>認証・認可・ログ</span>
+        </div>
+        <div class="sequence-message sequence-message--left sequence-message--step4">
+          <span>Access-Accept（グループ情報） / Access-Reject</span>
+        </div>
+        <div class="sequence-message sequence-message--left sequence-message--step5">
+          <span>接続許可 / 拒否</span>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 5 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s5-wlan-flow-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 5 / Wireless LAN</p>
+        <h1 id="s5-wlan-flow-title">無線LAN認証はAPやコントローラがRADIUSクライアントになる</h1>
+        <p class="content-slide__lead">無線LANでは、端末のSSID接続を無線APやコントローラが受け、RADIUS認証の結果をもとに接続可否を判断する。成功時のRADIUS応答で、VLAN ID情報を返す構成がある。</p>
+      </header>
+      <div class="content-slide__body sequence-diagram sequence-diagram--singleid">
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+          <strong>利用者 / 端末</strong>
+          <span>SSID接続</span>
+        </div>
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+          <strong>AP / コントローラ</strong>
+          <span>RADIUSクライアント</span>
+        </div>
+        <div class="sequence-actor">
+          <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+          <strong>SingleID</strong>
+          <span>RADIUS / PKI / IdP</span>
+        </div>
+
+        <div class="sequence-message sequence-message--right sequence-message--step1">
+          <span>SSID接続要求</span>
+        </div>
+        <div class="sequence-message sequence-message--right sequence-message--step2">
+          <span>Access-Request</span>
+        </div>
+        <div class="sequence-message sequence-message--local sequence-message--step3">
+          <span>認証・認可・ログ</span>
+        </div>
+        <div class="sequence-message sequence-message--left sequence-message--step4">
+          <span>Access-Accept（VLAN ID） / Access-Reject</span>
+        </div>
+        <div class="sequence-message sequence-message--left sequence-message--step5">
+          <span>接続許可 / 拒否</span>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 5 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s5-decision-overview-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 5 / Authentication Decision</p>
+        <h1 id="s5-decision-overview-title">認証判定は複数の条件を順に処理する</h1>
+        <p class="content-slide__lead">VPNでも無線LANでも、RADIUS要求を受けた後は「接続元」「認証方式」「ユーザ認証」「アクセス制限」を順に判定する。ログの読み方はトラブルシューティングで扱う。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+            接続元
+          </h2>
+          <p>標準RADIUSでは接続元IP、拡張RADIUSではNAS-IP / NAS-IDでサイトを識別する。</p>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            認証方式
+          </h2>
+          <p>機器が送るPAP、CHAP、MSCHAPv2、EAP系などの方式をSingleID側の対応方式と照合する。</p>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+            ユーザ認証
+          </h2>
+          <p>ID / パスワード、TOTP、ユーザ状態、証明書状態で認証可否を判定する。</p>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            アクセス制限
+          </h2>
+          <p>ユーザ / グループ、RADIUSサイトのルール、機器側ポリシーを照合する。</p>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 5 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s5-password-auth-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 5 / User Authentication</p>
+        <h1 id="s5-password-auth-title">ID / パスワード認証で判定されること</h1>
+        <p class="content-slide__lead">ID / パスワード認証は、利用者本人を判定する処理である。入力された認証情報、SingleID側のユーザ状態、機器が送るRADIUS認証方式が一致しているかを判定する。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+            入力される認証情報
+          </h2>
+          <ul>
+            <li>ユーザ名</li>
+            <li>パスワード</li>
+            <li>ワンタイムパスワードを使う場合はTOTPコード</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>
+            ユーザ状態
+          </h2>
+          <ul>
+            <li>ユーザが存在するか</li>
+            <li>ユーザが有効か</li>
+            <li>パスワードが正しいか</li>
+            <li>TOTPトークンが利用できる状態か</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            認証方式の一致
+          </h2>
+          <ul>
+            <li>機器が送るRADIUS認証方式</li>
+            <li>SingleID側で想定する認証方式</li>
+            <li>ワンタイムパスワード利用時はPAP / EAP-TTLS-PAP</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 5 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s5-cert-auth-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 5 / Certificate Authentication</p>
+        <h1 id="s5-cert-auth-title">証明書認証で判定されること</h1>
+        <p class="content-slide__lead">証明書認証は、端末が提示した証明書を、発行元、期限、失効状態、ユーザとの対応で判定する処理である。端末への配布や更新設計ではなく、認証時にSingleID側で判定する観点に絞る。</p>
+      </header>
+      <div class="content-slide__body four-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            提示証明書
+          </h2>
+          <ul>
+            <li>端末がクライアント証明書を提示しているか</li>
+            <li>証明書形式と用途が認証に合っているか</li>
+            <li>証明書情報を読み取れるか</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            発行元CA
+          </h2>
+          <ul>
+            <li>想定したCAで発行されているか</li>
+            <li>中間CAとルートCAをたどれるか</li>
+            <li>テナント専用の中間CAか</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>
+            有効性と失効
+          </h2>
+          <ul>
+            <li>有効期限内か</li>
+            <li>失効していないか</li>
+            <li>CRL反映待ちを考慮する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+            ユーザとの対応
+          </h2>
+          <ul>
+            <li>ユーザに紐づく証明書か</li>
+            <li>対象ユーザが有効か</li>
+            <li>証明書の利用者が想定どおりか</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 5 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s5-access-control-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 5 / Access Control</p>
+        <h1 id="s5-access-control-title">認証成功後は認可情報で接続先を制御する</h1>
+        <p class="content-slide__lead">Access-Acceptは単なる成功通知ではなく、機器側の接続制御に使う情報を含める場合がある。SingleID側では誰を許可し、どの認可情報を返し、機器側でどう扱うかを対応づける。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-users"></use></svg></span>
+            許可対象
+          </h2>
+          <ul>
+            <li>ユーザ単位で許可するか</li>
+            <li>グループ単位で許可するか</li>
+            <li>RADIUSサイトのルールに一致するか</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            RADIUS応答
+          </h2>
+          <ul>
+            <li>Access-Acceptで認可情報を返す</li>
+            <li>VPNではグループ情報を返す場合がある</li>
+            <li>無線LANではVLAN IDを返す場合がある</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            機器側ポリシー
+          </h2>
+          <ul>
+            <li>VPNのグループ / ポリシー判定</li>
+            <li>SSID / VLAN / アクセス制御</li>
+            <li>認可情報を受けた後の接続処理</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 5 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section6-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 6</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+        <h1 id="section6-title">トラブルシューティング</h1>
+        <p class="section-cover__lead">RADIUS認証ログの有無とエラー例を起点に、次に調査する対象を決める。SingleID側で止まったのか、機器側や経路側で止まったのかを切り分ける。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>RADIUS認証ログの有無</li>
+          <li>サイト識別とNAS-IP / NAS-ID</li>
+          <li>ユーザ状態とパスワード不一致</li>
+          <li>EAP / 証明書エラー</li>
+          <li>機器ログと問い合わせ判断</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-radius-log-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / No Log</p>
+        <h1 id="s6-radius-log-title">ログに表示されない場合を先に切り分ける</h1>
+        <p class="content-slide__lead">エラーメッセージがない場合は、SingleIDの認証判定以前で止まっている可能性がある。表示待ち、宛先、入口条件から切り分ける。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            表示待ち
+          </h2>
+          <p>認証実行直後にRADIUS認証ログへ表示されない場合がある。時間を置いてログ画面を再表示し、具体的な待ち時間は付録を参照する。</p>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            宛先IP / ポート
+          </h2>
+          <p>機器側のRADIUSサーバIP、認証ポート、標準RADIUS / 拡張RADIUSの使い分けが一致しているかを照合する。</p>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>
+            入口条件
+          </h2>
+          <p>RADIUSクライアントIP、送信元IP、共有シークレットが合わない場合は、要求があってもログに表示されない場合がある。</p>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-site-id-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / Site Identification</p>
+        <h1 id="s6-site-id-title">サイト識別エラーはNAS-IP / NAS-IDで判定する</h1>
+        <p class="content-slide__lead">拡張RADIUSでは、NAS-IP-AddressまたはNAS-Identifierでサイトを識別する。サイト未一致のエラーは、機器が実際に送った値とRADIUSサイト設定を突き合わせる。</p>
+      </header>
+      <div class="content-slide__body">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            ログ例: There is no sites ...
+          </h2>
+          <p>RADIUS認証ログにサイト未一致のエラーが出た場合は、拡張RADIUSのサイト識別属性と、機器が送信したNAS-IP / NAS-IDを照合する。</p>
+        </article>
+        <table class="matrix-table matrix-table--wide-topic">
+          <thead>
+            <tr>
+              <th>調査順序</th>
+              <th>調査対象</th>
+              <th>判定する内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>1. サイト設定</span></td>
+              <td>管理者ポータル＞認証＞RADIUS＞簡易設定</td>
+              <td>サイト識別する属性が、機器の送信するNAS-IP-AddressまたはNAS-Identifierと合っているか。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>2. 実測値</span></td>
+              <td>管理者ポータル＞ログ＞RADIUS認証ログ</td>
+              <td>ログに出たNAS-IPまたはNAS-IDを、サイトの属性値へ反映できるか。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>3. 属性値</span></td>
+              <td>機器側設定、設定ガイド、RADIUS認証ログ</td>
+              <td>NAS-Identifierを使う場合、部分一致にできる安定した共通文字列があるか。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-user-state-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / User State</p>
+        <h1 id="s6-user-state-title">ユーザ不存在・無効化は認証方式ごとに出方が違う</h1>
+        <p class="content-slide__lead">ユーザが存在しない、または無効化されている場合でも、試みた認証方式によってログ例が変わる。ログ例から方式と状況を読み取り、ユーザ一覧で登録状態を照合する。</p>
+      </header>
+      <div class="content-slide__body">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>
+            事象: ユーザが存在しない、または無効化されている
+          </h2>
+          <p>どのログ例でも、次の調査対象はユーザ一覧である。ユーザの存在、有効 / 無効、ユーザ名形式、同期 / 登録状態を照合する。</p>
+        </article>
+        <table class="matrix-table matrix-table--wide-topic">
+          <thead>
+            <tr>
+              <th>ログの手がかり</th>
+              <th>このログが示す状況</th>
+              <th>次に照合する項目</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>No Auth-Type found</span></td>
+              <td>PAP認証を試みたユーザが存在しない、または無効化されている。</td>
+              <td>ユーザ一覧で、ユーザ名と有効 / 無効を照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>Cleartext-Password is required</span></td>
+              <td>CHAP認証を試みたユーザが存在しない、または無効化されている。</td>
+              <td>ユーザ一覧の状態と、機器側がCHAPで送っていることを照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>No NT-Password</span></td>
+              <td>MS-CHAP認証を試みたユーザが存在しない、または無効化されている。</td>
+              <td>ユーザ一覧の状態と、機器側がMS-CHAP系で送っていることを照合する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-password-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / Password Mismatch</p>
+        <h1 id="s6-password-title">パスワード不一致は方式別メッセージで判定する</h1>
+        <p class="content-slide__lead">ユーザは存在していても、パスワードが一致しない場合は認証方式ごとに異なるログ例が出る。ログ例を起点に、入力情報、認証方式、TOTP利用有無を切り分ける。</p>
+      </header>
+      <div class="content-slide__body">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>
+            事象: ユーザは存在するが、パスワードが一致しない
+          </h2>
+          <p>ユーザ不存在・無効化のログとは分けて判定する。ここでは、認証対象ユーザは見つかったが、方式ごとのパスワード照合に失敗したケースを扱う。</p>
+        </article>
+        <table class="matrix-table matrix-table--wide-topic">
+          <thead>
+            <tr>
+              <th>ログの手がかり</th>
+              <th>このログが示す状況</th>
+              <th>次に照合する項目</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>pap: Cleartext password does not match</span></td>
+              <td>PAP認証で、復号後のUser-PasswordがSingleID側の値と一致しない。</td>
+              <td>入力パスワード、TOTP入力形式、共有シークレット不一致の可能性を切り分ける。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>chap: Password comparison failed</span></td>
+              <td>CHAP認証を試みたユーザのパスワードが間違っている。</td>
+              <td>端末の保存資格情報、機器側のCHAP設定、入力したユーザ名を照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>mschap: MS-CHAP2-Response is incorrect</span></td>
+              <td>MS-CHAP認証を試みたユーザのパスワードが間違っている。</td>
+              <td>端末の保存資格情報、機器側のMS-CHAP系設定、パスワード更新状況を照合する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-eap-cert-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / EAP and Certificate</p>
+        <h1 id="s6-eap-cert-title">EAP / 証明書エラーは端末設定とCAを分けて判定する</h1>
+        <p class="content-slide__lead">EAP系の失敗は、ログ例から端末設定、サーバ証明書のCA、クライアント証明書の検証失敗に分ける。証明書そのものだけでなく、端末側の検証設定も調査対象にする。</p>
+      </header>
+      <div class="content-slide__body">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>
+            事象: EAP / 証明書の検証で認証が止まる
+          </h2>
+          <p>同じ証明書認証の失敗でも、端末のEAP設定、サーバ証明書のCA、クライアント証明書チェーンのどこで止まったかを分けて判定する。</p>
+        </article>
+        <table class="matrix-table matrix-table--wide-topic">
+          <thead>
+            <tr>
+              <th>ログの手がかり</th>
+              <th>このログが示す状況</th>
+              <th>次に照合する項目</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>eap_peap: TLS Alert ... internal error</span></td>
+              <td>PEAPまたはTLSで、端末側のドメイン入力内容が正しくない。</td>
+              <td>端末側EAP設定と、RADIUS基本情報タブのホスト名を照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>eap_tls: ... unknown CA</span></td>
+              <td>端末側でRADIUSサーバ証明書を検証するCA設定が誤っている。</td>
+              <td>接続デバイス側に設定したサーバ証明書検証用CAを照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>eap_tls: ... verification failed</span></td>
+              <td>クライアント証明書の検証に失敗している。</td>
+              <td>中間CA、失効状態、対象ユーザに発行した証明書かを照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>unable to get local issuer certificate</span></td>
+              <td>クライアント証明書が適切な中間証明書で署名されていない。</td>
+              <td>証明書チェーン、端末に導入した証明書、配布手順を照合する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-device-log-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / Device Logs</p>
+        <h1 id="s6-device-log-title">Access-Accept後は機器ログで制御結果を調査する</h1>
+        <p class="content-slide__lead">RADIUS認証ログがAccess-Acceptでも、UDP応答が機器へ届いたか、途中経路でドロップされていないか、機器側で処理されたかは別問題である。接続できない場合は、機器ログと経路上の制御を順に調査する。</p>
+      </header>
+      <div class="content-slide__body">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            ログ例: Access-Accept
+          </h2>
+          <p>SingleID側ではAccess-Acceptを返している。機器側が受け取ったか、戻り経路で遮断されていないか、受け取った後にどう制御したかは機器ログで調査する。</p>
+        </article>
+        <table class="matrix-table matrix-table--wide-topic">
+          <thead>
+            <tr>
+              <th>ログの手がかり</th>
+              <th>切り分け段階</th>
+              <th>次に調査する項目</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>Access-Accept</span></td>
+              <td>SingleID側は成功</td>
+              <td>同じ時刻の機器ログでAccess-Acceptを受信しているかを照合する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>機器ログに応答なし</span></td>
+              <td>応答到達 / 経路</td>
+              <td>UDP応答の戻り経路、NAT、FW、ACL、ルーティング、途中経路でのドロップ、タイムアウトを切り分ける。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>応答は受信している</span></td>
+              <td>属性解釈</td>
+              <td>Filter-Id、Fortinet-Group-Name、VLAN IDなどを機器が受け取り、期待どおり解釈しているかを調査する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>接続制御で拒否</span></td>
+              <td>機器側ポリシー</td>
+              <td>VPNグループ、SSID、VLAN、ファイアウォールポリシー、アドレスプール、ネットワークポリシーを調査する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 6</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s6-inquiry-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 6 / Inquiry Preparation</p>
+        <h1 id="s6-inquiry-title">サポート問い合わせはRADIUS認証ログの有無で判断する</h1>
+        <p class="content-slide__lead">まずRADIUS認証ログに認証イベントが出ているかを判定する。ログが出ていればSingleID側で調査できる可能性が高く、Access-Accept後や機器側原因が明確な場合は機器側調査を優先する。</p>
+      </header>
+      <div class="content-slide__body">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            判断軸: RADIUS認証ログに出ているか
+          </h2>
+          <p>ユーザ名と発生時刻があれば、クラウド側のRADIUS認証ログやRADIUSサイト設定を追いやすい。ログがない場合は機器側ログ、宛先、経路、共有シークレットを先に調査する。</p>
+        </article>
+        <table class="matrix-table matrix-table--support">
+          <thead>
+            <tr>
+              <th>状態</th>
+              <th>判断</th>
+              <th>次の対応</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>ログあり / エラー</span></td>
+              <td>SingleID側で調査できる可能性が高い。</td>
+              <td>ユーザ名、発生時刻、エラー例を添えて問い合わせる。必要に応じてデバッグログを仕掛ける場合がある。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>ログなし / 機器側未調査</span></td>
+              <td>要求が届いていない、または入口で止まっている可能性がある。</td>
+              <td>機器側ログ、宛先IP、UDPポート、経路、NAT、FW、ACL、共有シークレットを先に調査する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-lab"></use></svg></span>ログなし / 調査済み</span></td>
+              <td>通常ログでは見えない入口側の問題が残っている可能性がある。</td>
+              <td>ユーザ名、発生時刻、利用機器、送信先、送信元、機器ログを添えて問い合わせる。必要に応じてデバッグログを仕掛ける場合がある。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>Access-Accept</span></td>
+              <td>SingleID側の認証判定は成功している。</td>
+              <td>SingleID側では接続制御後の原因は判断できない。機器側で応答受信、戻り経路、属性解釈、VPN / VLAN / ポリシーを調査する。</td>
+            </tr>
+            <tr>
+              <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>機器側原因が特定済み</span></td>
+              <td>SingleID側ではなく機器側・経路側の問題。</td>
+              <td>機器設定、ネットワーク経路、ベンダーログ、ポリシー設定を調査する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <p class="slide-footer">Section 6 / 7</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section7-operations-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 7</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+        <h1 id="section7-operations-title">運用管理</h1>
+        <p class="section-cover__lead">日常運用では、操作ログ、RADIUS認証ログ、通知メールを使って、管理操作・認証履歴・アカウント関連通知を後から追える状態にする。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>操作ログの閲覧</li>
+          <li>RADIUS認証ログのCSV出力</li>
+          <li>通知メールの種類</li>
+          <li>管理＞詳細設定で制御できる通知</li>
+          <li>ログ出力の共有・保管</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 7</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-csv-log-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 7 / CSV Export</p>
+        <h1 id="s7-csv-log-title">操作ログとRADIUS認証ログはCSVで出力して残す</h1>
+        <p class="content-slide__lead">運用管理では、管理者操作の履歴と認証履歴を後から追えることが重要である。RADIUS認証ログの詳細な切り分けはSection 6で扱い、ここではCSV出力による記録化と共有に絞る。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            操作ログ
+          </h2>
+          <ul>
+            <li>管理者操作の履歴閲覧に使う</li>
+            <li>設定変更や運用作業の後追いに使う</li>
+            <li>操作ログの集計通知と合わせて運用する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            RADIUS認証ログ
+          </h2>
+          <ul>
+            <li>認証履歴をCSVで一括ダウンロードできる</li>
+            <li>問い合わせ前の時刻・ユーザ・NAS情報の記録に使う</li>
+            <li>エラー例の読み方はSection 6を参照する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-list"></use></svg></span>
+            共有と保管
+          </h2>
+          <ul>
+            <li>CSVは調査・報告・作業記録の材料にする</li>
+            <li>共有時は個人情報や認証情報の扱いに注意する</li>
+            <li>保管範囲と共有先を運用ルールで決める</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 7 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-mail-types-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 7 / Notification Types</p>
+        <h1 id="s7-mail-types-title">通知メールは受信者目線で種類を区別する</h1>
+        <p class="content-slide__lead">通知メールは、送信操作を覚えるより、誰に何が届くかを押さえる。利用者・管理者・MSP側通知を、受信する可能性があるメールとして分類する。</p>
+      </header>
+      <table class="matrix-table matrix-table--support">
+        <thead>
+          <tr>
+            <th>メール</th>
+            <th>届く場面</th>
+            <th>受信者が知ること</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>ユーザ登録通知</span></td>
+            <td>ユーザ登録時</td>
+            <td>一般ユーザのアカウントが作成されたことを知る。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>管理者登録通知</span></td>
+            <td>管理者登録時</td>
+            <td>管理者アカウントが作成されたことを知る。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>パスワード設定案内</span></td>
+            <td>設定URLメール送信を選んだ場合</td>
+            <td>メール内リンクからパスワードを設定・変更する。リンクには有効期間がある。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>証明書発行通知</span></td>
+            <td>クライアント証明書発行時</td>
+            <td>証明書または自動構成ツールのダウンロードリンクを受け取る。リンク期限と再送可能期間は付録を参照する。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>操作ログ集計通知</span></td>
+            <td>操作ログの集計を有効にした場合</td>
+            <td>管理者または通知メールアドレス宛に、1日分の操作ログ集計が届く。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-mail"></use></svg></span>MSP側通知</span></td>
+            <td>MSP側の運用で送信される場合</td>
+            <td>納品通知や契約期限前の警告通知を受信する場合がある。MSPポータル操作は扱わない。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <p class="slide-footer">Section 7 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-mail-settings-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 7 / Notification Settings</p>
+        <h1 id="s7-mail-settings-title">管理 > 詳細設定で制御できる通知を分ける</h1>
+        <p class="content-slide__lead">通知メールのすべてが詳細設定で制御できるわけではない。詳細設定で有効 / 無効を切り替える通知と、個別操作やMSP側運用に連動して送信される通知を区別する。</p>
+      </header>
+      <table class="matrix-table matrix-table--wide-topic">
+        <thead>
+          <tr>
+            <th>詳細設定項目</th>
+            <th>制御するもの</th>
+            <th>設定方針</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-user"></use></svg></span>ユーザ > 登録時にメール通知</span></td>
+            <td>ユーザ登録時の通知メール</td>
+            <td>一括登録やSCIM同期前に、登録通知を送るか決める。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-certificate"></use></svg></span>証明書 > 発行時にメール通知</span></td>
+            <td>証明書発行通知メール、証明書 / 自動構成ツールのメール配布</td>
+            <td>利用者へ配布するか、管理者がダウンロードして導入するかを決める。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-mail"></use></svg></span>通知 > 通知メールアドレス</span></td>
+            <td>操作ログ集計などの通知先</td>
+            <td>管理者以外にも通知を送る必要がある場合に宛先を設定する。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>通知 > 操作ログの集計</span></td>
+            <td>1日分の操作ログ集計通知</td>
+            <td>管理者操作の集計通知を受け取る場合に有効化する。</td>
+          </tr>
+        </tbody>
+      </table>
+      <aside class="slide-note">
+        <strong>メールが届かない場合:</strong> 宛先メールサーバで拒否されたメールアドレスは送信不能宛先として扱われ、次回以降の通知対象から外れる場合がある。宛先が正しいのに通知メールが届かない場合はサポートへ問い合わせ、送信不能宛先の登録解除を依頼する。
+      </aside>
+    </section>
+    <p class="slide-footer">Section 7 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section8-availability-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 8</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+        <h1 id="section8-availability-title">SingleIDの可用性</h1>
+        <p class="section-cover__lead">前半ではSingleID側で可用性を高めるための取り組みを学ぶ。そのうえで、公式ブログを参考に、機器側でどこまで接続継続策を追加する必要があるかを判断する。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>SingleID側で可用性を確保する基盤</li>
+          <li>継続的な運用改善と復旧準備</li>
+          <li>SLAの対象範囲、稼働率、除外条件</li>
+          <li>公式ブログを参考にした段階的な可用性検討</li>
+          <li>機器側対策とセキュリティ低下のトレードオフ</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 8</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-availability-scope-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 8 / Availability Platform</p>
+        <h1 id="s7-availability-scope-title">SingleID側で可用性を確保する基盤</h1>
+        <p class="content-slide__lead">SingleIDはAWSをベースにしたクラウドサービスとして、冗長化、分散構成、死活監視と自動復旧を組み合わせて可用性を確保する。ここでは、障害を起こしにくくし、検知時に自動復旧する基盤を押さえる。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+            冗長化
+          </h2>
+          <ul>
+            <li>クラウドRADIUS、クラウドLDAP、IdPを冗長化対象として扱う</li>
+            <li>管理ポータルやデータベースもサービス基盤として冗長化する</li>
+            <li>認証基盤全体で単一障害点を減らす</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+            分散構成
+          </h2>
+          <ul>
+            <li>AWSのマルチAZにより単一データセンターへの依存を下げる</li>
+            <li>負荷分散により認証要求を複数系統で受ける</li>
+            <li>名前解決を活用し、分散構成として運用する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            死活監視と自動復旧
+          </h2>
+          <ul>
+            <li>24時間365日の死活監視を前提にする</li>
+            <li>障害検知時にサーバープロセスを自動復旧する</li>
+            <li>異常時にサービスを継続・復帰しやすい状態を保つ</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 8 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-radius-timing-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 8 / Operations</p>
+        <h1 id="s7-radius-timing-title">継続的な運用改善と復旧準備で可用性を支える</h1>
+        <p class="content-slide__lead">SingleID側の可用性は、基盤を冗長化して終わりではない。負荷増加や障害後の復旧に備え、メトリクス監視、スケール計画、バックアップを継続的に運用する。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            メトリクス監視
+          </h2>
+          <ul>
+            <li>CPU、メモリ、ディスク、ネットワーク負荷を監視する</li>
+            <li>負荷傾向やリソース逼迫の予兆を検知する</li>
+            <li>スケール計画や復旧判断の材料にする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+            スケール計画
+          </h2>
+          <ul>
+            <li>利用増加や負荷傾向に応じて増強を計画する</li>
+            <li>サーバーやネットワークの余力を継続的に監視する</li>
+            <li>性能劣化が可用性問題になる前に対処する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-cloud"></use></svg></span>
+            バックアップ
+          </h2>
+          <ul>
+            <li>データベースのスナップショットを取得する</li>
+            <li>設定情報やディレクトリ情報を保護する</li>
+            <li>復旧時に必要なデータをクラウド側で保持する</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 8 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-singleid-sla-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 8 / SLA Scope</p>
+        <h1 id="s7-singleid-sla-title">SLAは対象範囲、稼働率、除外条件で読む</h1>
+        <p class="content-slide__lead">SLAは可用性基盤そのものの説明ではなく、サービスレベルの対象範囲と計算方法を読むためのもの。SingleID側の認証サービスと、利用環境側の回線・機器・端末要因を分けて読む。参照: <a href="https://www.singleid.jp/sla/" target="_blank" rel="noopener noreferrer">https://www.singleid.jp/sla/</a></p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            対象範囲
+          </h2>
+          <ul>
+            <li>SingleID クラウドLDAPに関わるユーザ認証</li>
+            <li>SingleID クラウドRADIUSに関わるユーザ認証</li>
+            <li>SingleID SSOに関わるユーザ認証</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-log"></use></svg></span>
+            稼働率
+          </h2>
+          <ul>
+            <li>月間総稼働時間から累計障害時間を差し引いて算出する</li>
+            <li>毎月1日から末日までを1カ月として計算する</li>
+            <li>サービス・クレジットの詳細は公式SLAを参照する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+            適用除外
+          </h2>
+          <ul>
+            <li>管理ページ操作、保守作業、不可抗力は適用除外として分ける</li>
+            <li>第三者攻撃、利用環境側サービス、回線障害は除外条件に含まれる</li>
+            <li>当社管理外の設備に起因する障害も分けて扱う</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 8 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-link-integrity-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 8 / Blog Reference</p>
+        <h1 id="s7-link-integrity-title">公式ブログは段階的な可用性検討の参考例として読む</h1>
+        <p class="content-slide__lead">Buffalo AirStation Pro向け公式ブログでは、SingleID連携Wi-Fiでどこまで可用性を求めるかを段階的に示している。まず通常構成と再認証抑制で足りるかを判断し、必要な場合だけ緊急SSID切替まで検討する。参照: <a href="https://www.singleid.jp/buffalo-singleid-wifi-availability/" target="_blank" rel="noopener noreferrer">https://www.singleid.jp/buffalo-singleid-wifi-availability/</a></p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            1. 通常構成
+          </h2>
+          <ul>
+            <li>SingleID連携SSIDを通常構成で運用する</li>
+            <li>共有パスワード運用から認証強化へ移行する</li>
+            <li>利用者単位・端末単位で管理できる状態にする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-sync"></use></svg></span>
+            2. 再認証抑制
+          </h2>
+          <ul>
+            <li>セッションタイムアウトを見直す</li>
+            <li>Auth Cacheで一時的な到達不可の影響を抑える</li>
+            <li>複数AP環境ではPMKキャッシュを利用できるかを判定する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-decision"></use></svg></span>
+            判断
+          </h2>
+          <ul>
+            <li>再認証の発生頻度と業務影響を見積もる</li>
+            <li>通常構成と再認証抑制で接続継続要件を満たせるかを判定する</li>
+            <li>不足する場合のみ緊急SSID切替を検討する</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 8 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-emergency-ssid-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 8 / Emergency SSID</p>
+        <h1 id="s7-emergency-ssid-title">必要な場合だけLink Integrityで緊急SSIDへ切り替える</h1>
+        <p class="content-slide__lead">通常構成と再認証抑制だけでは接続継続要件を満たせない場合に、Link Integrityによる緊急SSID切替を検討する。これは接続性を優先する追加策であり、標準構成として前提にしない。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
+            切替の考え方
+          </h2>
+          <ul>
+            <li>普段はSingleID連携SSIDを使う</li>
+            <li>到達不可時だけ緊急用PSK SSIDへ切り替える</li>
+            <li>社内LAN接続の継続を重視する場合に検討する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-gear"></use></svg></span>
+            設計上の注意
+          </h2>
+          <ul>
+            <li>Link Integrityは短くしすぎない</li>
+            <li>簡単に切り替わるとPSKが近道になる</li>
+            <li>本当に必要な時だけ切り替わるようにする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-key"></use></svg></span>
+            運用上の注意
+          </h2>
+          <ul>
+            <li>PSK運用では個人を特定できない</li>
+            <li>パスワード漏洩リスクがある</li>
+            <li>緊急利用後はSSIDパスワードを変更する</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 8 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s7-availability-check-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 8 / Trade-off</p>
+        <h1 id="s7-availability-check-title">SMBでは標準構成を基本に必要時だけ追加策を検討する</h1>
+        <p class="content-slide__lead">多くのSMBでは、既存のPSK方式から通常のSingleID連携へ移行するだけでも認証強化になる。機器側の緊急SSIDなどの切替対応は、特別な設定、機器ごとの対応可否、自動切替の有無、復旧後の戻し手順が関わるため、標準構成として前提にしない。</p>
+      </header>
+      <table class="matrix-table matrix-table--wide-topic">
+        <thead>
+          <tr>
+            <th>判断ゾーン</th>
+            <th>見方</th>
+            <th>判断結果</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>標準構成で導入</span></td>
+            <td>既存のPSK方式から通常のSingleID連携へ移行するだけで、利用者単位・端末単位の管理に近づけられる。</td>
+            <td>多くのSMBではこの判断を基本にし、最初から緊急SSIDなどの切替対応を前提にしない。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-decision"></use></svg></span>例外として個別設計</span></td>
+            <td>止められない業務、拠点、SSID、端末が明確で、対象機器が必要な切替方式に対応している。自動切替できるか、手動運用になるかを確認できる。</td>
+            <td>追加策は個別設計として扱い、設定変更、切替条件、手動対応、復旧後の戻し、パスワード変更、ログ確認を工数に入れる。</td>
+          </tr>
+          <tr>
+            <td><span class="table-topic"><span class="slide-icon" aria-hidden="true"><svg><use href="#icon-alert"></use></svg></span>追加策を採用しない</span></td>
+            <td>対象機器で自動切替できない、運用手順を維持できない、または認証強度低下、共有鍵管理、戻し忘れ、トラブル原因の増加が大きい。</td>
+            <td>追加策は採用せず、監視、障害時連絡手順、通常構成の復旧確認を整える。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <p class="slide-footer">Section 8 / 6</p>
+  </main>
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="section9-title">
+      <div>
+        <p class="section-cover__meta">Part 1 / Section 9</p>
+        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+        <h1 id="section9-title">機器連携</h1>
+        <p class="section-cover__lead">指定の設定ガイドを読む前提として、FortiGate、YAMAHA RTX、Buffalo AirStation Proで何をどの順番で設定し、どこを注意して読むかを学ぶ。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>主なトピック</h2>
+        <ul>
+          <li>FortiGate IKEv2 + パスワード + 証明書</li>
+          <li>YAMAHA RTX L2TP/IPsec + パスワード + OTP</li>
+          <li>Buffalo AirStation Pro 無線LAN + EAP-TLS</li>
+          <li>機器側設定とSingleID側設定の対応</li>
+          <li>機器ログとRADIUS認証ログの突き合わせ</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">Section 9</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s8-fortigate-flow-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 9 / FortiGate Flow</p>
+        <h1 id="s8-fortigate-flow-title">FortiGate IKEv2 VPNでパスワードと証明書を併用する手順</h1>
+        <p class="content-slide__lead">この手順書は、FortiGateのリモートアクセスVPNで、SingleIDのRADIUS認証とクライアント証明書認証を組み合わせる構成を扱う。IKEv2 VPN、FortiClient、証明書、拡張RADIUSの対応関係を読む。参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/</a></p>
+      </header>
+      <div class="content-slide__body asset-diagram-with-notes">
+        <figure class="asset-diagram">
+          <img src="../../assets/fortigate-integration-map.svg" alt="FortiGate、FortiClient、SingleIDクラウドの関係を示す構成図">
+        </figure>
+        <div class="diagram-note-grid">
+          <article class="diagram-note">
+            <h2>設定要素</h2>
+            <p>SingleIDでユーザ、グループ、クライアント証明書、サーバ証明書、中間CA、CRL、拡張RADIUSを準備する。FortiGate側ではRADIUS、CA / CRL、サーバ証明書、IKEv2 VPNを対応づける。</p>
+          </article>
+          <article class="diagram-note">
+            <h2>手順書で扱う項目</h2>
+            <p>FortiClient接続結果、FortiGateログ、SingleIDのRADIUS認証ログを同じ時刻で突き合わせる。NAS-Identifier、専用ポート、共有シークレット、証明書検証を分けて読む。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 9 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s8-fortigate-notes-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 9 / FortiGate Notes</p>
+        <h1 id="s8-fortigate-notes-title">FortiGate手順書の注意点</h1>
+        <p class="content-slide__lead">注意点は、前提条件、RADIUS識別、アクセス制御の3つに分けて読む。GUI操作だけでなく、FortiGate CLIで変更する箇所も押さえる。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            前提条件
+          </h2>
+          <ul>
+            <li>手順書はFortiGate v7.6.6とFortiClient 7.4.3.4726を前提にしている</li>
+            <li>FortiGate / FortiClientの対応バージョンと通信条件を満たす</li>
+            <li>既存VPNを変更または再設定する前提で、FortiGate設定バックアップ、切り戻し手順、作業時間帯を決める</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            RADIUS識別
+          </h2>
+          <ul>
+            <li>手順書では拡張RADIUSを利用する</li>
+            <li>FortiGateのホスト名をNAS-Identifierの属性値に合わせる</li>
+            <li>拡張RADIUSの専用ポートはFortiGate CLIで設定する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            アクセス制御
+          </h2>
+          <ul>
+            <li>FortiGateへ追加するのは中間CA証明書であり、ルートCAではない</li>
+            <li>CRL、サーバ証明書、ユーザグループをVPN設定と対応づける</li>
+            <li>eap-cert-authをCLIで有効化する箇所を見落とさない</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 9 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s8-yamaha-flow-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 9 / YAMAHA RTX Flow</p>
+        <h1 id="s8-yamaha-flow-title">YAMAHA RTXのL2TP/IPsec VPNでOTPを使う手順</h1>
+        <p class="content-slide__lead">この手順書は、YAMAHA RTXのリモートアクセスVPNで、SingleIDのパスワード認証とワンタイムパスワード認証を使う構成を扱う。Windows端末、PAP認証、拡張RADIUS、NAS-IP照合を対応づける。参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/</a></p>
+      </header>
+      <div class="content-slide__body asset-diagram-with-notes">
+        <figure class="asset-diagram">
+          <img src="../../assets/yamaha-rtx-integration-map.svg" alt="YAMAHA RTX、Windows端末、SingleIDクラウドの関係を示す構成図">
+        </figure>
+        <div class="diagram-note-grid">
+          <article class="diagram-note">
+            <h2>設定要素</h2>
+            <p>SingleIDでユーザ、グループ、OTPトークン、拡張RADIUS、RADIUSサイトを準備する。RTX側ではL2TP/IPsec、PAP認証、RADIUS、同時接続数に応じたanonymous PPを対応づける。</p>
+          </article>
+          <article class="diagram-note">
+            <h2>手順書で扱う項目</h2>
+            <p>RADIUS認証ログからNAS-IPを読み取り、RTX側ログと同じ時刻で突き合わせる。PAPを利用できるVPNクライアントか、RTXローカルユーザと重複していないかも判定する。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 9 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s8-yamaha-notes-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 9 / YAMAHA RTX Notes</p>
+        <h1 id="s8-yamaha-notes-title">YAMAHA RTX手順書の注意点</h1>
+        <p class="content-slide__lead">注意点は、前提条件、RADIUS識別、アクセス制御の3つに分けて読む。特にVPNクライアント条件とNAS-IP照合は、設計時に先に押さえる。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            前提条件
+          </h2>
+          <ul>
+            <li>VPN接続端末はWindows端末を前提にする</li>
+            <li>L2TP/IPsecとPAP認証を利用できる必要がある</li>
+            <li>スマートフォンやタブレットはOTP表示端末として使う位置づけにする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            RADIUS識別
+          </h2>
+          <ul>
+            <li>RADIUSサーバ情報はCLIで設定する</li>
+            <li>一時的な属性値でRADIUSサイトを登録して認証を失敗させる</li>
+            <li>RADIUS認証ログのNAS-IPを見て実際の属性値を読む</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            アクセス制御
+          </h2>
+          <ul>
+            <li>GUIでVPN作成時に一時ユーザ登録が必要になる</li>
+            <li>複数ユーザを同時接続させる場合は、想定同時接続数分のトンネルをanonymous PPにバインドする</li>
+            <li>SingleID利用ユーザと同名のRTXローカルユーザを作らない</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 9 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s8-buffalo-flow-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 9 / Buffalo AirStation Pro Flow</p>
+        <h1 id="s8-buffalo-flow-title">Buffalo AirStation Proの無線LANで証明書認証を使う手順</h1>
+        <p class="content-slide__lead">この手順書は、Buffalo AirStation Proの無線LANアクセスで、SingleIDのクライアント証明書認証（EAP-TLS）を使う構成を扱う。SSID、WPA2/WPA3 Enterprise、拡張RADIUS、NAS-Identifierを対応づける。参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/</a></p>
+      </header>
+      <div class="content-slide__body asset-diagram-with-notes">
+        <figure class="asset-diagram">
+          <img src="../../assets/buffalo-airstation-pro-integration-map.svg" alt="Buffalo AirStation Pro、無線クライアント、SingleIDクラウドの関係を示す構成図">
+        </figure>
+        <div class="diagram-note-grid">
+          <article class="diagram-note">
+            <h2>設定要素</h2>
+            <p>SingleIDでユーザ、グループ、クライアント証明書、拡張RADIUS、RADIUSサイトを準備する。AirStation Pro側ではSSID、WPA2 / WPA3 Enterprise、RADIUS、属性形式を対応づける。</p>
+          </article>
+          <article class="diagram-note">
+            <h2>設定で合わせる項目</h2>
+            <p>AirStation Pro側で、Calling-Station-IdとCalled-Station-Idの送信形式を指定する。RADIUS認証ログでは、端末MAC、SSID、NAS-Identifier、端末証明書を対応づける。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <p class="slide-footer">Section 9 / 5</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide" aria-labelledby="s8-buffalo-notes-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Section 9 / Buffalo AirStation Pro Notes</p>
+        <h1 id="s8-buffalo-notes-title">Buffalo AirStation Pro手順書の注意点</h1>
+        <p class="content-slide__lead">前提条件、RADIUS識別、アクセス制御の3つを設定ガイドの指定値に合わせる。SSID側の設定差分が、SingleIDの認証失敗に見えることがある。</p>
+      </header>
+      <div class="content-slide__body three-column">
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
+            前提条件
+          </h2>
+          <ul>
+            <li>無線LANアクセスでクライアント証明書認証を使う構成である</li>
+            <li>SSIDはWPA2/WPA3 Enterpriseを選択する</li>
+            <li>端末側で信頼するCAとサーバ名を設定し、RADIUSサーバ証明書を検証できる状態にする</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
+            RADIUS識別
+          </h2>
+          <ul>
+            <li>設定ガイドではサイト識別属性にNAS-Identifierを使う</li>
+            <li>属性値は特別な値である <code>**BUFFALO**</code> を使う</li>
+            <li>Calling-Station-Idは「ハイフン区切り・大文字」、Called-Station-Idは「ハイフン区切り・大文字:SSID」に設定する</li>
+          </ul>
+        </article>
+        <article class="info-card icon-card">
+          <h2 class="icon-card__title">
+            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
+            アクセス制御
+          </h2>
+          <ul>
+            <li>証明書認証のみ許可するか、他方式も許可するかを決める</li>
+            <li>接続可能なSSIDを制限するかを決める</li>
+            <li>SingleIDはRADIUS Accountingをサポートしないため、AirStation Pro側のAccountingは無効にする</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    <p class="slide-footer">Section 9 / 6</p>
+  </main>
+
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

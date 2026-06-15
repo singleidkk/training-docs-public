@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SingleID 設定情報シート（サンプル） | SingleID 技術説明ハンドブック</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--singleid-settings-sheet guide-companion" aria-label="SingleID 設定情報シート">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+        <header class="a4-training-overview__title">
+          <p class="a4-training-overview__label">Supplement / SingleID Settings Sheet</p>
+          <h1>SingleID 設定情報シート（サンプル）</h1>
+        <p class="a4-training-overview__subtitle">SingleID 管理者ポータルで設定する値を事前に記入するためのサンプル。記入された内容をもとに、ユーザ / グループ、管理 > 詳細設定、RADIUS、証明書の設定を行う。</p>
+        </header>
+
+        <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+          <h2>記入時の前提</h2>
+          <ul class="guide-companion__compact-list">
+            <li>Excelで記入する場合は、<a href="../../downloads/singleid-settings-sheet.xlsx" download>SingleID 設定情報シート Excel版</a>を使う。</li>
+            <li>このシートは設定作業用の入力情報を事前に記入するためのもの。未記入項目は設定前に確定する。</li>
+            <li>RADIUSの共有シークレットは設定値として記入する。共有時は保管場所、共有先、取扱い範囲に注意する。</li>
+            <li>PoC環境と本番環境ではログイン入口、設定対象、発行情報が異なるため、環境を混在させない。</li>
+          </ul>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>1. 環境・管理者設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>設定対象環境</td>
+                <td>□ PoC環境　□ 本番環境</td>
+                <td>PoCと本番は別環境として扱う。</td>
+              </tr>
+              <tr>
+                <td>テナント / アカウント名</td>
+                <td></td>
+                <td>管理者ポータル上の設定対象を識別する。</td>
+              </tr>
+              <tr>
+                <td>管理者メールアドレス</td>
+                <td></td>
+                <td>管理者登録と初期ログインに使う。</td>
+              </tr>
+              <tr>
+                <td>設定作業者</td>
+                <td></td>
+                <td>SingleID 管理者ポータルで設定作業を行う担当者を記入する。</td>
+              </tr>
+              <tr>
+                <td>設定作業日 / 反映希望日</td>
+                <td></td>
+                <td>設定実施日と利用開始に向けた反映希望日を記入する。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>2. ユーザ設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>登録方式</td>
+                <td>□ 個別登録　□ CSV一括登録　□ Entra ID SCIM　□ SCIM API連携（ベータ）</td>
+                <td>登録方式が複数ある場合は、対象ユーザを分けて記入する。</td>
+              </tr>
+              <tr>
+                <td>登録対象ユーザリスト</td>
+                <td>□ このシートに記入　□ CSV別紙で提出　□ SCIM対象グループで管理</td>
+                <td>手動登録またはCSV一括登録では、登録するユーザ情報が必要になる。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>3. 管理 > 詳細設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ユーザ > ログイン状態の保存</td>
+                <td>□ 有効　□ 無効</td>
+                <td>デフォルトは有効。ログイン画面の保存チェックボックスに関係する。</td>
+              </tr>
+              <tr>
+                <td>ユーザ > パスワードリセットをユーザに許可</td>
+                <td>□ 有効　□ 無効</td>
+                <td>デフォルトは有効。ユーザ自身によるパスワードリセット可否を決める。</td>
+              </tr>
+              <tr>
+                <td>ユーザ > 登録時にメール通知</td>
+                <td>□ 有効　□ 無効</td>
+                <td>デフォルトは有効。ユーザ登録時の通知メール送信を制御する。</td>
+              </tr>
+              <tr>
+                <td>証明書 > ユーザ登録時に発行</td>
+                <td>□ 有効　□ 無効</td>
+                <td>デフォルトは無効。ユーザ作成と同時にクライアント証明書を発行するかを決める。</td>
+              </tr>
+              <tr>
+                <td>証明書 > 発行時にメール通知</td>
+                <td>□ 有効　□ 無効</td>
+                <td>デフォルトは有効。証明書または自動構成ツールのダウンロードリンク送信を制御する。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 class="guide-companion__subheading">パスワードポリシー</h3>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ポリシーレベル</td>
+                <td>□ なし　□ 弱い　□ 標準　□ 強い　□ カスタム</td>
+                <td>画面上のスライダーで選択する。個別指定する場合はカスタムを使う。</td>
+              </tr>
+              <tr>
+                <td>有効期限</td>
+                <td>_____ 日</td>
+                <td>0の場合は期限なしとして扱う。</td>
+              </tr>
+              <tr>
+                <td>パスワードの長さ</td>
+                <td>_____ 文字以上</td>
+                <td>例: 8文字以上。</td>
+              </tr>
+              <tr>
+                <td>特殊文字</td>
+                <td>_____ 文字以上</td>
+                <td>必要な特殊文字数を指定する。</td>
+              </tr>
+              <tr>
+                <td>大文字</td>
+                <td>_____ 文字以上</td>
+                <td>必要な英大文字数を指定する。</td>
+              </tr>
+              <tr>
+                <td>小文字</td>
+                <td>_____ 文字以上</td>
+                <td>必要な英小文字数を指定する。</td>
+              </tr>
+              <tr>
+                <td>数字</td>
+                <td>_____ 文字以上</td>
+                <td>必要な数字数を指定する。</td>
+              </tr>
+              <tr>
+                <td>ユーザ名を含まない</td>
+                <td>□ 有効　□ 無効</td>
+                <td>ユーザ名を含むパスワードを許可しない場合は有効にする。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>4. ユーザ登録リスト</h2>
+          <p>手動登録またはCSV一括登録で登録するユーザを記入する。10名を超える場合は、同じ項目のCSV別紙で提出する。ユーザのパスワード設定・更新案内はメールで送信する前提とする。</p>
+          <table class="guide-companion__table guide-companion__table--user-list">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>ユーザ名</th>
+                <th>メールアドレス</th>
+                <th>姓</th>
+                <th>名</th>
+                <th>所属グループ / 備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>2</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>3</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>4</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>5</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>6</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>7</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>8</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>9</td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>10</td><td></td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>5. グループ設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>グループ名</th>
+                <th>用途</th>
+                <th>メンバー登録方法 / 備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td>例: VPN接続を許可するユーザ</td>
+                <td>□ 手動　□ CSV　□ SCIM　□ その他</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>例: 無線LAN接続を許可するユーザ</td>
+                <td>□ 手動　□ CSV　□ SCIM　□ その他</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>6. SCIM設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SCIM利用</td>
+                <td>□ 利用する　□ 利用しない</td>
+                <td>Microsoft Entra ID SCIMでユーザ / グループを同期する場合に記入する。</td>
+              </tr>
+              <tr>
+                <td>SingleIDアカウント番号</td>
+                <td></td>
+                <td>SCIMエンドポイント用シークレットトークン発行時に必要になる。</td>
+              </tr>
+              <tr>
+                <td>Microsoft Entra ID テナントID</td>
+                <td></td>
+                <td>SCIMエンドポイント用シークレットトークン発行時に必要になる。</td>
+              </tr>
+              <tr>
+                <td>SCIMエンドポイントURL</td>
+                <td>□ PoC環境　□ 本番環境　URL: __________________</td>
+                <td>SingleIDから提供される環境別URLを記入する。</td>
+              </tr>
+              <tr>
+                <td>シークレットトークン</td>
+                <td></td>
+                <td>SingleIDから提供される値。再発行時はEntra ID側の設定も更新する。</td>
+              </tr>
+              <tr>
+                <td>Microsoft Entra ID エディション</td>
+                <td>□ P1　□ P2　□ Governance　□ Suite　□ その他</td>
+                <td>グループ同期を使う場合は対応エディションを前提にする。</td>
+              </tr>
+              <tr>
+                <td>同期対象</td>
+                <td>□ ユーザ　□ グループ</td>
+                <td>Entra IDのエンタープライズアプリに割り当てる対象を記入する。</td>
+              </tr>
+              <tr>
+                <td>UPNローカルパート</td>
+                <td>□ 重複なし　□ 要修正</td>
+                <td>SingleIDユーザ名はUPNの@より前の部分になる。</td>
+              </tr>
+              <tr>
+                <td>UPN変更</td>
+                <td>□ 同期開始後は変更しない　□ 要検討</td>
+                <td>同期開始後のUPN変更は避ける。</td>
+              </tr>
+              <tr>
+                <td>必須属性</td>
+                <td>□ userPrincipalName　□ givenName　□ surname　□ mail</td>
+                <td>未設定の場合はプロビジョニング失敗の原因になる。</td>
+              </tr>
+              <tr>
+                <td>グループ同期</td>
+                <td>□ 直下メンバーのみで設計する</td>
+                <td>ネストグループは展開されない。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>7. RADIUSサーバ / RADIUSサイト設定（VPN用）</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>サイト名</td>
+                <td></td>
+                <td>VPN装置からの認証要求を識別するサイトとして登録する。</td>
+              </tr>
+              <tr>
+                <td>RADIUS種別</td>
+                <td>□ 拡張RADIUS　□ 標準RADIUS</td>
+                <td>識別属性を利用できる場合は拡張RADIUSを基本に検討する。</td>
+              </tr>
+              <tr>
+                <td>サーバ番号 / 認証ポート</td>
+                <td></td>
+                <td>管理者ポータルのRADIUS基本情報で確認した値を記入する。</td>
+              </tr>
+              <tr>
+                <td>共有シークレット</td>
+                <td></td>
+                <td>VPN装置側とSingleID側で同じ値を設定する。</td>
+              </tr>
+              <tr>
+                <td>VPNアクセス > 2要素認証（OTP）のみ許可</td>
+                <td>□ 有効　□ 無効</td>
+                <td>有効にすると、2要素認証（OTP）以外の認証方式を拒否する。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 class="guide-companion__subheading">VPN用サイトの識別値</h3>
+          <table class="guide-companion__table guide-companion__table--identifier-list">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>識別方式</th>
+                <th>識別値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>2</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>3</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>4</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>5</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="guide-companion__subheading">VPN用サイトの許可ルール</h3>
+          <table class="guide-companion__table guide-companion__table--rule-list">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>種別</th>
+                <th>対象</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>2</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>3</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>4</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>5</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>6</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>7</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>8</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>9</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+              <tr><td>10</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>8. RADIUSサーバ / RADIUSサイト設定（無線LAN用）</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>サイト名</td>
+                <td></td>
+                <td>APまたは無線LANコントローラからの認証要求を識別するサイトとして登録する。</td>
+              </tr>
+              <tr>
+                <td>RADIUS種別</td>
+                <td>□ 拡張RADIUS　□ 標準RADIUS</td>
+                <td>識別属性を利用できる場合は拡張RADIUSを基本に検討する。</td>
+              </tr>
+              <tr>
+                <td>サーバ番号 / 認証ポート</td>
+                <td></td>
+                <td>管理者ポータルのRADIUS基本情報で確認した値を記入する。</td>
+              </tr>
+              <tr>
+                <td>共有シークレット</td>
+                <td></td>
+                <td>無線AP側とSingleID側で同じ値を設定する。</td>
+              </tr>
+              <tr>
+                <td>無線アクセス > 証明書認証（EAP-TLS）のみ許可</td>
+                <td>□ 有効　□ 無効</td>
+                <td>有効にすると、クライアント証明書認証以外の認証方式を拒否する。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 class="guide-companion__subheading">無線LAN用サイトの識別値</h3>
+          <table class="guide-companion__table guide-companion__table--identifier-list">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>識別方式</th>
+                <th>識別値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>2</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>3</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>4</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+              <tr><td>5</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="guide-companion__subheading">無線LAN用サイトの許可ルール</h3>
+          <table class="guide-companion__table guide-companion__table--rule-list">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>種別</th>
+                <th>対象</th>
+                <th>VLAN ID</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>2</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>3</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>4</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>5</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>6</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>7</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>8</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>9</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+              <tr><td>10</td><td>□ ユーザ　□ グループ　□ MAB</td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+          <p class="a4-training-overview__note">VLAN IDは、無線APがRADIUS応答によるVLAN割り当てに対応している場合に、許可ルールごとに設定する。</p>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>9. 証明書設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>証明書用途</td>
+                <td>□ クライアント証明書　□ SCEP証明書　□ サーバ証明書</td>
+                <td>VPN、無線LAN、端末配布、機器側用途を分ける。</td>
+              </tr>
+              <tr>
+                <td>有効期限</td>
+                <td>デフォルト10年</td>
+                <td>変更する場合は設定値を記入する。</td>
+              </tr>
+              <tr>
+                <td>配布方式</td>
+                <td>□ メール　□ 管理者導入　□ Windows自動構成　□ Intune SCEP</td>
+                <td>同一証明書を複数デバイスへ入れさせない要件がある場合は方式を慎重に選ぶ。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>10. SCEP設定</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>設定項目</th>
+                <th>設定値</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SCEP利用</td>
+                <td>□ 利用する　□ 利用しない</td>
+                <td>Microsoft IntuneでSCEP証明書を配布する場合に記入する。</td>
+              </tr>
+              <tr>
+                <td>SingleIDアカウント番号</td>
+                <td></td>
+                <td>SingleID SCEPサーバのエンドポイント作成時に必要になる。</td>
+              </tr>
+              <tr>
+                <td>Microsoft Entra ID アプリ名</td>
+                <td></td>
+                <td>Azureポータルで登録するアプリ名を記入する。</td>
+              </tr>
+              <tr>
+                <td>アプリケーション（クライアント）ID</td>
+                <td></td>
+                <td>Entra IDアプリ登録後に取得する。</td>
+              </tr>
+              <tr>
+                <td>ディレクトリ（テナント）ID</td>
+                <td></td>
+                <td>Entra IDアプリ登録後に取得する。</td>
+              </tr>
+              <tr>
+                <td>クライアントシークレット値</td>
+                <td></td>
+                <td>作成後に表示される値を記入する。</td>
+              </tr>
+              <tr>
+                <td>クライアントシークレット有効期限</td>
+                <td>□ 24か月　□ その他: ______</td>
+                <td>有効期限切れ前に更新が必要になる。</td>
+              </tr>
+              <tr>
+                <td>APIアクセス許可</td>
+                <td>□ Application.Read.All　□ scep_challenge_provider</td>
+                <td>管理者の同意まで完了させる。</td>
+              </tr>
+              <tr>
+                <td>対象プラットフォーム</td>
+                <td>□ Windows 10以降　□ Mac　□ Android　□ iOS / iPadOS</td>
+                <td>Intune構成プロファイルを作成する対象を記入する。</td>
+              </tr>
+              <tr>
+                <td>構成プロファイル名</td>
+                <td></td>
+                <td>Intune側で作成するSCEP証明書プロファイル名を記入する。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <footer class="a4-training-overview__footer">
+          <p>このシートはサンプルであり、製品仕様の正本ではない。実際の設定値はSingleID公式ドキュメント、機器別設定ガイド、利用環境の前提に合わせて記入する。</p>
+        </footer>
+      </section>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

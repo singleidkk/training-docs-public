@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SingleID設定情報シート記入例 | FortiGate VPN / 10名規模 / 法律事務所</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/layout.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/print.css" media="print">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="back-link" href="index.html">← ケーストップへ戻る</a>
+      <p class="eyebrow">Case Study / SingleID Settings Sheet Example</p>
+      <h1>SingleID設定情報シート記入例</h1>
+      <p class="lead">SingleID設定情報シートの項目に、FortiGate VPN 10名構成のサンプル値を赤字で記入した例です。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>記入時の前提</h2>
+      <div class="case-panel">
+        <ul class="doc-list">
+          <li>赤字は、このケースで記入したサンプル値です。</li>
+          <li>共有シークレットやメールアドレスはサンプル値です。実案件では実際の発行値・管理値を記入します。</li>
+          <li>このケースは本番環境へ直接設定する前提の記入例です。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>1. 環境・管理者設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>設定対象環境</td><td><span class="case-filled">本番環境</span></td><td>本番環境へ直接設定する。</td></tr>
+            <tr><td>テナント / アカウント名</td><td><span class="case-filled">FortiGate VPN本番用</span></td><td>SingleID管理者ポータルで設定対象を取り違えないための表示名として扱う。</td></tr>
+            <tr><td>管理者メールアドレス</td><td><span class="case-filled">admin@example.invalid</span></td><td>管理者登録と初期ログインに使う。</td></tr>
+            <tr><td>設定作業者</td><td><span class="case-filled">販売店SE</span></td><td>SingleID 管理者ポータルで設定作業を行う担当者を記入する。</td></tr>
+            <tr><td>設定作業日 / 反映希望日</td><td><span class="case-filled">設定作業日: 2026-07-01　反映希望日: 2026-07-05</span></td><td>設定実施日と利用開始に向けた反映希望日を記入する。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>2. ユーザ設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>登録方式</td><td>□ 個別登録　□ CSV一括登録<br><span class="case-filled">☑ CSV一括登録</span></td><td>10名分のユーザリストを使って登録する。</td></tr>
+            <tr><td>登録対象ユーザリスト</td><td>□ このシートに記入　□ CSV別紙で提出<br><span class="case-filled">☑ このシートに記入</span></td><td>ユーザ名、メールアドレス、姓、名、所属グループを記入する。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>3. 管理 > 詳細設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ユーザ > ログイン状態の保存</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 有効</span></td><td>デフォルトは有効。ログイン画面の保存チェックボックスに関係する。</td></tr>
+            <tr><td>ユーザ > パスワードリセットをユーザに許可</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 有効</span></td><td>デフォルトは有効。ユーザ自身によるパスワードリセットを許可する。</td></tr>
+            <tr><td>ユーザ > 登録時にメール通知</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 有効</span></td><td>デフォルトは有効。ユーザ登録時の通知メール送信を制御する。</td></tr>
+            <tr><td>証明書 > ユーザ登録時に発行</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 無効</span></td><td><span class="case-filled">証明書は対象ユーザ登録後に発行する。</span></td></tr>
+            <tr><td>証明書 > 発行時にメール通知</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 有効</span></td><td><span class="case-filled">利用者がWindows自動構成を実行できるように、証明書発行通知を送信する。</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="case-subheading">パスワードポリシー</h3>
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>ポリシーレベル</td><td>□ なし　□ 弱い　□ 標準　□ 強い　□ カスタム<br><span class="case-filled">☑ 標準</span></td><td>画面上のスライダーで選択する。</td></tr>
+            <tr><td>有効期限</td><td>_____ 日<br><span class="case-filled">0 日</span></td><td>0の場合は期限なしとして扱う。</td></tr>
+            <tr><td>パスワードの長さ</td><td>_____ 文字以上<br><span class="case-filled">8 文字以上</span></td><td></td></tr>
+            <tr><td>特殊文字</td><td>_____ 文字以上<br><span class="case-filled">0 文字以上</span></td><td></td></tr>
+            <tr><td>大文字</td><td>_____ 文字以上<br><span class="case-filled">1 文字以上</span></td><td></td></tr>
+            <tr><td>小文字</td><td>_____ 文字以上<br><span class="case-filled">1 文字以上</span></td><td></td></tr>
+            <tr><td>数字</td><td>_____ 文字以上<br><span class="case-filled">1 文字以上</span></td><td></td></tr>
+            <tr><td>ユーザ名を含まない</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 有効</span></td><td>ユーザ名を含むパスワードを許可しない。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>4. ユーザ登録リスト</h2>
+      <div class="case-panel">
+        <p>手動登録またはCSV一括登録で登録するユーザを記入する。10名を超える場合は、同じ項目のCSV別紙で提出する。ユーザのパスワード設定・更新案内はメールで送信する前提とする。</p>
+        <table class="case-table case-table--user-list">
+          <colgroup>
+            <col class="case-table__col-no">
+            <col class="case-table__col-username">
+            <col class="case-table__col-email">
+            <col class="case-table__col-name-part">
+            <col class="case-table__col-name-part">
+            <col class="case-table__col-group">
+          </colgroup>
+          <thead>
+            <tr><th>No.</th><th>ユーザ名</th><th>メールアドレス</th><th>姓</th><th>名</th><th>所属グループ / 備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td><span class="case-filled">user01</span></td><td><span class="case-filled">user01@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">01</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>2</td><td><span class="case-filled">user02</span></td><td><span class="case-filled">user02@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">02</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>3</td><td><span class="case-filled">user03</span></td><td><span class="case-filled">user03@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">03</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>4</td><td><span class="case-filled">user04</span></td><td><span class="case-filled">user04@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">04</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>5</td><td><span class="case-filled">user05</span></td><td><span class="case-filled">user05@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">05</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>6</td><td><span class="case-filled">user06</span></td><td><span class="case-filled">user06@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">06</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>7</td><td><span class="case-filled">user07</span></td><td><span class="case-filled">user07@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">07</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>8</td><td><span class="case-filled">user08</span></td><td><span class="case-filled">user08@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">08</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>9</td><td><span class="case-filled">user09</span></td><td><span class="case-filled">user09@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">09</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+            <tr><td>10</td><td><span class="case-filled">user10</span></td><td><span class="case-filled">user10@example.invalid</span></td><td><span class="case-filled">User</span></td><td><span class="case-filled">10</span></td><td><span class="case-filled">remote-access-users</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>5. グループ設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>グループ名</th><th>用途</th><th>メンバー登録方法 / 備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="case-filled">remote-access-users</span></td><td><span class="case-filled">VPN接続を許可するユーザ</span></td><td>□ 手動　□ CSV　□ その他<br><span class="case-filled">☑ CSV</span><br>初期状態で用意されているVPN用グループを使い、CSV登録時に所属させる。</td></tr>
+            <tr><td><span class="case-muted">なし</span></td><td><span class="case-muted">無線LANは対象外</span></td><td><span class="case-muted">未使用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>6. RADIUSサーバ / RADIUSサイト設定（VPN用）</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>サイト名</td><td><span class="case-filled">vpn-fortigate-law-office</span></td><td>VPN装置からの認証要求を識別するサイトとして登録する。</td></tr>
+            <tr><td>RADIUS種別</td><td>□ 拡張RADIUS　□ 標準RADIUS<br><span class="case-filled">☑ 拡張RADIUS</span></td><td>FortiGateから送信するNAS-IdentifierでVPNサイトを識別するため、拡張RADIUSを使う。</td></tr>
+            <tr><td>サーバ番号 / 認証ポート</td><td><span class="case-filled">拡張RADIUS専用ポート: 2xxxx</span></td><td>SingleID 管理者ポータル > 認証 > RADIUS > 基本情報に表示された拡張RADIUS専用ポートを記入する。</td></tr>
+            <tr><td>共有シークレット</td><td><span class="case-filled">sample-radius-secret-01</span></td><td>VPN装置側とSingleID側で同じ値を設定する。</td></tr>
+            <tr><td>VPNアクセス > 2要素認証（OTP）のみ許可</td><td>□ 有効　□ 無効<br><span class="case-filled">☑ 無効</span></td><td>OTPは使わない。SingleID側はパスワード認証とグループ許可を行う。</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="case-subheading">VPN用サイトの識別値</h3>
+        <table class="case-table case-table--identifier-list">
+          <thead>
+            <tr><th>No.</th><th>識別方式</th><th>識別値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier<br><span class="case-filled">☑ NAS-Identifier</span></td><td><span class="case-filled">fg-vpn-law-office</span></td><td><span class="case-filled">FortiGateのホスト名をこの値に設定し、RADIUS要求のNAS-Identifierとして送信させる。</span></td></tr>
+            <tr><td>2</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+            <tr><td>3</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+            <tr><td>4</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+            <tr><td>5</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="case-subheading">VPN用サイトの許可ルール</h3>
+        <table class="case-table">
+          <thead>
+            <tr><th>No.</th><th>種別</th><th>対象</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>□ ユーザ　□ グループ<br><span class="case-filled">☑ グループ</span></td><td><span class="case-filled">remote-access-users</span></td><td><span class="case-filled">SingleID側ではパスワード認証の許可対象としてVPN利用者グループを指定する。クライアント証明書の検証はFortiGate側で行う。</span></td></tr>
+            <tr><td>2</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>3</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>4</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>5</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>6</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>7</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>8</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>9</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+            <tr><td>10</td><td>□ ユーザ　□ グループ</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>7. RADIUSサーバ / RADIUSサイト設定（無線LAN用）</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>サイト名</td><td><span class="case-muted">未使用</span></td><td><span class="case-filled">このケースでは無線LAN認証を対象外にする。</span></td></tr>
+            <tr><td>RADIUS種別</td><td>□ 拡張RADIUS　□ 標準RADIUS</td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>共有シークレット</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>無線アクセス > 証明書認証（EAP-TLS）のみ許可</td><td>□ 有効　□ 無効</td><td><span class="case-muted">未使用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>8. 証明書設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>証明書用途</td><td>□ クライアント証明書　□ サーバ証明書<br><span class="case-filled">☑ クライアント証明書</span></td><td>10名分のWindows端末にインストールするクライアント証明書を発行する。FortiGateへ登録するサーバ証明書はFortiGate設定設計で扱う。</td></tr>
+            <tr><td>有効期限</td><td>デフォルト10年<br><span class="case-filled">デフォルト10年</span></td><td>変更しない。</td></tr>
+            <tr><td>配布方式</td><td>□ メール　□ 管理者導入　□ Windows自動構成<br><span class="case-filled">☑ Windows自動構成</span></td><td><span class="case-filled">利用者が端末で自動構成を実行する。インストール後はインストール日時が更新され、メモ欄にコンピュータ名が記録される。</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

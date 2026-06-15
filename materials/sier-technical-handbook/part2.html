@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Part 2: FortiGate 設定ガイド副読本</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--part2 guide-companion" aria-label="FortiGate 設定ガイド副読本">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+      <header class="a4-training-overview__title">
+        <p class="a4-training-overview__label">Part 2 / FortiGate Guide Companion</p>
+        <h1>FortiGate 設定ガイド副読本</h1>
+        <p class="a4-training-overview__subtitle">公開設定ガイドの各見出しについて、「何のための設定か」「どこと対応するか」「どの設定値やログで判定するか」を補足する。設定ガイドだけでは意図をつかみにくい場合の理解支援資料として使う。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <h2>この資料の使い方</h2>
+        <p>公開ガイドの画面操作を再掲せず、見出しごとに設定の意味を読む。実際の操作は公開ガイドを参照する。</p>
+        <p class="a4-training-overview__note">参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/</a></p>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>このガイドで作る認証構成</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>接続先</th>
+              <th>認証方式</th>
+              <th>SingleIDの役割</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>利用者はFortiClientからFortiGateへIKEv2 VPNで接続する。FortiGateはVPN装置であり、RADIUSクライアントでもある。</td>
+              <td>パスワード認証とクライアント証明書認証を併用する。ユーザ本人と端末・証明書の両方を判定する構成になる。</td>
+              <td>拡張RADIUSサーバとRADIUSサイトで、FortiGateからの認証要求を受け、許可ユーザ / グループを判定する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>先に満たす前提条件</h2>
+        <ul class="guide-companion__compact-list">
+          <li>ガイドはFortiGate v7.6.6およびFortiClient 7.4.3.4726（ライセンス版）で動作確認された内容を前提にしている。</li>
+          <li>IKEv2の自動トランスポートモードでTCPフォールバックを使う場合、FortiClientのバージョンとライセンス要件を満たす。</li>
+          <li>小規模構成では既存VPNをIKEv2 VPNへ変更または再設定する前提で、UDP 500、TCP 443、NATトラバーサル、管理GUIのポート、アドレスプール、ポリシーへの影響を洗い出す。</li>
+          <li>FortiGate設定バックアップを取得し、問題時にバックアップからリストアできる手順と作業時間帯を決めてから設定変更する。</li>
+        </ul>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">SingleID Side / Users And Certificates</p>
+        <h1>SingleID側で認証に使う対象を準備する</h1>
+        <p class="a4-training-overview__subtitle">最初のSingleID側設定は、VPNを許可するユーザ、グループ、クライアント証明書を準備する作業である。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 1</p>
+        <h2>SingleIDのグループの作成</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>管理者ポータル＞グループで、VPNアクセス用のグループを作成する。</td>
+              <td>あとでRADIUSサイトに「許可したいグループ」として登録し、誰をVPN認証で通すかを決めるため。</td>
+              <td>グループ名は用途が分かる名前にする。PoC用と本番用を混ぜると、許可範囲の説明や移行時の設定確認が難しくなる。</td>
+            </tr>
+            <tr>
+              <td>このグループに、VPN接続を許可したいユーザを所属させる前提で設計する。</td>
+              <td>ユーザ単位で許可するより、案件や運用単位で許可対象を管理しやすくするため。</td>
+              <td>誰がグループ追加・削除を運用するかを決める。運用責任が曖昧だと、退職・異動時にVPN許可が残りやすい。</td>
+            </tr>
+            <tr>
+              <td>グループはFortiGate側のユーザグループとは別物として扱う。</td>
+              <td>SingleID側のグループは認証許可条件、FortiGate側のグループはRADIUSサーバ参照用の設定で役割が違うため。</td>
+              <td>同じ名前にしても同一オブジェクトではない。SingleID側の許可グループとFortiGate側の参照グループを混同しない。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 2</p>
+        <h2>SingleIDのユーザの作成</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>管理者ポータル＞ユーザで、VPN検証に使うユーザを作成する。</td>
+              <td>FortiClientで入力されるユーザ名とパスワードをSingleIDで照合できるようにするため。</td>
+              <td>ユーザ名とメールアドレスは重複不可。命名規則を決めずに登録すると、SCIM連携や本番移行時に修正が発生しやすい。</td>
+            </tr>
+            <tr>
+              <td>基本情報を入力し、ユーザを有効な状態で登録する。</td>
+              <td>RADIUS認証では、ユーザが存在し有効であることが前提になるため。</td>
+              <td>ユーザ状態、パスワード設定、通知メールの扱いを事前に決める。不要な通知メールを送ると、利用者問い合わせが増えやすい。</td>
+            </tr>
+            <tr>
+              <td>グループタブで、先に作成したVPNアクセス用グループへ所属させる。</td>
+              <td>RADIUSサイトで許可グループとして判定できるようにするため。</td>
+              <td>所属グループが漏れると、ユーザ名とパスワードが正しくても許可条件で止まる。ユーザ作成とグループ所属はセットで扱う。</td>
+            </tr>
+            <tr>
+              <td>SCIM連携を使う環境では、手動登録と同期登録の使い分けを決める。</td>
+              <td>同じ利用者を複数の方法で管理すると、属性変更や無効化の運用が崩れやすいため。</td>
+              <td>このガイドのPoC手順は手動登録例。実案件ではEntra ID連携の有無を先に決め、手動登録と同期管理を混在させない。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">SingleID Side / Users And Certificates</p>
+        <h1>SingleID側で認証に使う対象を準備する（続き）</h1>
+        <p class="a4-training-overview__subtitle">クライアント証明書は、ユーザ本人の認証に端末・証明書の条件を加えるための準備である。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 3</p>
+        <h2>SingleIDのクライアント証明書の発行</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ユーザ一覧で対象ユーザを選択し、選択実行から証明書発行を実行する。</td>
+              <td>FortiGateがVPN接続時にクライアント証明書を検証し、端末・証明書を認証条件に含めるため。</td>
+              <td>誰の証明書を発行するかを間違えない。証明書はユーザだけでなく端末運用にも結びつくため、発行対象を記録する。</td>
+            </tr>
+            <tr>
+              <td>証明書プロファイルを選択する。</td>
+              <td>証明書の用途や発行条件を、SingleID側で定義されたプロファイルに従わせるため。</td>
+              <td>PoCでは例示プロファイルを使うことが多いが、本番では用途、期限、配布方式に合わせたプロファイル設計が必要になる。</td>
+            </tr>
+            <tr>
+              <td>配布形式を選択し、発行する。</td>
+              <td>利用者へダウンロードリンクを送る、または管理者が導入するなど、証明書配布の方法を決めるため。</td>
+              <td>メール配布では複数端末への導入を止めにくい。端末を限定したい案件では、管理者導入、自動構成、SCEPなどを検討する。</td>
+            </tr>
+            <tr>
+              <td>証明書発行後、利用者に届く通知とダウンロード手順まで案内対象に含める。</td>
+              <td>端末側の証明書インストール作業につなげるため。</td>
+              <td>通知メール、ダウンロードリンク有効期限、再送可能期間は事前説明に含める。案内不足は証明書導入時の問い合わせにつながる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">SingleID Side / Server Certificate And RADIUS</p>
+        <h1>SingleID側で証明書とRADIUS入口を準備する</h1>
+        <p class="a4-training-overview__subtitle">ここではFortiGateに渡す証明書類と、FortiGateが問い合わせる拡張RADIUSの入口を準備する。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 4</p>
+        <h2>SingleIDのサーバ証明書の発行とダウンロード</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>認証＞証明書＞証明書タブで、サーバ証明書を発行する。</td>
+              <td>FortiGateがVPN接続先として証明書を提示し、クライアント側から見た接続先の証明書になるため。</td>
+              <td>クライアントが接続するIPアドレスまたはFQDNに合わせる。接続先と証明書の識別情報がずれると端末側検証で問題になる。</td>
+            </tr>
+            <tr>
+              <td>サーバ名、サブジェクトの代替名、有効期間を設定する。</td>
+              <td>VPN接続先として提示する証明書の識別情報と期限を決めるため。</td>
+              <td>IPアドレスで接続する場合とFQDNで接続する場合で、代替名の設計を間違えない。将来FQDNへ変える予定も考慮する。</td>
+            </tr>
+            <tr>
+              <td>発行後、証明書を選択してP12形式のファイルをダウンロードする。</td>
+              <td>FortiGateへ秘密鍵付きのサーバ証明書としてインポートするため。</td>
+              <td>P12ファイルとパスワードは秘密鍵を含む前提で管理する。FortiGateへ渡すファイルと利用後の保管・削除方針を決める。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 5</p>
+        <h2>SingleIDの中間CA証明書のダウンロード</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>認証＞証明書＞基本情報タブで、中間CA証明書をダウンロードする。</td>
+              <td>FortiGateが、提示されたクライアント証明書がSingleIDの正しい中間CAで発行されたものかを判定するため。</td>
+              <td>FortiGateへ入れるのは中間CA証明書。ルートCAを入れると信頼範囲が広がりすぎる可能性がある。</td>
+            </tr>
+            <tr>
+              <td>中間CAの場所と、失効リスト配布ポイントを記録する。</td>
+              <td>FortiGate側では中間CA証明書とCRL URLの両方を使うため。</td>
+              <td>中間CA証明書とCRL URLはFortiGate側で別々に設定する。片方だけでは証明書検証と失効確認の両方は成立しない。</td>
+            </tr>
+            <tr>
+              <td>ルートCA証明書を誤ってダウンロード・配布しない。</td>
+              <td>FortiGateへルートCAを入れると、意図しない証明書の検証成功につながる可能性があるため。</td>
+              <td>ガイドの注意どおり、中間CAとルートCAを明確に区別する。証明書ファイル名だけで判断しない。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">SingleID Side / Server Certificate And RADIUS</p>
+        <h1>SingleID側でRADIUS入口を準備する</h1>
+        <p class="a4-training-overview__subtitle">拡張RADIUSサーバとRADIUSサイトを分けて理解する。サーバは接続入口、サイトは機器識別と許可条件の設定である。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 6</p>
+        <h2>SingleIDの拡張RADIUSサーバの登録</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>認証＞RADIUS＞基本設定で、拡張RADIUSサーバを登録する。</td>
+              <td>FortiGateからSingleIDへRADIUS認証要求を送れるようにするため。</td>
+              <td>この設定はRADIUSサイトではなく、FortiGateが接続するRADIUSサーバ側の入口を作る設定。サイト識別や許可条件とは分けて考える。</td>
+            </tr>
+            <tr>
+              <td>使用するプロトコルにUDPを選び、共有シークレットを設定する。</td>
+              <td>FortiGateとSingleIDのRADIUS通信で、同じ共有シークレットを使って通信を成立させるため。</td>
+              <td>共有シークレットはFortiGate側にも同じ値を入れる。複数人で扱う場合は、共有方法と変更手順を決める。</td>
+            </tr>
+            <tr>
+              <td>登録後に割り当てられるRADIUSポート番号を記録する。</td>
+              <td>拡張RADIUSでは、専用ポートへFortiGateから認証要求を送る必要があるため。</td>
+              <td>標準RADIUSのポートと混同しない。FortiGate側ではGUIだけでなくCLIの `radius-port` もこの値に合わせる。</td>
+            </tr>
+            <tr>
+              <td>プライマリ / セカンダリのRADIUS IPアドレスを記録する。</td>
+              <td>FortiGate側のRADIUSサーバ設定に、SingleIDの接続先として登録するため。</td>
+              <td>IP、ポート、共有シークレットの3点はセットで管理する。どれか1つでもずれるとRADIUS要求が成立しない。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 7</p>
+        <h2>SingleIDのRADIUSサイトの登録</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>SingleIDで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>認証＞RADIUS＞簡易設定で、FortiGate用カタログからRADIUSサイトを登録する。</td>
+              <td>認証要求がFortiGateから来たものだと識別し、その機器・用途に対する許可条件で判定するため。</td>
+              <td>RADIUSサイトは「どの機器・用途の要求か」と「誰を許可するか」をまとめる設定。サーバ設定だけでは許可条件は決まらない。</td>
+            </tr>
+            <tr>
+              <td>基本情報で、有効化、サーバ種別、サーバ番号を設定する。</td>
+              <td>このRADIUSサイトを有効にし、どの拡張RADIUSサーバ設定を使うか決めるため。</td>
+              <td>サーバは拡張、サーバ番号は拡張RADIUSサーバ登録で作成したものを選ぶ。別サーバ番号を選ぶとFortiGate側設定と対応しない。</td>
+            </tr>
+            <tr>
+              <td>サイト識別する属性にNAS-Identifierを選び、属性値を設定する。</td>
+              <td>FortiGateから送られるNAS-Identifierを使って、このRADIUSサイトに紐づけるため。</td>
+              <td>FortiGateのホスト名がNAS-Identifierとして送られるため、FortiGate側のホスト名と属性値を一致させる。変更時は両側を見直す。</td>
+            </tr>
+            <tr>
+              <td>VPNアクセスの認証タブで、許可したいユーザ / グループを許可へ移動する。</td>
+              <td>このFortiGate VPNで接続できるユーザ範囲をSingleID側で決めるため。</td>
+              <td>ユーザ単位とグループ単位のどちらで運用するかを決める。グループ運用の方が追加・削除の影響範囲を説明しやすい。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">FortiGate Side / Certificate Trust</p>
+        <h1>FortiGate側で証明書を検証できるようにする</h1>
+        <p class="a4-training-overview__subtitle">ここではFortiGateに「どのCAを信頼するか」「失効をどう判定するか」「VPN装置としてどの証明書を提示するか」を教える。証明書を入れる作業ではなく、証明書検証の前提を作る作業として読む。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 8</p>
+        <h2>FortiGateへ中間CA証明書を追加</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>FortiGateで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>証明書メニューが表示されていない場合は、表示機能設定で証明書を有効にする。</td>
+              <td>FortiGateでCA証明書、CRL、サーバ証明書を扱える画面を表示するため。</td>
+              <td>証明書メニューがない場合は、設定値が間違っているのではなく表示機能の問題を先に疑う。FortiGateの機能表示設定も確認対象にする。</td>
+            </tr>
+            <tr>
+              <td>作成/インポートからCA証明書を選び、SingleIDの中間CA証明書をファイルとして取り込む。</td>
+              <td>VPN接続時に端末が提示するクライアント証明書の発行元を、FortiGateが検証できるようにするため。</td>
+              <td>FortiGateに入れるのは中間CA証明書。SingleIDのルートCA証明書は入れない。信頼範囲を広げすぎない。</td>
+            </tr>
+            <tr>
+              <td>中間CA証明書を「信頼する発行元」としてFortiGateに保持させる。</td>
+              <td>証明書を持っている端末なら何でも通すのではなく、指定した中間CAで発行された証明書だけを検証対象にするため。</td>
+              <td>ルートCAを入れると、意図しない中間CA配下の証明書まで検証に成功する可能性があるため避ける。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 9</p>
+        <h2>FortiGateへ証明書失効リスト（CRL）の設定</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>FortiGateで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CRLをオンライン更新方式で追加し、SingleIDの中間CAの失効リスト配布ポイントURLを設定する。</td>
+              <td>退職、端末紛失、証明書再発行などで失効した証明書をVPN接続で使わせないため。</td>
+              <td>URLはSingleID 管理者ポータル＞認証＞証明書＞基本情報の中間CA側を使う。ルートCA側のURLと取り違えない。</td>
+            </tr>
+            <tr>
+              <td>FortiGate CLIでCRLの更新間隔を設定する。</td>
+              <td>FortiGateが古いCRLを見続けないようにし、失効情報を定期的に反映するため。</td>
+              <td>ガイドでは1時間ごとの更新例として `set update-interval 3600` を設定している。運用要件に応じて更新間隔を検討する。</td>
+            </tr>
+            <tr>
+              <td>FortiGateからCRL配布ポイントへ到達できるか疎通試験する。</td>
+              <td>CRLを登録しても、FortiGateがURLへ到達できなければ失効確認が機能しないため。</td>
+              <td>インターネット到達性、プロキシ、DNS、経路、FW制御を設計に含める。失効後の反映試験も運用に含める。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">FortiGate Side / Certificate Trust</p>
+        <h1>FortiGateへサーバ証明書を追加する</h1>
+        <p class="a4-training-overview__subtitle">中間CAとCRLでクライアント証明書を検証できるようにした後、FortiGate自身がVPN接続先として提示するサーバ証明書を登録する。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 10</p>
+        <h2>FortiGateへサーバ証明書を追加</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>FortiGateで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SingleIDからダウンロードしたZIPを展開し、P12形式のサーバ証明書をFortiGateへインポートする。</td>
+              <td>FortiGateがVPN接続先として証明書を提示し、IKEv2 VPNの認証設定で参照できるようにするため。</td>
+              <td>タイプはPKCS12証明書。P12ファイル、パスワード、証明書名を管理し、VPN設定で参照する名前を決める。</td>
+            </tr>
+            <tr>
+              <td>サーバ証明書のパスワードを入力して登録する。</td>
+              <td>P12には秘密鍵も含まれるため、インポート時にパスワードが必要になる。</td>
+              <td>ガイドでは証明書ファイル名から拡張子を除いた部分がパスワードとして説明されている。ファイル名変更時は混乱しやすい。</td>
+            </tr>
+            <tr>
+              <td>登録したサーバ証明書を、後続のVPN設定で選択できる状態にする。</td>
+              <td>VPNウィザードの証明書名で、FortiGateが提示する証明書を指定するため。</td>
+              <td>VPN設定で別の証明書を選ばないよう、証明書名とVPN接続先のIP / FQDNの対応を設計時に記録する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">FortiGate Side / RADIUS</p>
+        <h1>FortiGate側でRADIUS問い合わせ先を作る</h1>
+        <p class="a4-training-overview__subtitle">RADIUSサーバ定義とユーザグループは、FortiGateがSingleIDへ認証要求を送るための入口設定である。VPNトンネル設定とは分けて、まず「どこへ問い合わせるか」を理解する。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 11</p>
+        <h2>FortiGateのRADIUSサーバの設定</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>FortiGateで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ユーザ＆認証＞RADIUSサーバで、新しいRADIUSサーバ定義を作成する。</td>
+              <td>VPN接続時に、FortiGateがSingleIDへAccess-Requestを送る宛先を登録するため。</td>
+              <td>名前はFortiGate内で参照するための名前。後続のユーザグループ設定で選択するため、用途が分かる名前にする。</td>
+            </tr>
+            <tr>
+              <td>プライマリ / セカンダリサーバのIPと共有シークレットを入力する。</td>
+              <td>FortiGateがSingleIDのRADIUSサーバへ到達し、共有シークレットでRADIUS通信を成立させるため。</td>
+              <td>IPはSingleID 管理者ポータル＞認証＞RADIUS＞基本情報の拡張RADIUSサーバの値を使う。シークレットは拡張RADIUSサーバ登録時の値と一致させる。</td>
+            </tr>
+            <tr>
+              <td>FortiGateのホスト名を、SingleIDのRADIUSサイト属性値と一致させる。</td>
+              <td>FortiGateはホスト名をNAS-Identifierとして送るため、SingleID側がどのRADIUSサイトの要求か識別できるようにするため。</td>
+              <td>SingleID側のRADIUSサイトで設定した属性値とFortiGateのホスト名を揃える。ホスト名変更時はRADIUSサイトも見直す。</td>
+            </tr>
+            <tr>
+              <td>CLIでRADIUS認証の通信ポート番号を、拡張RADIUSサーバの専用ポートへ変更する。</td>
+              <td>拡張RADIUSでは顧客専用に割り当てられたポートへ送る必要があるため。</td>
+              <td>GUIでIPとシークレットを入れただけでは不十分。拡張RADIUSでは `set radius-port` の設定漏れが起きやすい。</td>
+            </tr>
+            <tr>
+              <td>接続テストでFortiGateからSingleIDのRADIUS IP / ポートへ到達できるか疎通試験する。</td>
+              <td>認証以前に、通信経路、宛先、ポート、共有シークレットの問題を切り分けるため。</td>
+              <td>接続テストは成功するが、ユーザクレデンシャルテストは失敗しても問題ない。到達性確認とユーザ認証確認を混同しない。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 12</p>
+        <h2>FortiGateのユーザグループの設定</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>FortiGateで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ユーザ＆認証＞ユーザグループで、ファイアウォールタイプのユーザグループを作成する。</td>
+              <td>VPN設定で「このRADIUSサーバを使って認証する利用者のまとまり」を指定できるようにするため。</td>
+              <td>ここで作るグループはFortiGate内の参照用グループ。SingleID側の許可グループそのものではない。</td>
+            </tr>
+            <tr>
+              <td>リモートグループに、先ほど作成したRADIUSサーバを追加する。</td>
+              <td>FortiGateのユーザグループとSingleIDへのRADIUS問い合わせ先を結びつけるため。</td>
+              <td>リモートサーバはRADIUSサーバ設定で付けた名前を選択する。RADIUSサーバ名を変えた場合は参照先も見直す。</td>
+            </tr>
+            <tr>
+              <td>VPN設定でこのユーザグループを選択できる状態にする。</td>
+              <td>VPN接続時に、FortiGateがどの認証方式 / RADIUSサーバを使うか判断できるようにするため。</td>
+              <td>SingleID側の許可ユーザ / 許可グループはRADIUSサイトで判定する。FortiGate側はRADIUS問い合わせ先との紐づけとして理解する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">FortiGate Side / VPN Tunnel</p>
+        <h1>FortiGate側でVPNトンネルと追加CLI設定を仕上げる</h1>
+        <p class="a4-training-overview__subtitle">VPN設定では、FortiClientが接続するトンネル、証明書認証、EAP認証、アドレス割り当て、UDP / TCPポートをまとめる。ウィザードで作る部分とCLIで補正する部分を分けて読む。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 13</p>
+        <h2>FortiGateのVPNの設定</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>FortiGateで行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>VPNウィザードでリモートアクセスVPNを作成し、FortiClient、IKEv2、自動トランスポートを選択する。</td>
+              <td>FortiClientから接続するIKEv2 VPNトンネルの基本形を作るため。</td>
+              <td>利用するFortiClientのバージョン、UDP / TCPフォールバック、ライセンス要件を前提条件として先に決める。</td>
+            </tr>
+            <tr>
+              <td>トランスポート、自動モード、Fortinetカプセル化、NATトラバーサルを設定する。</td>
+              <td>FortiClientとのIKEv2接続で、UDPまたはTCPのどちらで接続するか、NAT越えをどう扱うかを決めるため。</td>
+              <td>FortiGate側とFortiClient側のトランスポート設定を揃える。ガイドではFortinetカプセル化を無効、NATトラバーサルを有効にする。</td>
+            </tr>
+            <tr>
+              <td>認証方式にシグネチャを選び、サーバ証明書とPeer certificate CAを指定する。</td>
+              <td>FortiGateがサーバ証明書を提示し、端末側のクライアント証明書を中間CAで検証するため。</td>
+              <td>証明書名はFortiGateへ追加したサーバ証明書、Peer certificate CAは追加した中間CA証明書を選ぶ。取り違えると証明書認証で止まる。</td>
+            </tr>
+            <tr>
+              <td>EAPピア識別とユーザ認証方法で、FortiGate側ユーザグループを指定する。</td>
+              <td>証明書認証に加えて、ユーザ名 / パスワードをRADIUSで照合するため。</td>
+              <td>ユーザ認証方法では、FortiGateのユーザグループ設定で作成したグループを選択する。SingleID側グループ名とは別に考える。</td>
+            </tr>
+            <tr>
+              <td>VPNクライアントへ割り当てるIPアドレス範囲、WAN側インターフェース、LAN側インターフェース、ローカルアドレスを設定する。</td>
+              <td>認証後に、VPNクライアントへどのアドレスを払い出し、どのネットワークへ到達させるかを決めるため。</td>
+              <td>既存VPN設定を変更する範囲、既存アドレスプール、LAN側セグメント、FWポリシーへの影響を事前に洗い出す。作業前にFortiGate設定バックアップを取得する。</td>
+            </tr>
+            <tr>
+              <td>CLIで `eap-cert-auth` を有効にする。</td>
+              <td>IKEv2でクライアント証明書認証とEAP認証を併用するため。</td>
+              <td>このガイドのFortiGate v7.6.6前提では、ウィザード作成後に `disable` のためCLIで `enable` へ変更する。設定漏れは証明書+EAP併用の失敗につながる。</td>
+            </tr>
+            <tr>
+              <td>UDP 500 / TCP 443と管理GUIポートの利用状況を見て、必要なら管理ポートを変更する。</td>
+              <td>自動トランスポートでTCPフォールバックを使う場合、IKE用TCP 443と管理GUIなどが競合する可能性があるため。</td>
+              <td>管理GUI、ZTNA、Agentless VPNなど、FortiGateで既に使っている受信ポートへの影響を洗い出す。ポート変更は管理アクセス断のリスクも含めて作業計画に入れる。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">Client Side / Verification</p>
+        <h1>端末側で証明書と接続先を準備する</h1>
+        <p class="a4-training-overview__subtitle">動作確認の見出しは、設定済みのSingleIDとFortiGateへ端末から接続するための準備を示している。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 14</p>
+        <h2>クライアント証明書のダウンロード</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>端末側で行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>証明書発行通知メールを開き、ダウンロードリンクからP12形式のクライアント証明書を取得する。</td>
+              <td>FortiClientで接続するときに、端末が提示するクライアント証明書を準備するため。</td>
+              <td>誰が証明書を取得するか、どの端末に入れるかを運用で決める。証明書配布は端末管理方針と合わせる。</td>
+            </tr>
+            <tr>
+              <td>メールを受信した端末と、証明書をインストールする端末を一致させる。</td>
+              <td>証明書を意図した端末に導入するため。</td>
+              <td>メール転送やQRコード利用で別端末へ導入できる場合がある。複数端末への導入を許容するか設計時に決める。</td>
+            </tr>
+            <tr>
+              <td>ダウンロードしたP12ファイルを保管し、インストール作業へ進める。</td>
+              <td>FortiClientで選択できる証明書としてWindowsへ取り込むため。</td>
+              <td>P12ファイルは秘密鍵を含む。扱い、削除、再ダウンロードの運用を決める。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 15</p>
+        <h2>クライアント証明書のインストール</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>端末側で行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>P12ファイルを開き、Windowsの証明書インポートウィザードを開始する。</td>
+              <td>クライアント証明書をOSの証明書ストアへ取り込むため。</td>
+              <td>作業するWindowsユーザと実際にVPN接続するユーザを一致させる。別ユーザに入れるとFortiClientで選べない場合がある。</td>
+            </tr>
+            <tr>
+              <td>保存場所として「現在のユーザー」を選択する。</td>
+              <td>FortiClientが、そのユーザの証明書として選択できるようにするため。</td>
+              <td>ローカルコンピュータ側へ入れる運用と混同しない。端末管理方針に合わせる。</td>
+            </tr>
+            <tr>
+              <td>クライアント証明書のパスワードを入力する。</td>
+              <td>P12内の秘密鍵付き証明書をWindowsへ取り込むため。</td>
+              <td>ガイドではクライアント証明書のパスワードをユーザ名と同一として説明している。入力ミス時はインポートに失敗する。</td>
+            </tr>
+            <tr>
+              <td>証明書ストアを自動選択し、インストール完了状態を記録する。</td>
+              <td>FortiClientの接続設定で、証明書一覧から選べる状態にするため。</td>
+              <td>端末標準化がないと、保存場所や証明書選択で問い合わせが増えやすい。手順を標準化する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">Client Side / Verification</p>
+        <h1>端末側で接続先を設定しVPN接続を試験する</h1>
+        <p class="a4-training-overview__subtitle">証明書を入れた後、FortiClientの接続先設定とVPN接続試験へ進む。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 16-17</p>
+        <h2>リモートアクセスクライアントのインストール / 接続先の設定</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>端末側で行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>FortiClientをインストールする。</td>
+              <td>端末からFortiGateへリモートアクセスVPN接続を開始するため。</td>
+              <td>ガイドの前提どおり、TCPフォールバックを扱う場合はFortiClientのバージョンとライセンス要件を事前条件に含める。</td>
+            </tr>
+            <tr>
+              <td>新規VPN接続を作成し、VPN種別、接続名、リモートGWを設定する。</td>
+              <td>どのFortiGateへ接続するかをFortiClientに登録するため。</td>
+              <td>リモートGWはFortiGateの接続先IPアドレスまたはFQDN。サーバ証明書の識別情報とも対応させる。</td>
+            </tr>
+            <tr>
+              <td>認証方法にX.509証明書を選び、インストール済みのクライアント証明書を選択する。</td>
+              <td>端末側からクライアント証明書を提示できるようにするため。</td>
+              <td>証明書一覧に出ない場合は、インストール先、Windowsユーザ、証明書ストアの設計・手順を見直す。</td>
+            </tr>
+            <tr>
+              <td>認証（EAP）でユーザ名入力を選択する。</td>
+              <td>証明書認証に加えて、ユーザ名 / パスワード認証を行うため。</td>
+              <td>SingleIDのユーザ名とパスワードを入力する。証明書だけで通す構成ではないことを利用者手順にも反映する。</td>
+            </tr>
+            <tr>
+              <td>IKEv2、アドレス割り当て、Encapsulation Auto、UDP 500、TCP 443を設定する。</td>
+              <td>FortiGate側のVPNトンネル設定とFortiClient側の接続設定を一致させるため。</td>
+              <td>FortiGate側のフェーズ1/2、接続先、証明書、UDP 500、TCP 443の設定と照合する。端末側だけを直しても解決しない場合がある。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">Connection Test / Troubleshooting</p>
+        <h1>VPN接続は合格条件を決めて試験する</h1>
+        <p class="a4-training-overview__subtitle">最後の接続試験では、接続できたかだけで終わらせない。端末、FortiGate、SingleIDのどの設定が成立したかをログと接続状態で判定する。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <p class="guide-companion__meta">設定ガイド見出し 18</p>
+        <h2>VPN接続</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>試験で行うこと</th>
+              <th>何のためか</th>
+              <th>設計上の注意</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>FortiClientでVPN名称を選択し、ユーザ名、パスワード、クライアント証明書を指定して接続する。</td>
+              <td>端末、FortiGate、SingleIDの設定を一連の接続で通すため。</td>
+              <td>ユーザ名はSingleIDで許可したユーザ。証明書はインストールしたクライアント証明書を選ぶ。別ユーザの証明書を選ばない。</td>
+            </tr>
+            <tr>
+              <td>ログイン成功を合格条件にする。</td>
+              <td>RADIUS認証、証明書検証、FortiGate側VPN制御が成立したことを判定するため。</td>
+              <td>成功時も、SingleID側、FortiGate側、端末側のどの設定が効いたかを記録する。再現性のある試験手順にする。</td>
+            </tr>
+            <tr>
+              <td>SingleIDのRADIUS認証ログで結果を記録する。</td>
+              <td>認証要求がSingleIDへ届き、Access-Accept / Access-Rejectのどちらになったかを判定するため。</td>
+              <td>ログがない場合は、FortiGateからSingleIDへ認証要求が届いていない。ログ表示までの待ち時間も試験手順に含める。</td>
+            </tr>
+            <tr>
+              <td>FortiGate CLIでVPNセッションの状態を記録する。</td>
+              <td>VPNセッションが成立し、UDPまたはTCPのどちらで接続されたかを判定するため。</td>
+              <td>ガイドでは `diagnose vpn ike gateway list` で `transport` を取得する。UDP / TCPどちらで成立したかを試験結果に残す。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      </section>
+
+      <section class="portrait-page">
+      <header class="a4-training-overview__title a4-training-overview__title--chapter">
+        <p class="a4-training-overview__label">Connection Test / Troubleshooting</p>
+        <h1>失敗時は止まった段階を特定する</h1>
+        <p class="a4-training-overview__subtitle">認証要求の到達、サイト識別、証明書検証、FortiGate側の接続制御を分けて、次に調べる設定とログを決める。</p>
+      </header>
+
+      <section class="a4-training-overview__panel">
+        <h2>失敗時の切り分け</h2>
+        <table class="guide-companion__table">
+          <thead>
+            <tr>
+              <th>段階</th>
+              <th>調査対象</th>
+              <th>次に行う作業</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>RADIUSに届かない</td>
+              <td>FortiGateのRADIUSサーバ設定、経路、FW、ACL</td>
+              <td>SingleIDのRADIUS IP、専用ポート、UDP到達性、戻り経路を調べる。</td>
+            </tr>
+            <tr>
+              <td>RADIUS接続テストで失敗する</td>
+              <td>FortiGateのRADIUSサーバ設定</td>
+              <td>IP、専用ポート、共有シークレット、RADIUSポートCLI設定、FortiGateからの経路を照合する。</td>
+            </tr>
+            <tr>
+              <td>サイト識別で止まる</td>
+              <td>SingleID RADIUSサイト、FortiGateホスト名</td>
+              <td>FortiGateが送るNAS-Identifierと、RADIUSサイトの属性値を一致させる。</td>
+            </tr>
+            <tr>
+              <td>証明書で止まる</td>
+              <td>FortiGateの中間CA、CRL、サーバ証明書、端末のクライアント証明書</td>
+              <td>中間CAの登録、CRL到達性、端末のクライアント証明書インストール先を調べる。</td>
+            </tr>
+            <tr>
+              <td>認証後に接続できない</td>
+              <td>FortiGate VPN、ユーザグループ、ファイアウォールポリシー</td>
+              <td>Access-Accept後のVPNグループ一致、アドレスプール、ファイアウォールポリシーを調べる。</td>
+            </tr>
+            <tr>
+              <td>TCPフォールバックでつながらない</td>
+              <td>FortiGate / FortiClientのトランスポート設定、TCP 443、管理GUIポート</td>
+              <td>FortiGate側とFortiClient側のトランスポート設定、TCP 443の利用状況、ライセンス版FortiClientの前提を照合する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>このパートの読み終わりで説明できること</h2>
+        <ul class="guide-companion__compact-list">
+          <li>SingleID側で作った値が、FortiGate側のどの設定へ渡るか説明できる。</li>
+          <li>クライアント証明書、サーバ証明書、中間CA、CRLの役割を分けて説明できる。</li>
+          <li>認証失敗時に、到達、サイト識別、認証情報、証明書、FortiGate側ポリシーを分けて確認できる。</li>
+        </ul>
+      </section>
+      </section>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

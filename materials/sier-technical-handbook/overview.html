@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>トレーニング概要 | SingleID 技術説明ハンドブック</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--overview a4-training-overview" aria-label="SingleID 技術説明ハンドブック トレーニング概要">
+    <article class="portrait-page a4-training-overview__content">
+      <header class="a4-training-overview__title">
+        <p class="a4-training-overview__label">Training Overview</p>
+        <h1>SingleID 技術説明ハンドブック</h1>
+        <p class="a4-training-overview__subtitle">SIer / 販売パートナー向け トレーニング概要</p>
+      </header>
+
+      <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+        <h2>目的</h2>
+        <p>SingleID、クラウドRADIUS、PKI、ネットワーク機器連携の理解を平準化し、提案・検証・設計・構築・見積もりで使える技術判断の土台を作る。</p>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>対象</h2>
+        <p>SIer / 販売パートナーの設計・構築エンジニア、PoC検証担当、顧客向け提案や工数見積もりを行うSE。</p>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>実施方針</h2>
+        <ul>
+          <li>オンライン画面共有による技術説明として実施する</li>
+          <li>ハンズオン再実施ではなく、設定ガイドの読み解きを中心にする</li>
+          <li>FortiGateは詳細に扱い、YAMAHA RTXとBuffalo AirStation Proは連携概要に留める</li>
+        </ul>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>内容</h2>
+        <table class="a4-training-overview__schedule">
+          <tbody>
+            <tr>
+              <th>導入</th>
+              <td>5分</td>
+              <td>本日のゴール共有</td>
+            </tr>
+            <tr>
+              <th>第1部</th>
+              <td>70分</td>
+              <td>基本アーキテクチャ、ID管理、RADIUS、PKI / 証明書、認証フロー、トラブルシューティング、運用管理、可用性、機器連携</td>
+            </tr>
+            <tr>
+              <th>休憩</th>
+              <td>10分</td>
+              <td>休憩</td>
+            </tr>
+            <tr>
+              <th>第2部</th>
+              <td>50分</td>
+              <td>FortiGate連携 IKEv2 拡張RADIUSの設定ガイドを使い、SingleID側設定、FortiGate側設定、接続確認、ログ確認の要点を確認</td>
+            </tr>
+            <tr>
+              <th>休憩</th>
+              <td>10分</td>
+              <td>休憩</td>
+            </tr>
+            <tr>
+              <th>第3部</th>
+              <td>15分</td>
+              <td>構築見積もり・設計観点、リモートアクセスVPN / 無線LAN接続の作業範囲と工数影響要素</td>
+            </tr>
+            <tr>
+              <th>第4部</th>
+              <td>15分</td>
+              <td>FAQ・質疑応答、PoC、本番移行、証明書、ログ、Wi-Fi展開、事前質問</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="a4-training-overview__note">合計175分。残り5分を進行バッファとして見込む。</p>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>重視する観点</h2>
+        <ul>
+          <li>何を設定するか</li>
+          <li>何のために設定するか</li>
+          <li>SingleID側と機器側のどちらで設定するか</li>
+          <li>案件では何が工数に影響するか</li>
+          <li>認証失敗時にどこから切り分けるか</li>
+        </ul>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>事前準備</h2>
+        <ul>
+          <li>PoC環境へ管理者としてログインできる状態にしておく</li>
+          <li>FortiGate連携 IKEv2 拡張RADIUS 設定ガイドに事前に目を通す</li>
+          <li>実案件の構成、質問、見積もり観点があれば事前に確認しておく</li>
+        </ul>
+      </section>
+
+      <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+        <h2>到達目標</h2>
+        <p>この資料を確認した後に、SingleIDを使う認証強化案件について、PoC確認、本番設計、機器連携、証明書運用、トラブル切り分けの要点を説明できる状態を目指す。</p>
+      </section>
+
+      <footer class="a4-training-overview__footer">
+        <p>本資料は営業資料ではなく、エンジニア向けの実務的な技術説明資料です。</p>
+      </footer>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

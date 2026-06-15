@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>構築見積もりヒアリングシート（サンプル） | SingleID 技術説明ハンドブック</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--estimation-checksheet guide-companion" aria-label="構築見積もりヒアリングシート（サンプル）">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+        <header class="a4-training-overview__title">
+          <p class="a4-training-overview__label">Part 3 Supplement / Estimation Sheet</p>
+          <h1>構築見積もりヒアリングシート（サンプル）</h1>
+          <p class="a4-training-overview__subtitle">SingleIDを使うVPN / 無線LAN認証案件で、見積もり前に必要な前提をそろえるためのサンプルチェックシート。詳細設計書ではなく、作業範囲と工数影響要素を見落とさないために使う。</p>
+        </header>
+
+        <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+          <h2>使い方</h2>
+          <ul class="guide-companion__compact-list">
+            <li>Excelで記入する場合は、<a href="../../downloads/estimation-checksheet.xlsx" download>構築見積もりヒアリングシート Excel版</a>を使う。</li>
+            <li>初回ヒアリング、PoC前確認、見積もり前レビューで使う。</li>
+            <li>不明な項目は空欄にせず、「設定ファイル解析後に確定」「機器仕様調査後に確定」など、次の作業で確定する条件を記入する。</li>
+            <li>このシートだけで見積もりを確定せず、機器仕様、既存環境、作業責任、検証範囲を別途記録する。</li>
+          </ul>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>1. 案件の基本情報</h2>
+          <table class="guide-companion__table">
+            <tbody>
+              <tr>
+                <th>利用シーン</th>
+                <td>□ リモートアクセスVPN　□ 無線LAN認証　□ 両方　□ その他: __________</td>
+              </tr>
+              <tr>
+                <th>対象規模</th>
+                <td>ユーザ数: ______　端末数: ______　拠点数: ______　対象機器数: ______</td>
+              </tr>
+              <tr>
+                <th>対象機器</th>
+                <td>□ FortiGate　□ YAMAHA RTX　□ Buffalo AirStation Pro　□ その他: __________</td>
+              </tr>
+              <tr>
+                <th>希望時期</th>
+                <td>PoC開始: ________　本番開始: ________　作業可能時間帯: __________________</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>2. 既存環境</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>領域</th>
+                <th>ヒアリング内容</th>
+                <th>メモ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>既存VPN</td>
+                <td>VPN方式: __________　認証方式: __________　既存ポリシー: □ あり　□ なし</td>
+                <td>利用中のVPNクライアント、ユーザ / グループ制御の有無を記入する。</td>
+              </tr>
+              <tr>
+                <td>既存無線LAN</td>
+                <td>SSID数: _____　VLAN: □ あり　□ なし　AP / コントローラ: __________</td>
+                <td>既存認証方式、端末接続条件、拠点ごとの差分を記入する。</td>
+              </tr>
+              <tr>
+                <td>ネットワーク</td>
+                <td>固定IP / DDNS: __________　NAT: □ あり　□ なし　FW / ACL変更: □ 必要　□ 不要</td>
+                <td>RADIUS通信経路、DNS / DDNS、経路上の制御を記入する。</td>
+              </tr>
+              <tr>
+                <td>機器設定ファイル</td>
+                <td>提供可否: □ 可能　□ 不可　□ 要調整　対象機器: __________　マスキング: □ 済　□ 未</td>
+                <td>既存VPN、インターフェース、アドレスプール、ポリシー、証明書、RADIUS設定を読み取れる範囲で提供してもらう。</td>
+              </tr>
+              <tr>
+                <td>ID管理</td>
+                <td>□ Active Directory　□ Microsoft Entra ID　□ その他IdP　□ ID管理なし</td>
+                <td>ユーザ登録方式やSCIM要否に影響する前提を記入する。</td>
+              </tr>
+              <tr>
+                <td>証明書</td>
+                <td>既存CA: □ あり　□ なし　端末証明書: □ あり　□ なし　Intune: □ あり　□ なし</td>
+                <td>証明書配布方法、既存証明書の継続利用可否を記入する。</td>
+              </tr>
+              <tr>
+                <td>端末展開</td>
+                <td>
+                  対象OS: □ Windows　□ macOS　□ iOS / iPadOS　□ Android　□ その他<br>
+                  端末管理: □ MDM　□ 管理者　□ 利用者　□ 不明
+                </td>
+                <td>VPNクライアント、無線プロファイル、証明書の展開方法を記入する。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>3. 認証・ユーザ・証明書の前提</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>領域</th>
+                <th>採用する方式</th>
+                <th>メモ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>認証方式</td>
+                <td>□ ID / パスワード　□ TOTP　□ 証明書　□ EAP-TLS / PEAP</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>RADIUS</td>
+                <td>□ 拡張RADIUS　□ 標準RADIUS　□ 識別属性の調査後に選定</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>ユーザ管理</td>
+                <td>□ 個別登録　□ CSV一括登録　□ Entra ID SCIM　□ SCIM API連携（ベータ）</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>証明書配布</td>
+                <td>□ メール配布　□ 管理者導入　□ Windows自動構成　□ Intune SCEP　□ 不明</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>運用体制</td>
+                <td>□ 自社で運用　□ 販売店が一部支援　□ 運用 / サポートを委託　□ 未定</td>
+                <td>ユーザ追加 / 削除、証明書失効、RADIUS認証ログ調査、問い合わせ一次対応を誰が担当するかを記入する。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>4. 作業範囲と工数影響要素</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>作業領域</th>
+                <th>ヒアリング内容</th>
+                <th>工数に入れる内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>SingleID側作業</td>
+                <td>ユーザ / グループ、RADIUSサイト、証明書、通知、RADIUS認証ログの取得を誰が行うか。</td>
+                <td>PoCと本番は別環境として設定し直すため、本番環境の設定作業を工数に入れる。</td>
+              </tr>
+              <tr>
+                <td>機器側作業</td>
+                <td>RADIUSサーバ、共有シークレット、VPN / SSID、VLAN、ポリシーを誰が変更するか。</td>
+                <td>既存設定変更、夜間作業、切り戻し、ベンダー問い合わせの有無で工数が変わる。</td>
+              </tr>
+              <tr>
+                <td>端末作業</td>
+                <td>VPNクライアント、無線プロファイル、証明書インストール、利用者案内をどう展開するか。</td>
+                <td>手動展開が多い場合、端末数と問い合わせ対応を別に見積もる。</td>
+              </tr>
+              <tr>
+                <td>接続試験</td>
+                <td>成功条件、失敗条件、代表拠点、対象OS、ログ突き合わせ範囲を記入する。</td>
+                <td>全拠点試験と代表試験を分ける。失敗系テストを省略しない。</td>
+              </tr>
+              <tr>
+                <td>運用 / サポート</td>
+                <td>ユーザ追加 / 削除、証明書失効、RADIUS認証ログ調査、問い合わせ一次対応の担当範囲を記入する。</td>
+                <td>委託範囲、対応時間、問い合わせ窓口、初期問い合わせ期間を見積もりに含めるかを記入する。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>5. 本番作業前に確定する項目</h2>
+          <table class="guide-companion__table">
+            <thead>
+              <tr>
+                <th>未確定項目</th>
+                <th>調査担当</th>
+                <th>決定者</th>
+                <th>期限</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>機器のファームウェア、設定ガイド適合、RADIUS属性の確定</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>対象ユーザ / グループ、証明書配布方式、端末展開方法の確定</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>作業時間帯、切り戻し条件、受け入れ条件、運用 / サポート範囲の確定</td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+          <h2>見積もり前の判断メモ</h2>
+          <p>□ 見積もり可能　□ 設定ファイル解析後に見積もり　□ 機器検証が必要　□ 要件再定義後に見積もり</p>
+          <p>主な理由: ________________________________________________________________________________</p>
+        </section>
+
+        <footer class="a4-training-overview__footer">
+          <p>このシートはサンプルであり、個別案件では既存環境、役割分担、検証範囲、運用要件に合わせて項目を追加・削除する。</p>
+        </footer>
+      </section>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

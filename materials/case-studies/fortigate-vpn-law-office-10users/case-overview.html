@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>案件概要 | FortiGate VPN / 10名規模 / 法律事務所</title>
+  <link rel="stylesheet" href="../../../css/base.css">
+  <link rel="stylesheet" href="../../../css/layout.css">
+  <link rel="stylesheet" href="../../../css/components.css">
+  <link rel="stylesheet" href="../../../css/print.css" media="print">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="back-link" href="index.html">← ケーストップへ戻る</a>
+      <p class="eyebrow">Case Study / Case Overview</p>
+      <h1>案件概要</h1>
+      <p class="lead">10名規模の法律事務所が、FortiGateリモートアクセスVPNの認証を強化し、設計・構築・運用まで販売店に任せたいケースです。</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section">
+      <h2>案件背景</h2>
+      <div class="case-panel">
+        <p>このケースの事務所では、外出先や在宅勤務からFortiGateのリモートアクセスVPNを使って業務システムへ接続している。扱う情報には個人情報や機密性の高い相談情報が含まれるため、アカウントだけに依存したVPN認証では不安がある。</p>
+        <p>ランサムウェア感染や認証情報の悪用によって、情報漏えい、データ暗号化、外部公開が発生すると、業務停止だけでなく、守秘義務、依頼者への説明、信用低下にもつながる。小規模でも、VPN認証を強化し、利用者を止める手順を明確にしておきたい。</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>現在の課題</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>専任管理者がいない</th><td>10名規模のため、ID管理、VPN設定、証明書管理を継続的に担当する社内管理者がいない。設計、構築、運用、問い合わせ対応まで外部に任せたい。</td></tr>
+            <tr><th>退職者アカウント管理が弱い</th><td>既存VPNはFortiGate側のローカルユーザ管理に依存している。退職者や利用停止者をVPNから外す手順が統一されていない。</td></tr>
+            <tr><th>機器設定の変更が難しい</th><td>FortiGateにログインしてVPN設定を変更する作業は負担が高い。既存VPNを変更する前に設定バックアップを取得し、問題時はバックアップから切り戻す。</td></tr>
+            <tr><th>端末管理が利用者任せ</th><td>MDMや社内端末管理は使っていない。各利用者がWindows端末を個別に使っているため、証明書導入、FortiClient設定、初回接続支援の手順を用意する。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>重視すること</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>認証強化</th><td>ID / パスワードだけでなく、端末に導入したクライアント証明書も組み合わせる。パスワードが漏れても、証明書のない端末からはVPN接続できない構成にする。</td></tr>
+            <tr><th>退職者・利用停止者の制御</th><td>SingleID側のユーザ無効化、グループ除外、証明書失効でVPN利用を停止する。FortiGate側のローカルユーザ管理には依存しない。</td></tr>
+            <tr><th>小規模でも運用できること</th><td>SCIMやSCEPのような外部連携は使わず、CSV一括登録、初期グループ、Windows自動構成を使って、過剰な仕組みにしない。</td></tr>
+            <tr><th>販売店に任せられること</th><td>設定作業、接続試験、失敗時のログ調査、ユーザ追加 / 削除、証明書失効、問い合わせ一次対応を支援範囲に含める。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>このケースでの方針</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <tbody>
+            <tr><th>SingleID側</th><td>ユーザ10名をCSV一括登録し、初期状態で用意されている <code>remote-access-users</code> に所属させる。RADIUSサイトではFortiGate用の拡張RADIUSを使い、VPN利用者グループを許可する。</td></tr>
+            <tr><th>FortiGate側</th><td>IKEv2 VPNを構成し、RADIUS認証はSingleIDへ問い合わせる。クライアント証明書の検証はFortiGate側で行う。</td></tr>
+            <tr><th>端末側</th><td>利用者がWindows自動構成を実行し、FortiClient設定とクライアント証明書を導入する。代表ユーザの接続試験では、FortiClientでクライアント証明書を選択できることを合格条件にする。</td></tr>
+            <tr><th>運用側</th><td>ユーザ追加 / 削除、証明書失効、RADIUS認証ログ、FortiGateログ、問い合わせ時に集める情報を運用手順に含める。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
