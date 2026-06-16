@@ -50,7 +50,7 @@
             </tr>
             <tr>
               <th>希望時期</th>
-              <td>利用開始希望日: ________　作業可能時間帯: __________________<br><span class="case-filled">利用開始希望日: 2026年8月　作業可能時間帯: 平日日中または事前調整</span></td>
+              <td>利用開始希望日: ________　作業可能時間帯: __________________　PoC: □ 不要　□ 必要（理由: __________）<br><span class="case-filled">利用開始希望日: 2026年8月　作業可能時間帯: 平日日中または事前調整　PoC: ☑ 不要（検証済みFortiGate構成のため）</span></td>
             </tr>
           </tbody>
         </table>
@@ -96,7 +96,7 @@
             </tr>
             <tr>
               <td>証明書</td>
-              <td>既存CA: □ あり　□ なし　端末証明書: □ あり　□ なし<br><span class="case-filled">既存CA: ☑ なし　端末証明書: ☑ なし</span></td>
+              <td>既存CA: □ あり　□ なし　端末証明書: □ あり　□ なし　Intune: □ あり　□ なし<br><span class="case-filled">既存CA: ☑ なし　端末証明書: ☑ なし　Intune: ☑ なし</span></td>
               <td><span class="case-filled">SingleIDでクライアント証明書を10名分発行し、Windows自動構成で利用者が端末へ導入する。</span></td>
             </tr>
             <tr>
@@ -132,17 +132,17 @@
             </tr>
             <tr>
               <td>RADIUS</td>
-              <td>□ 拡張RADIUS　□ 標準RADIUS<br><span class="case-filled">☑ 拡張RADIUS</span></td>
+              <td>□ 拡張RADIUS　□ 標準RADIUS　□ 識別属性の調査後に選定<br><span class="case-filled">☑ 拡張RADIUS</span></td>
               <td><span class="case-filled">FortiGateのNAS-Identifierでサイトを識別する。</span></td>
             </tr>
             <tr>
               <td>ユーザ管理</td>
-              <td>□ 個別登録　□ CSV一括登録<br><span class="case-filled">☑ CSV一括登録</span></td>
+              <td>□ 個別登録　□ CSV一括登録　□ Entra ID SCIM　□ SCIM API連携（ベータ）<br><span class="case-filled">☑ CSV一括登録</span></td>
               <td><span class="case-filled">ユーザ名は user01 〜 user10。</span></td>
             </tr>
             <tr>
               <td>証明書配布</td>
-              <td>□ メール配布　□ 管理者導入　□ Windows自動構成　□ 不明<br><span class="case-filled">☑ Windows自動構成</span></td>
+              <td>□ メール配布　□ 管理者導入　□ Windows自動構成　□ Intune SCEP　□ 不明<br><span class="case-filled">☑ Windows自動構成</span></td>
               <td><span class="case-filled">利用者が端末ごとに自動構成を実行する。</span></td>
             </tr>
             <tr>

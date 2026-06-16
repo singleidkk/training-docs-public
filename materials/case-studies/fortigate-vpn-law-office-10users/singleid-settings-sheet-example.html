@@ -57,8 +57,8 @@
             <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
           </thead>
           <tbody>
-            <tr><td>登録方式</td><td>□ 個別登録　□ CSV一括登録<br><span class="case-filled">☑ CSV一括登録</span></td><td>10名分のユーザリストを使って登録する。</td></tr>
-            <tr><td>登録対象ユーザリスト</td><td>□ このシートに記入　□ CSV別紙で提出<br><span class="case-filled">☑ このシートに記入</span></td><td>ユーザ名、メールアドレス、姓、名、所属グループを記入する。</td></tr>
+            <tr><td>登録方式</td><td>□ 個別登録　□ CSV一括登録　□ Entra ID SCIM　□ SCIM API連携（ベータ）<br><span class="case-filled">☑ CSV一括登録</span></td><td>10名分のユーザリストを使って登録する。</td></tr>
+            <tr><td>登録対象ユーザリスト</td><td>□ このシートに記入　□ CSV別紙で提出　□ SCIM対象グループで管理<br><span class="case-filled">☑ このシートに記入</span></td><td>ユーザ名、メールアドレス、姓、名、所属グループを記入する。</td></tr>
           </tbody>
         </table>
       </div>
@@ -139,7 +139,7 @@
             <tr><th>グループ名</th><th>用途</th><th>メンバー登録方法 / 備考</th></tr>
           </thead>
           <tbody>
-            <tr><td><span class="case-filled">remote-access-users</span></td><td><span class="case-filled">VPN接続を許可するユーザ</span></td><td>□ 手動　□ CSV　□ その他<br><span class="case-filled">☑ CSV</span><br>初期状態で用意されているVPN用グループを使い、CSV登録時に所属させる。</td></tr>
+            <tr><td><span class="case-filled">remote-access-users</span></td><td><span class="case-filled">VPN接続を許可するユーザ</span></td><td>□ 手動　□ CSV　□ SCIM　□ その他<br><span class="case-filled">☑ CSV</span><br>初期状態で用意されているVPN用グループを使い、CSV登録時に所属させる。</td></tr>
             <tr><td><span class="case-muted">なし</span></td><td><span class="case-muted">無線LANは対象外</span></td><td><span class="case-muted">未使用</span></td></tr>
           </tbody>
         </table>
@@ -147,7 +147,31 @@
     </section>
 
     <section class="section">
-      <h2>6. RADIUSサーバ / RADIUSサイト設定（VPN用）</h2>
+      <h2>6. SCIM設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>SCIM利用</td><td>□ 利用する　□ 利用しない<br><span class="case-filled">☑ 利用しない</span></td><td><span class="case-filled">このケースではCSV一括登録で初期ユーザを登録する。</span></td></tr>
+            <tr><td>SingleIDアカウント番号</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>Microsoft Entra ID テナントID</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>SCIMエンドポイントURL</td><td>□ PoC環境　□ 本番環境　URL: __________________<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>シークレットトークン</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>Microsoft Entra ID エディション</td><td>□ P1　□ P2　□ Governance　□ Suite　□ その他<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>同期対象</td><td>□ ユーザ　□ グループ<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>UPNローカルパート</td><td>□ 重複なし　□ 要修正<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>UPN変更</td><td>□ 同期開始後は変更しない　□ 要検討<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>必須属性</td><td>□ userPrincipalName　□ givenName　□ surname　□ mail<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>グループ同期</td><td>□ 直下メンバーのみで設計する<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>7. RADIUSサーバ / RADIUSサイト設定（VPN用）</h2>
       <div class="case-panel">
         <table class="case-table">
           <thead>
@@ -198,7 +222,7 @@
     </section>
 
     <section class="section">
-      <h2>7. RADIUSサーバ / RADIUSサイト設定（無線LAN用）</h2>
+      <h2>8. RADIUSサーバ / RADIUSサイト設定（無線LAN用）</h2>
       <div class="case-panel">
         <table class="case-table">
           <thead>
@@ -207,24 +231,68 @@
           <tbody>
             <tr><td>サイト名</td><td><span class="case-muted">未使用</span></td><td><span class="case-filled">このケースでは無線LAN認証を対象外にする。</span></td></tr>
             <tr><td>RADIUS種別</td><td>□ 拡張RADIUS　□ 標準RADIUS</td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>サーバ番号 / 認証ポート</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
             <tr><td>共有シークレット</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
             <tr><td>無線アクセス > 証明書認証（EAP-TLS）のみ許可</td><td>□ 有効　□ 無効</td><td><span class="case-muted">未使用</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="case-subheading">無線LAN用サイトの識別値</h3>
+        <table class="case-table case-table--identifier-list">
+          <thead>
+            <tr><th>No.</th><th>識別方式</th><th>識別値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>□ 接続元IP/DDNS　□ NAS-IP-Address　□ NAS-Identifier</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="case-subheading">無線LAN用サイトの許可ルール</h3>
+        <table class="case-table">
+          <thead>
+            <tr><th>No.</th><th>種別</th><th>対象</th><th>VLAN ID</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>□ ユーザ　□ グループ　□ MAB</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <section class="section">
-      <h2>8. 証明書設定</h2>
+      <h2>9. 証明書設定</h2>
       <div class="case-panel">
         <table class="case-table">
           <thead>
             <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
           </thead>
           <tbody>
-            <tr><td>証明書用途</td><td>□ クライアント証明書　□ サーバ証明書<br><span class="case-filled">☑ クライアント証明書</span></td><td>10名分のWindows端末にインストールするクライアント証明書を発行する。FortiGateへ登録するサーバ証明書はFortiGate設定設計で扱う。</td></tr>
+            <tr><td>証明書用途</td><td>□ クライアント証明書　□ SCEP証明書　□ サーバ証明書<br><span class="case-filled">☑ クライアント証明書</span></td><td>10名分のWindows端末にインストールするクライアント証明書を発行する。FortiGateへ登録するサーバ証明書はFortiGate設定設計で扱う。</td></tr>
             <tr><td>有効期限</td><td>デフォルト10年<br><span class="case-filled">デフォルト10年</span></td><td>変更しない。</td></tr>
-            <tr><td>配布方式</td><td>□ メール　□ 管理者導入　□ Windows自動構成<br><span class="case-filled">☑ Windows自動構成</span></td><td><span class="case-filled">利用者が端末で自動構成を実行する。インストール後はインストール日時が更新され、メモ欄にコンピュータ名が記録される。</span></td></tr>
+            <tr><td>配布方式</td><td>□ メール　□ 管理者導入　□ Windows自動構成　□ Intune SCEP<br><span class="case-filled">☑ Windows自動構成</span></td><td><span class="case-filled">利用者が端末で自動構成を実行する。インストール後はインストール日時が更新され、メモ欄にコンピュータ名が記録される。</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>10. SCEP設定</h2>
+      <div class="case-panel">
+        <table class="case-table">
+          <thead>
+            <tr><th>設定項目</th><th>設定値</th><th>備考</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>SCEP利用</td><td>□ 利用する　□ 利用しない<br><span class="case-filled">☑ 利用しない</span></td><td><span class="case-filled">このケースではIntune SCEPを使わず、Windows自動構成で証明書を配布する。</span></td></tr>
+            <tr><td>SingleIDアカウント番号</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>Microsoft Entra ID アプリ名</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>アプリケーション（クライアント）ID</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>ディレクトリ（テナント）ID</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>クライアントシークレット値</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>クライアントシークレット有効期限</td><td>□ 24か月　□ その他: ______<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>APIアクセス許可</td><td>□ Application.Read.All　□ scep_challenge_provider<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>対象プラットフォーム</td><td>□ Windows 10以降　□ Mac　□ Android　□ iOS / iPadOS<br><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
+            <tr><td>構成プロファイル名</td><td><span class="case-muted">未使用</span></td><td><span class="case-muted">未使用</span></td></tr>
           </tbody>
         </table>
       </div>
