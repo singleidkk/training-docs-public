@@ -50,7 +50,7 @@
             </tr>
             <tr>
               <th>希望時期</th>
-              <td>利用開始希望日: ________　作業可能時間帯: __________________　PoC: □ 不要　□ 必要（理由: __________）<br><span class="case-filled">利用開始希望日: 2026年8月　作業可能時間帯: 平日日中または事前調整　PoC: ☑ 不要（検証済みFortiGate構成のため）</span></td>
+              <td>利用開始希望日: ________　作業可能時間帯: __________________　PoC: □ 不要　□ 要（理由: __________）<br><span class="case-filled">利用開始希望日: 2026年8月　作業可能時間帯: 平日日中または事前調整　PoC: ☑ 不要（検証済みFortiGate構成のため）</span></td>
             </tr>
           </tbody>
         </table>
@@ -71,7 +71,7 @@
           <tbody>
             <tr>
               <td>既存VPN</td>
-              <td>VPN方式: __________　認証方式: __________　VPNクライアント: __________　ライセンス: □ 確認済　□ 要確認　既存ポリシー: □ あり　□ なし<br><span class="case-filled">VPN方式: SSL VPN　認証方式: ID / パスワード　VPNクライアント: FortiClient　ライセンス: ☑ 確認済　既存ポリシー: ☑ あり</span></td>
+              <td>VPN方式: __________　認証方式: __________　VPNクライアント: __________　ライセンス: □ 確認済　□ 要確認　既存ポリシー: □ 有　□ 無<br><span class="case-filled">VPN方式: SSL VPN　認証方式: ID / パスワード　VPNクライアント: FortiClient　ライセンス: ☑ 確認済　既存ポリシー: ☑ 有</span></td>
               <td><span class="case-filled">今回の対応では既存SSL VPNを停止し、IKEv2 VPNへ切り替える。作業前にFortiGate設定をバックアップし、問題時はバックアップから切り戻す。FortiClientの利用条件も事前に確認する。</span></td>
             </tr>
             <tr>
@@ -86,7 +86,7 @@
             </tr>
             <tr>
               <td>ネットワーク</td>
-              <td>固定IP / DDNS: __________　NAT: □ あり　□ なし　FW / ACL変更: □ 必要　□ 不要<br><span class="case-filled">固定IP / DDNS: DDNS（vpn.example.invalid）　NAT: □ あり　☑ なし　FW / ACL変更: ☑ 必要</span></td>
+              <td>固定IP / DDNS: __________　NAT: □ 有　□ 無　FW / ACL変更: □ 要　□ 不要<br><span class="case-filled">固定IP / DDNS: DDNS（vpn.example.invalid）　NAT: □ 有　☑ 無　FW / ACL変更: ☑ 要</span></td>
               <td><span class="case-filled">FortiGateがインターネット回線の終端。FortiGateからSingleID拡張RADIUSのサーバIP / 専用ポートへUDP通信できるようにする。</span></td>
             </tr>
             <tr>
@@ -101,7 +101,7 @@
             </tr>
             <tr>
               <td>証明書</td>
-              <td>既存CA: □ あり　□ なし　端末証明書: □ あり　□ なし　Intune: □ あり　□ なし<br><span class="case-filled">既存CA: ☑ なし　端末証明書: ☑ なし　Intune: ☑ なし</span></td>
+              <td>既存CA: □ 有　□ 無　端末証明書: □ 有　□ 無　Intune: □ 有　□ 無<br><span class="case-filled">既存CA: ☑ 無　端末証明書: ☑ 無　Intune: ☑ 無</span></td>
               <td><span class="case-filled">SingleIDでクライアント証明書を10名分発行し、Windows自動構成で利用者が端末へ導入する。</span></td>
             </tr>
             <tr>
