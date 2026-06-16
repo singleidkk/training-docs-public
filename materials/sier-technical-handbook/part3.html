@@ -186,7 +186,7 @@
             </tr>
             <tr>
               <td>ログ / 通知</td>
-              <td>RADIUS認証ログ、操作ログ、CSV出力、通知メール、問い合わせ時の確認手順を決める。</td>
+              <td>RADIUS認証ログ、CSV出力、通知メール、問い合わせ時の確認手順を決める。</td>
               <td>運用引き継ぎ資料や問い合わせ一次対応範囲を含めるかで工数が変わる。</td>
             </tr>
           </tbody>
@@ -259,7 +259,7 @@
       <section class="portrait-page">
       <section class="a4-training-overview__panel">
         <h2>8. ログ確認・運用引き継ぎ</h2>
-        <p>構築見積もりでは、接続試験だけでなく、運用開始後に誰がどのログを調査するかも含める。SingleID側ではRADIUS認証ログや操作ログを取得でき、CSV出力を使って後追い調査や共有に使える。機器側ログは、Access-Accept後の接続制御、VLAN割り当て、VPNポリシー適用の調査に必要である。</p>
+        <p>構築見積もりでは、接続試験だけでなく、運用開始後に誰がどのログを調査するかも含める。SingleID側ではRADIUS認証ログを取得でき、CSV出力を使って後追い調査や共有に使える。機器側ログは、Access-Accept後の接続制御、VLAN割り当て、VPNポリシー適用の調査に必要である。</p>
         <table class="guide-companion__table">
           <thead>
             <tr>
@@ -273,11 +273,6 @@
               <td>RADIUS認証ログ</td>
               <td>認証要求がSingleIDへ届いたか、Access-Accept / Reject、エラー例、NAS-IP / NAS-IDを判定する。</td>
               <td>確認画面、CSV出力、問い合わせ時に必要なユーザ名・時刻・機器ログの集め方を決める。</td>
-            </tr>
-            <tr>
-              <td>操作ログ</td>
-              <td>管理者操作の履歴を取得する。</td>
-              <td>誰が調査するか、操作ログの集計通知を使うか、共有範囲をどうするかを決める。</td>
             </tr>
             <tr>
               <td>機器側ログ</td>

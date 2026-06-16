@@ -42,7 +42,7 @@
             </tr>
             <tr>
               <th>対象規模</th>
-              <td>ユーザ数: ______　端末数: ______　拠点数: ______　対象機器数: ______<br><span class="case-filled">ユーザ数: 10　端末数: 10　拠点数: 1　対象機器数: 1</span></td>
+              <td>ユーザ数: ______　端末数: ______　拠点数: ______　VPN装置数: ______　AP台数: ______　SSID数: ______　VLAN数: ______<br><span class="case-filled">ユーザ数: 10　端末数: 10　拠点数: 1　VPN装置数: 1　AP台数: 0　SSID数: 0　VLAN数: 0</span></td>
             </tr>
             <tr>
               <th>対象機器</th>
@@ -71,13 +71,18 @@
           <tbody>
             <tr>
               <td>既存VPN</td>
-              <td>VPN方式: __________　認証方式: __________　既存ポリシー: □ あり　□ なし<br><span class="case-filled">VPN方式: SSL VPN　認証方式: ID / パスワード　既存ポリシー: ☑ あり</span></td>
-              <td><span class="case-filled">今回の対応では既存SSL VPNを停止し、IKEv2 VPNへ切り替える。作業前にFortiGate設定をバックアップし、問題時はバックアップから切り戻す。</span></td>
+              <td>VPN方式: __________　認証方式: __________　VPNクライアント: __________　ライセンス: □ 確認済　□ 要確認　既存ポリシー: □ あり　□ なし<br><span class="case-filled">VPN方式: SSL VPN　認証方式: ID / パスワード　VPNクライアント: FortiClient　ライセンス: ☑ 確認済　既存ポリシー: ☑ あり</span></td>
+              <td><span class="case-filled">今回の対応では既存SSL VPNを停止し、IKEv2 VPNへ切り替える。作業前にFortiGate設定をバックアップし、問題時はバックアップから切り戻す。FortiClientの利用条件も事前に確認する。</span></td>
             </tr>
             <tr>
               <td>既存無線LAN</td>
-              <td>SSID数: _____　VLAN: □ あり　□ なし　AP / コントローラ: __________<br><span class="case-filled">対象外</span></td>
+              <td>SSID数: _____　VLAN数: _____　AP台数: _____　AP / コントローラ: __________<br><span class="case-filled">対象外</span></td>
               <td><span class="case-filled">今回の見積もりには含めない。</span></td>
+            </tr>
+            <tr>
+              <td>作業条件</td>
+              <td>リモート作業: □ 可　□ 不可　変更申請: □ 要　□ 不要　立ち会い: □ 要　□ 不要<br><span class="case-filled">リモート作業: ☑ 可　変更申請: ☑ 要　立ち会い: ☑ 要</span></td>
+              <td><span class="case-filled">本番切り替え時は顧客側担当者が立ち会い、事前に変更申請を通したうえでリモート作業を行う。</span></td>
             </tr>
             <tr>
               <td>ネットワーク</td>
@@ -211,7 +216,7 @@
           </thead>
           <tbody>
             <tr>
-              <td>機器のファームウェア、設定ガイド適合、RADIUS属性の確定</td>
+              <td>機器のファームウェア、ライセンス、設定ガイド適合、RADIUS属性、VPNクライアント要件の確定</td>
               <td><span class="case-filled">販売店SE</span></td>
               <td><span class="case-filled">顧客側機器担当者</span></td>
               <td><span class="case-filled">本番設定前</span></td>
@@ -223,7 +228,7 @@
               <td><span class="case-filled">本番設定前</span></td>
             </tr>
             <tr>
-              <td>作業時間帯、切り戻し条件、受け入れ条件、運用 / サポート範囲の確定</td>
+              <td>リモート作業可否、変更申請、立ち会い要否、作業時間帯、切り戻し条件、受け入れ条件、運用 / サポート範囲の確定</td>
               <td><span class="case-filled">販売店SE</span></td>
               <td><span class="case-filled">顧客側責任者</span></td>
               <td><span class="case-filled">本番作業前</span></td>
@@ -239,7 +244,7 @@
         <p>□ 見積もり可能　□ 設定ファイル解析後に見積もり　□ 機器検証が必要　□ 要件再定義後に見積もり</p>
         <p class="case-filled">☑ 設定ファイル解析後に見積もり</p>
         <p>主な理由:</p>
-        <p class="case-filled">FortiGateのファームウェア、既存VPNの再設定範囲、設定バックアップ / リストア手順、NAS-Identifierの送信値、端末展開方法を本番設定前に確定する必要があるため。</p>
+        <p class="case-filled">FortiGateのファームウェアとライセンス、既存VPNの再設定範囲、設定バックアップ / リストア手順、NAS-Identifierの送信値、FortiClientの利用条件、端末展開方法を本番設定前に確定する必要があるため。</p>
       </div>
     </section>
   </main>
