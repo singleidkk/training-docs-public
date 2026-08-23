@@ -147,7 +147,7 @@
         <p class="section-cover__meta">Part 1 / 70 min</p>
         <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-network"></use></svg></span>
         <h1 id="part1-title">SingleID 技術説明</h1>
-        <p class="section-cover__lead">SingleIDを認証基盤として理解するために、アーキテクチャ、ID管理、RADIUS、PKI、認証フロー、トラブルシューティング、運用管理、可用性、機器連携を順番に学ぶ。</p>
+        <p class="section-cover__lead">SingleIDを認証基盤として理解するために、アーキテクチャ、ID管理、RADIUS、PKI、認証フロー、トラブルシューティング、運用管理、可用性を順番に学ぶ。機種別の認証フローは独立した機器連携ガイドで確認する。</p>
       </div>
       <aside class="section-cover__points">
         <h2>このパートで扱うこと</h2>
@@ -156,7 +156,7 @@
           <li>ID管理、RADIUS、PKI</li>
           <li>PKI / 証明書と認証フロー</li>
           <li>トラブルシューティングと運用管理</li>
-          <li>可用性と機器連携</li>
+          <li>可用性と機器連携ガイドへの導線</li>
         </ul>
       </aside>
     </section>
@@ -2518,241 +2518,26 @@
     <p class="slide-footer">Section 8 / 6</p>
   </main>
   <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="section-cover" aria-labelledby="section9-title">
+    <section class="content-slide" aria-labelledby="section9-title">
       <div>
         <p class="section-cover__meta">Part 1 / Section 9</p>
-        <span class="section-cover__badge" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
-        <h1 id="section9-title">機器連携</h1>
-        <p class="section-cover__lead">指定の設定ガイドを読む前提として、FortiGate、YAMAHA RTX、Buffalo AirStation Proで何をどの順番で設定し、どこを注意して読むかを学ぶ。</p>
+        <h1 id="section9-title">機器連携は独立資料で確認する</h1>
+        <p class="section-cover__lead">機種別の認証フローは、通常版・図解版で分けずに「機器連携ガイド」で扱う。対象機器の設定ガイドと副読本へ、ここから進む。</p>
       </div>
-      <aside class="section-cover__points">
-        <h2>主なトピック</h2>
-        <ul>
-          <li>FortiGate IKEv2 + パスワード + 証明書</li>
-          <li>YAMAHA RTX L2TP/IPsec + パスワード + OTP</li>
-          <li>Buffalo AirStation Pro 無線LAN + EAP-TLS</li>
-          <li>機器側設定とSingleID側設定の対応</li>
-          <li>機器ログとRADIUS認証ログの突き合わせ</li>
-        </ul>
-      </aside>
+      <div class="content-slide__body two-column">
+        <article class="info-card">
+          <h2>認証フロー</h2>
+          <p>端末、ネットワーク機器、SingleIDの関係、Access-Request、Access-Accept / Access-Reject、RADIUSサイトの識別属性を機種別に確認する。</p>
+          <p><a href="../device-integrations/index.html">機器連携ガイドを開く</a></p>
+        </article>
+        <article class="info-card">
+          <h2>設定の詳細</h2>
+          <p>機器の画面操作、設定値、機種・ファームウェア固有の差異は、公式設定ガイドと設定ガイド副読本で確認する。</p>
+          <p><a href="../guide-companions/index.html">設定ガイド副読本を開く</a></p>
+        </article>
+      </div>
     </section>
     <p class="slide-footer">Section 9</p>
-  </main>
-
-  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="content-slide" aria-labelledby="s8-fortigate-flow-title">
-      <header class="content-slide__header">
-        <p class="content-slide__kicker">Section 9 / FortiGate Flow</p>
-        <h1 id="s8-fortigate-flow-title">FortiGate IKEv2 VPNでパスワードと証明書を併用する手順</h1>
-        <p class="content-slide__lead">この手順書は、FortiGateのリモートアクセスVPNで、SingleIDのRADIUS認証とクライアント証明書認証を組み合わせる構成を扱う。IKEv2 VPN、FortiClient、証明書、拡張RADIUSの対応関係を読む。参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/</a></p>
-      </header>
-      <div class="content-slide__body asset-diagram-with-notes">
-        <figure class="asset-diagram">
-          <img src="../../assets/fortigate-integration-map.svg" alt="FortiGate、FortiClient、SingleIDクラウドの関係を示す構成図">
-        </figure>
-        <div class="diagram-note-grid">
-          <article class="diagram-note">
-            <h2>設定要素</h2>
-            <p>SingleIDでユーザ、グループ、クライアント証明書、サーバ証明書、中間CA、CRL、拡張RADIUSを準備する。FortiGate側ではRADIUS、CA / CRL、サーバ証明書、IKEv2 VPNを対応づける。</p>
-          </article>
-          <article class="diagram-note">
-            <h2>手順書で扱う項目</h2>
-            <p>FortiClient接続結果、FortiGateログ、SingleIDのRADIUS認証ログを同じ時刻で突き合わせる。NAS-Identifier、専用ポート、共有シークレット、証明書検証を分けて読む。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-    <p class="slide-footer">Section 9 / 1</p>
-  </main>
-
-  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="content-slide" aria-labelledby="s8-fortigate-notes-title">
-      <header class="content-slide__header">
-        <p class="content-slide__kicker">Section 9 / FortiGate Notes</p>
-        <h1 id="s8-fortigate-notes-title">FortiGate手順書の注意点</h1>
-        <p class="content-slide__lead">注意点は、前提条件、RADIUS識別、アクセス制御の3つに分けて読む。GUI操作だけでなく、FortiGate CLIで変更する箇所も押さえる。</p>
-      </header>
-      <div class="content-slide__body three-column">
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
-            前提条件
-          </h2>
-          <ul>
-            <li>手順書はFortiGate v7.6.6とFortiClient 7.4.3.4726を前提にしている</li>
-            <li>FortiGate / FortiClientの対応バージョンと通信条件を満たす</li>
-            <li>既存VPNを変更または再設定する前提で、FortiGate設定バックアップ、切り戻し手順、作業時間帯を決める</li>
-          </ul>
-        </article>
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
-            RADIUS識別
-          </h2>
-          <ul>
-            <li>手順書では拡張RADIUSを利用する</li>
-            <li>FortiGateのホスト名をNAS-Identifierの属性値に合わせる</li>
-            <li>拡張RADIUSの専用ポートはFortiGate CLIで設定する</li>
-          </ul>
-        </article>
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
-            アクセス制御
-          </h2>
-          <ul>
-            <li>FortiGateへ追加するのは中間CA証明書であり、ルートCAではない</li>
-            <li>CRL、サーバ証明書、ユーザグループをVPN設定と対応づける</li>
-            <li>eap-cert-authをCLIで有効化する箇所を見落とさない</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-    <p class="slide-footer">Section 9 / 2</p>
-  </main>
-
-  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="content-slide" aria-labelledby="s8-yamaha-flow-title">
-      <header class="content-slide__header">
-        <p class="content-slide__kicker">Section 9 / YAMAHA RTX Flow</p>
-        <h1 id="s8-yamaha-flow-title">YAMAHA RTXのL2TP/IPsec VPNでOTPを使う手順</h1>
-        <p class="content-slide__lead">この手順書は、YAMAHA RTXのリモートアクセスVPNで、SingleIDのパスワード認証とワンタイムパスワード認証を使う構成を扱う。Windows端末、PAP認証、拡張RADIUS、NAS-IP照合を対応づける。参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/</a></p>
-      </header>
-      <div class="content-slide__body asset-diagram-with-notes">
-        <figure class="asset-diagram">
-          <img src="../../assets/yamaha-rtx-integration-map.svg" alt="YAMAHA RTX、Windows端末、SingleIDクラウドの関係を示す構成図">
-        </figure>
-        <div class="diagram-note-grid">
-          <article class="diagram-note">
-            <h2>設定要素</h2>
-            <p>SingleIDでユーザ、グループ、OTPトークン、拡張RADIUS、RADIUSサイトを準備する。RTX側ではL2TP/IPsec、PAP認証、RADIUS、同時接続数に応じたanonymous PPを対応づける。</p>
-          </article>
-          <article class="diagram-note">
-            <h2>手順書で扱う項目</h2>
-            <p>RADIUS認証ログからNAS-IPを読み取り、RTX側ログと同じ時刻で突き合わせる。PAPを利用できるVPNクライアントか、RTXローカルユーザと重複していないかも判定する。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-    <p class="slide-footer">Section 9 / 3</p>
-  </main>
-
-  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="content-slide" aria-labelledby="s8-yamaha-notes-title">
-      <header class="content-slide__header">
-        <p class="content-slide__kicker">Section 9 / YAMAHA RTX Notes</p>
-        <h1 id="s8-yamaha-notes-title">YAMAHA RTX手順書の注意点</h1>
-        <p class="content-slide__lead">注意点は、前提条件、RADIUS識別、アクセス制御の3つに分けて読む。特にVPNクライアント条件とNAS-IP照合は、設計時に先に押さえる。</p>
-      </header>
-      <div class="content-slide__body three-column">
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
-            前提条件
-          </h2>
-          <ul>
-            <li>VPN接続端末はWindows端末を前提にする</li>
-            <li>L2TP/IPsecとPAP認証を利用できる必要がある</li>
-            <li>スマートフォンやタブレットはOTP表示端末として使う位置づけにする</li>
-          </ul>
-        </article>
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
-            RADIUS識別
-          </h2>
-          <ul>
-            <li>RADIUSサーバ情報はCLIで設定する</li>
-            <li>一時的な属性値でRADIUSサイトを登録して認証を失敗させる</li>
-            <li>RADIUS認証ログのNAS-IPを見て実際の属性値を読む</li>
-          </ul>
-        </article>
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
-            アクセス制御
-          </h2>
-          <ul>
-            <li>GUIでVPN作成時に一時ユーザ登録が必要になる</li>
-            <li>複数ユーザを同時接続させる場合は、想定同時接続数分のトンネルをanonymous PPにバインドする</li>
-            <li>SingleID利用ユーザと同名のRTXローカルユーザを作らない</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-    <p class="slide-footer">Section 9 / 4</p>
-  </main>
-
-  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="content-slide" aria-labelledby="s8-buffalo-flow-title">
-      <header class="content-slide__header">
-        <p class="content-slide__kicker">Section 9 / Buffalo AirStation Pro Flow</p>
-        <h1 id="s8-buffalo-flow-title">Buffalo AirStation Proの無線LANで証明書認証を使う手順</h1>
-        <p class="content-slide__lead">この手順書は、Buffalo AirStation Proの無線LANアクセスで、SingleIDのクライアント証明書認証（EAP-TLS）を使う構成を扱う。SSID、WPA2/WPA3 Enterprise、拡張RADIUS、NAS-Identifierを対応づける。参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/</a></p>
-      </header>
-      <div class="content-slide__body asset-diagram-with-notes">
-        <figure class="asset-diagram">
-          <img src="../../assets/buffalo-airstation-pro-integration-map.svg" alt="Buffalo AirStation Pro、無線クライアント、SingleIDクラウドの関係を示す構成図">
-        </figure>
-        <div class="diagram-note-grid">
-          <article class="diagram-note">
-            <h2>設定要素</h2>
-            <p>SingleIDでユーザ、グループ、クライアント証明書、拡張RADIUS、RADIUSサイトを準備する。AirStation Pro側ではSSID、WPA2 / WPA3 Enterprise、RADIUS、属性形式を対応づける。</p>
-          </article>
-          <article class="diagram-note">
-            <h2>設定で合わせる項目</h2>
-            <p>AirStation Pro側で、Calling-Station-IdとCalled-Station-Idの送信形式を指定する。RADIUS認証ログでは、端末MAC、SSID、NAS-Identifier、端末証明書を対応づける。</p>
-          </article>
-        </div>
-      </div>
-    </section>
-    <p class="slide-footer">Section 9 / 5</p>
-  </main>
-
-  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
-    <section class="content-slide" aria-labelledby="s8-buffalo-notes-title">
-      <header class="content-slide__header">
-        <p class="content-slide__kicker">Section 9 / Buffalo AirStation Pro Notes</p>
-        <h1 id="s8-buffalo-notes-title">Buffalo AirStation Pro手順書の注意点</h1>
-        <p class="content-slide__lead">前提条件、RADIUS識別、アクセス制御の3つを設定ガイドの指定値に合わせる。SSID側の設定差分が、SingleIDの認証失敗に見えることがある。</p>
-      </header>
-      <div class="content-slide__body three-column">
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-device"></use></svg></span>
-            前提条件
-          </h2>
-          <ul>
-            <li>無線LANアクセスでクライアント証明書認証を使う構成である</li>
-            <li>SSIDはWPA2/WPA3 Enterpriseを選択する</li>
-            <li>端末側で信頼するCAとサーバ名を設定し、RADIUSサーバ証明書を検証できる状態にする</li>
-          </ul>
-        </article>
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-radius"></use></svg></span>
-            RADIUS識別
-          </h2>
-          <ul>
-            <li>設定ガイドではサイト識別属性にNAS-Identifierを使う</li>
-            <li>属性値は特別な値である <code>**BUFFALO**</code> を使う</li>
-            <li>Calling-Station-Idは「ハイフン区切り・大文字」、Called-Station-Idは「ハイフン区切り・大文字:SSID」に設定する</li>
-          </ul>
-        </article>
-        <article class="info-card icon-card">
-          <h2 class="icon-card__title">
-            <span class="slide-icon" aria-hidden="true"><svg><use href="#icon-shield"></use></svg></span>
-            アクセス制御
-          </h2>
-          <ul>
-            <li>証明書認証のみ許可するか、他方式も許可するかを決める</li>
-            <li>接続可能なSSIDを制限するかを決める</li>
-            <li>SingleIDはRADIUS Accountingをサポートしないため、AirStation Pro側のAccountingは無効にする</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-    <p class="slide-footer">Section 9 / 6</p>
   </main>
 
   <script src="../../js/material-nav.js" defer></script>

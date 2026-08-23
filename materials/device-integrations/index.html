@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SingleID 機器連携ガイド</title>
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/a4-landscape.css">
+  <link rel="stylesheet" href="../../css/diagrams.css">
+  <link rel="stylesheet" href="../../css/visual-edition.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="section-cover" aria-labelledby="device-integrations-title">
+      <div>
+        <p class="section-cover__meta">SingleID Device Integrations</p>
+        <h1 id="device-integrations-title">機器連携ガイド</h1>
+        <p class="section-cover__lead">VPN装置と無線APがSingleIDへ認証要求を送り、認証結果を端末へ返す流れを機種ごとに確認する。設定値や画面操作は、各ページの公式設定ガイドと副読本で確認する。</p>
+      </div>
+      <aside class="section-cover__points">
+        <h2>確認すること</h2>
+        <ul>
+          <li>端末、機器、SingleIDの役割</li>
+          <li>Access-Requestと認証結果の方向</li>
+          <li>RADIUSサイトの識別属性</li>
+          <li>機種別の設定ガイドと副読本</li>
+        </ul>
+      </aside>
+    </section>
+    <p class="slide-footer">機器連携</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="fortigate-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">VPN / FortiGate</p>
+        <h1 id="fortigate-title">FortiGate IKEv2 VPNでパスワードと証明書を併用する</h1>
+        <p class="content-slide__lead">FortiClientがFortiGateへVPN接続し、FortiGateがNAS-Identifierを含むAccess-RequestをSingleIDへ送る。SingleIDの応答はFortiGateを経由して端末へ戻る。設定ガイド: <a href="https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/fortigate/vpn-group-password-cert-ikev2-adv/</a> ／ 副読本: <a href="../guide-companions/fortigate-ikev2.html">FortiGate IKEv2 設定ガイド副読本</a></p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../assets/device-integrations-fortigate-ikev2-flow.png" alt="FortiClient、FortiGate、SingleIDの間でパスワード認証とクライアント証明書認証を行うフロー" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </section>
+    <p class="slide-footer">機器連携 / 1</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="yamaha-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">VPN / YAMAHA RTX</p>
+        <h1 id="yamaha-title">YAMAHA RTXのL2TP/IPsec VPNでワンタイムパスワードを使う</h1>
+        <p class="content-slide__lead">Windows端末がYAMAHA RTXへ接続し、ユーザ名と、パスワード欄に<code>パスワード:OTP</code>を入力する。YAMAHA RTXはNAS-IP-Addressを含むAccess-RequestをSingleIDへ送り、認証結果を端末へ返す。設定ガイド: <a href="https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/</a> ／ 副読本: <a href="../guide-companions/yamaha-rtx-l2tp-ipsec-otp.html">YAMAHA RTX L2TP/IPsec VPN OTP 設定ガイド副読本</a></p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../assets/device-integrations-yamaha-rtx-otp-flow.png" alt="Windows端末、YAMAHA RTX、SingleIDの間でパスワード認証とワンタイムパスワード認証を行うフロー" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </section>
+    <p class="slide-footer">機器連携 / 2</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="buffalo-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Wireless LAN / Buffalo AirStation Pro</p>
+        <h1 id="buffalo-title">Buffalo AirStation Proの無線LANでEAP-TLSを使う</h1>
+        <p class="content-slide__lead">無線クライアントがAirStation ProへEAP-TLS接続し、AirStation ProがNAS-Identifierを含むAccess-RequestをSingleIDへ送る。認証結果はAirStation Proを経由して無線クライアントへ戻る。設定ガイド: <a href="https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/buffalo_airstation_pro/wlan-group-cert-adv/</a> ／ 副読本: <a href="../guide-companions/buffalo-airstation-pro-eap-tls.html">Buffalo AirStation Pro EAP-TLS 設定ガイド副読本</a></p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../assets/device-integrations-buffalo-airstation-pro-flow.png" alt="無線クライアント、Buffalo AirStation Pro、SingleIDの間でEAP-TLS認証を行うフロー" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </section>
+    <p class="slide-footer">機器連携 / 3</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="aruba-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Wireless LAN / Aruba Instant</p>
+        <h1 id="aruba-title">Aruba Instantの無線LANでEAP-TLSを使う</h1>
+        <p class="content-slide__lead">無線クライアントがAruba InstantへEAP-TLS接続し、Aruba InstantがNAS-Identifierを含むAccess-RequestをSingleIDへ送る。認証結果はAruba Instantを経由して無線クライアントへ戻る。設定ガイド: <a href="https://pubdocs.singleid.jp/singleid-pocguide/aruba_instant/wlan-group-cert-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/aruba_instant/wlan-group-cert-adv/</a> ／ 副読本: <a href="../guide-companions/aruba-instant-eap-tls.html">Aruba Instant EAP-TLS 設定ガイド副読本</a></p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../assets/device-integrations-aruba-instant-flow.png" alt="無線クライアント、Aruba Instant、SingleIDの間でEAP-TLS認証を行うフロー" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </section>
+    <p class="slide-footer">機器連携 / 4</p>
+  </main>
+
+  <main class="a4-page a4-landscape-page a4-landscape-page--padded">
+    <section class="content-slide visual-slide" aria-labelledby="allied-title">
+      <header class="content-slide__header">
+        <p class="content-slide__kicker">Wireless LAN / Allied Telesis AP</p>
+        <h1 id="allied-title">アライドテレシス無線APでEAP-TLSを使う</h1>
+        <p class="content-slide__lead">無線クライアントがアライドテレシス無線APへEAP-TLS接続し、無線APがNAS-IP-Addressを含むAccess-RequestをSingleIDへ送る。認証結果は無線APを経由して無線クライアントへ戻る。設定ガイド: <a href="https://pubdocs.singleid.jp/singleid-pocguide/allied_telesis_ap/wlan-group-cert-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/allied_telesis_ap/wlan-group-cert-adv/</a> ／ 副読本: <a href="../guide-companions/allied-telesis-ap-eap-tls.html">アライドテレシス無線AP EAP-TLS 設定ガイド副読本</a></p>
+      </header>
+      <div class="content-slide__body visual-edition-layout">
+        <figure class="visual-diagram">
+          <img class="visual-diagram__image" src="../../assets/device-integrations-allied-telesis-ap-flow.png" alt="無線クライアント、アライドテレシス無線AP、SingleIDの間でEAP-TLS認証を行うフロー" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </section>
+    <p class="slide-footer">機器連携 / 5</p>
+  </main>
+
+  <nav class="visual-section-nav" aria-label="資料移動">
+    <a href="../sier-technical-handbook/index.html">← 技術説明ハンドブック</a>
+    <a href="../guide-companions/index.html">設定ガイド副読本</a>
+    <a href="../../index.html">資料一覧</a>
+  </nav>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

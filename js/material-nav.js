@@ -1,7 +1,7 @@
 (() => {
   const MATERIAL_INDEX_HREF = "index.html";
   const PUBLIC_INDEX_HREF = "../../index.html";
-  const MATERIAL_INDEX_PATTERN = /\/materials\/sier-technical-handbook\/(?:index\.html)?$/;
+  const MATERIAL_INDEX_PATTERN = /\/materials\/[^/]+\/(?:index\.html)?$/;
 
   const normalizeText = (value) => value.replace(/\s+/g, " ").trim();
 

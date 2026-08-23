@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Part 2: FortiGate 設定ガイド副読本</title>
+  <title>FortiGate IKEv2 設定ガイド副読本</title>
   <link rel="stylesheet" href="../../css/a4-portrait.css">
   <link rel="stylesheet" href="../../css/material-nav.css">
 </head>
 <body>
-  <main class="portrait-document portrait-document--part2 guide-companion" aria-label="FortiGate 設定ガイド副読本">
+  <main class="portrait-document portrait-document--fortigate-guide guide-companion" aria-label="FortiGate IKEv2 設定ガイド副読本">
     <article class="a4-training-overview__content">
       <section class="portrait-page">
       <header class="a4-training-overview__title">
-        <p class="a4-training-overview__label">Part 2 / FortiGate Guide Companion</p>
-        <h1>FortiGate 設定ガイド副読本</h1>
+        <p class="a4-training-overview__label">Section 1 / Overview</p>
+        <h1>FortiGate IKEv2 設定ガイド副読本</h1>
         <p class="a4-training-overview__subtitle">公開設定ガイドの各見出しについて、「何のための設定か」「どこと対応するか」「どの設定値やログで判定するか」を補足する。設定ガイドだけでは意図をつかみにくい場合の理解支援資料として使う。</p>
       </header>
 
@@ -57,7 +57,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">SingleID Side / Users And Certificates</p>
+        <p class="a4-training-overview__label">Section 2 / SingleID Identity Preparation</p>
         <h1>SingleID側で認証に使う対象を準備する</h1>
         <p class="a4-training-overview__subtitle">最初のSingleID側設定は、VPNを許可するユーザ、グループ、クライアント証明書を準備する作業である。</p>
       </header>
@@ -132,7 +132,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">SingleID Side / Users And Certificates</p>
+        <p class="a4-training-overview__label">Section 2 / SingleID Identity Preparation</p>
         <h1>SingleID側で認証に使う対象を準備する（続き）</h1>
         <p class="a4-training-overview__subtitle">クライアント証明書は、ユーザ本人の認証に端末・証明書の条件を加えるための準備である。</p>
       </header>
@@ -177,7 +177,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">SingleID Side / Server Certificate And RADIUS</p>
+        <p class="a4-training-overview__label">Section 3 / SingleID Authentication Foundation</p>
         <h1>SingleID側で証明書とRADIUS入口を準備する</h1>
         <p class="a4-training-overview__subtitle">ここではFortiGateに渡す証明書類と、FortiGateが問い合わせる拡張RADIUSの入口を準備する。</p>
       </header>
@@ -247,7 +247,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">SingleID Side / Server Certificate And RADIUS</p>
+        <p class="a4-training-overview__label">Section 3 / SingleID Authentication Foundation</p>
         <h1>SingleID側でRADIUS入口を準備する</h1>
         <p class="a4-training-overview__subtitle">拡張RADIUSサーバとRADIUSサイトを分けて理解する。サーバは接続入口、サイトは機器識別と許可条件の設定である。</p>
       </header>
@@ -328,7 +328,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">FortiGate Side / Certificate Trust</p>
+        <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
         <h1>FortiGate側で証明書を検証できるようにする</h1>
         <p class="a4-training-overview__subtitle">ここではFortiGateに「どのCAを信頼するか」「失効をどう判定するか」「VPN装置としてどの証明書を提示するか」を教える。証明書を入れる作業ではなく、証明書検証の前提を作る作業として読む。</p>
       </header>
@@ -398,7 +398,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">FortiGate Side / Certificate Trust</p>
+        <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
         <h1>FortiGateへサーバ証明書を追加する</h1>
         <p class="a4-training-overview__subtitle">中間CAとCRLでクライアント証明書を検証できるようにした後、FortiGate自身がVPN接続先として提示するサーバ証明書を登録する。</p>
       </header>
@@ -438,7 +438,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">FortiGate Side / RADIUS</p>
+        <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
         <h1>FortiGate側でRADIUS問い合わせ先を作る</h1>
         <p class="a4-training-overview__subtitle">RADIUSサーバ定義とユーザグループは、FortiGateがSingleIDへ認証要求を送るための入口設定である。VPNトンネル設定とは分けて、まず「どこへ問い合わせるか」を理解する。</p>
       </header>
@@ -519,7 +519,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">FortiGate Side / VPN Tunnel</p>
+        <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
         <h1>FortiGate側でVPNトンネルと追加CLI設定を仕上げる</h1>
         <p class="a4-training-overview__subtitle">VPN設定では、FortiClientが接続するトンネル、証明書認証、EAP認証、アドレス割り当て、UDP / TCPポートをまとめる。ウィザードで作る部分とCLIで補正する部分を分けて読む。</p>
       </header>
@@ -579,7 +579,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">Client Side / Verification</p>
+        <p class="a4-training-overview__label">Section 5 / Client Configuration</p>
         <h1>端末側で証明書と接続先を準備する</h1>
         <p class="a4-training-overview__subtitle">動作確認の見出しは、設定済みのSingleIDとFortiGateへ端末から接続するための準備を示している。</p>
       </header>
@@ -654,7 +654,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">Client Side / Verification</p>
+        <p class="a4-training-overview__label">Section 5 / Client Configuration</p>
         <h1>端末側で接続先を設定しVPN接続を試験する</h1>
         <p class="a4-training-overview__subtitle">証明書を入れた後、FortiClientの接続先設定とVPN接続試験へ進む。</p>
       </header>
@@ -704,10 +704,11 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">Connection Test / Troubleshooting</p>
+        <p class="a4-training-overview__label">Section 6 / Test And Troubleshooting</p>
         <h1>VPN接続は合格条件を決めて試験する</h1>
         <p class="a4-training-overview__subtitle">最後の接続試験では、接続できたかだけで終わらせない。端末、FortiGate、SingleIDのどの設定が成立したかをログと接続状態で判定する。</p>
       </header>
+      <p class="a4-training-overview__note">RADIUS認証ログは、認証実行後から表示まで5分程度かかる場合がある。直後に表示されない場合は、発生時刻とユーザ名を控えて時間を置き、再表示する。待機後も表示されない場合は、RADIUSクライアントIP、共有シークレット、宛先IP・ポート、経路を確認する。</p>
 
       <section class="a4-training-overview__panel">
         <p class="guide-companion__meta">設定ガイド見出し 18</p>
@@ -734,7 +735,7 @@
             <tr>
               <td>SingleIDのRADIUS認証ログで結果を記録する。</td>
               <td>認証要求がSingleIDへ届き、Access-Accept / Access-Rejectのどちらになったかを判定するため。</td>
-              <td>ログがない場合は、FortiGateからSingleIDへ認証要求が届いていない。ログ表示までの待ち時間も試験手順に含める。</td>
+              <td>表示待ち後もログがない場合は、FortiGateからSingleIDへ認証要求が届いていない可能性を確認する。</td>
             </tr>
             <tr>
               <td>FortiGate CLIでVPNセッションの状態を記録する。</td>
@@ -748,7 +749,7 @@
 
       <section class="portrait-page">
       <header class="a4-training-overview__title a4-training-overview__title--chapter">
-        <p class="a4-training-overview__label">Connection Test / Troubleshooting</p>
+        <p class="a4-training-overview__label">Section 6 / Test And Troubleshooting</p>
         <h1>失敗時は止まった段階を特定する</h1>
         <p class="a4-training-overview__subtitle">認証要求の到達、サイト識別、証明書検証、FortiGate側の接続制御を分けて、次に調べる設定とログを決める。</p>
       </header>
@@ -799,7 +800,8 @@
       </section>
 
       <section class="a4-training-overview__panel">
-        <h2>このパートの読み終わりで説明できること</h2>
+        <p class="a4-training-overview__label">Section 7 / Summary</p>
+        <h2>この副読本の読み終わりで説明できること</h2>
         <ul class="guide-companion__compact-list">
           <li>SingleID側で作った値が、FortiGate側のどの設定へ渡るか説明できる。</li>
           <li>クライアント証明書、サーバ証明書、中間CA、CRLの役割を分けて説明できる。</li>

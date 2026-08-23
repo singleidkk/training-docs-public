@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YAMAHA RTX L2TP/IPsec VPN OTP 設定ガイド副読本</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--yamaha-guide guide-companion" aria-label="YAMAHA RTX L2TP/IPsec VPN OTP 設定ガイド副読本">
+    <article class="a4-training-overview__content">
+      <section class="portrait-page">
+        <header class="a4-training-overview__title">
+          <p class="a4-training-overview__label">Section 1 / Overview</p>
+          <h1>YAMAHA RTX L2TP/IPsec VPN OTP 設定ガイド副読本</h1>
+          <p class="a4-training-overview__subtitle">YAMAHA RTXのリモートアクセスVPNで、SingleIDのパスワード認証とワンタイムパスワード認証を使う構成の設定意図と確認観点を整理する。</p>
+        </header>
+
+        <section class="a4-training-overview__panel">
+          <h2>この資料の使い方</h2>
+          <p>公開ガイドの画面操作とCLIを再掲せず、見出しごとに設定の目的、対応する値、試験時の確認点を読む。実際の操作は公開ガイドを正として確認する。</p>
+          <p class="a4-training-overview__note">参照: <a href="https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/yamaha_rtx/vpn-group-otp-adv/</a></p>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>このガイドで作る認証構成</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>接続先</th><th>認証方式</th><th>SingleIDの役割</th></tr></thead>
+            <tbody><tr>
+              <td>Windows端末がYAMAHA RTXへL2TP/IPsecでリモートアクセスVPN接続する。YAMAHA RTXはRADIUSクライアントである。</td>
+              <td>パスワードとワンタイムパスワードをコロンで連結し、PAPで認証する。</td>
+              <td>拡張RADIUSサーバとRADIUSサイトで、NAS-IP-Addressを識別し、許可ユーザまたはグループを判定する。</td>
+            </tr></tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>先に満たす前提条件</h2>
+          <ul class="guide-companion__compact-list">
+            <li>VPN接続端末はWindowsを前提とし、L2TP/IPsecとPAPを利用できる必要がある。</li>
+            <li>iPhone/iPadの標準VPNクライアントと、Android 12以降の標準機能はこの構成の接続端末の対象外である。</li>
+            <li>固定グローバルIPを持たない環境では、拡張RADIUSを利用する。既存のローカルユーザ認証VPNへ2要素認証を追加する場合は、公式ガイドの既存構成向け手順を確認する。</li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 2 / SingleID Identity Preparation</p>
+          <h1>SingleIDのグループとユーザを作成する</h1>
+          <p class="a4-training-overview__subtitle">OTP認証ではクライアント証明書を使わない。VPNを許可するユーザ、グループ、オーセンティケーター登録対象を先に決める。</p>
+        </header>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 1</p>
+          <h2>SingleIDのグループの作成</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <tbody>
+              <tr><td>管理者ポータル＞グループで、VPNアクセスを許可するグループを作成する。</td><td>RADIUSサイトで許可対象をグループ単位で判定するため。</td><td>VPN用途が分かるグループ名にし、管理責任と異動・退職時の削除手順を決める。</td></tr>
+              <tr><td>許可したいユーザをグループへ所属させる。</td><td>ユーザごとの例外を減らし、許可範囲を管理しやすくするため。</td><td>ユーザが有効でもグループ許可がなければ接続できない。検証用と本番用の対象を混在させない。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 2</p>
+          <h2>SingleIDのユーザの作成</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <tbody>
+              <tr><td>管理者ポータル＞ユーザで、VPN接続するユーザを登録する。</td><td>RADIUS認証でユーザ名とパスワードを照合するため。</td><td>YAMAHA RTXのローカルユーザと同じユーザ名を使わない。ローカル認証で処理される可能性がある。</td></tr>
+              <tr><td>ユーザをVPN用グループへ所属させる。</td><td>RADIUSサイトの許可条件を満たすため。</td><td>ユーザの有効／無効、グループ所属、オーセンティケーター登録を、接続試験前にまとめて確認する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 3 / SingleID Authentication Foundation</p>
+          <h1>拡張RADIUSとRADIUSサイトを対応付ける</h1>
+          <p class="a4-training-overview__subtitle">YAMAHA RTXはNAS-IP-Addressで識別する。実際に送信される値をRADIUS認証ログで確認してから、RADIUSサイトの属性値を確定する。</p>
+        </header>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 3</p>
+          <h2>SingleIDの拡張RADIUSサーバの登録</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>YAMAHA RTXへ渡す値</th></tr></thead>
+            <tbody>
+              <tr><td>認証＞RADIUS＞基本設定で、UDPの拡張RADIUSサーバを登録する。</td><td>YAMAHA RTXからの認証要求を受ける専用のRADIUS入口を作るため。</td><td>プライマリ／セカンダリIPアドレスと専用RADIUSポート番号。</td></tr>
+              <tr><td>複雑なシークレットを設定する。</td><td>RADIUSクライアントとサーバで共有するシークレットを作るため。</td><td>YAMAHA RTXの`radius secret`へ同じ値を設定する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 4-5</p>
+          <h2>サイト識別する属性の確認とRADIUSサイトの登録</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>確認観点</th></tr></thead>
+            <tbody>
+              <tr><td>YAMAHA RTXシリーズのRADIUSサイトを一時値で登録し、サイト識別する属性にNAS-IP-Addressを選ぶ。</td><td>認証要求を実行し、YAMAHA RTXが送るNAS-IP-Addressを確認するため。</td><td>一時値では認証が失敗する。RADIUS認証ログのNAS-IPを実測値として確認する。</td></tr>
+              <tr><td>確認したNAS-IP-AddressをRADIUSサイトの属性値へ設定する。</td><td>YAMAHA RTXからの要求を正しいサイトへ対応付けるため。</td><td>グローバルIPアドレスを設定しない。機器の設定により値が変わる場合があるため、変更時は再確認する。</td></tr>
+              <tr><td>VPNアクセスの認証で許可ユーザ／グループを登録し、2要素認証（OTP）のみ許可を有効にする。</td><td>OTP以外の認証方式を拒否し、VPNの許可範囲を限定するため。</td><td>設定反映には最大15分かかる場合がある。試験は反映後に実施する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
+          <h1>YAMAHA RTXのRADIUSとVPN認証を設定する</h1>
+          <p class="a4-training-overview__subtitle">YAMAHA RTX側では、SingleIDへRADIUS認証を送る設定と、L2TP/IPsecでPAPを使うリモートアクセスVPN設定を対応付ける。</p>
+        </header>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 6</p>
+          <h2>YAMAHA RTXのRADIUSサーバの設定</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>YAMAHA RTXで行うこと</th><th>何のためか</th><th>確認する対応値</th></tr></thead>
+            <tbody>
+              <tr><td>RADIUS認証を有効にし、プライマリ／セカンダリサーバを登録する。</td><td>YAMAHA RTXがSingleIDの拡張RADIUSへ認証要求を送るため。</td><td>IPアドレスはSingleIDの拡張RADIUSサーバのプライマリ／セカンダリを使う。</td></tr>
+              <tr><td>RADIUS認証ポートとシークレットを設定する。</td><td>専用ポートと共有シークレットでRADIUS通信を成立させるため。</td><td>`radius auth port`は専用ポート、`radius secret`はSingleID側のシークレットと一致させる。</td></tr>
+              <tr><td>設定を保存する。</td><td>再起動や作業後も設定を維持するため。</td><td>接続試験前に、登録した値とSingleID側の値を照合する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 7</p>
+          <h2>YAMAHA RTXのリモートアクセスユーザの認証の設定</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>YAMAHA RTXで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <tbody>
+              <tr><td>リモートアクセスVPNでL2TP/IPsec、IPsec事前共有鍵、HMAC-SHA、AES-CBC、PAPを設定する。</td><td>Windows端末からのVPN接続と、RADIUSによるOTP認証を成立させるため。</td><td>接続端末側もL2TP/IPsecとPAPに対応している必要がある。</td></tr>
+              <tr><td>GUIで必要になる一時ローカルユーザは、SingleIDのユーザ名と重複しない値で作る。</td><td>GUIの設定を完了させるため。</td><td>SingleID利用者を`pp auth username`として登録しない。必要に応じて一時ユーザのトンネル設定をCLIで削除する。</td></tr>
+              <tr><td>同時接続数に応じて`anonymous` PPへトンネルをバインドする。</td><td>想定する同時接続数を受け入れるため。</td><td>同時接続数は案件の設計値。GUI作成後の設定を確認し、必要な数へ調整する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 5 / Client Configuration</p>
+          <h1>ソフトウェアトークンとWindows VPNを設定する</h1>
+          <p class="a4-training-overview__subtitle">OTPはスマートフォンまたはタブレットのソフトウェアトークンで表示し、VPN接続はWindows端末から行う。</p>
+        </header>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 8-9</p>
+          <h2>ソフトウェアトークンのインストールと登録</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>利用者側で行うこと</th><th>何のためか</th><th>確認観点</th></tr></thead>
+            <tbody>
+              <tr><td>スマートフォンまたはタブレットへ、対応するソフトウェアトークンアプリをインストールする。</td><td>ワンタイムパスワードを表示するため。</td><td>VPN接続端末はWindowsであり、トークン表示端末とは分けて利用できる。</td></tr>
+              <tr><td>SingleID ユーザポータル＞オーセンティケーターでQRコードを表示し、トークンアプリで読み取る。</td><td>ユーザとソフトウェアトークンを対応付けるため。</td><td>初回登録時に表示されるコードを入力して保存する。未登録ユーザはOTP認証にならない。</td></tr>
+              <tr><td>表示される6桁のコードの更新周期を意識して登録・接続する。</td><td>有効なワンタイムパスワードを使うため。</td><td>コードは30秒ごとに変わる。期限切れのコードを使わない。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 10</p>
+          <h2>VPNの設定</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>Windowsで行うこと</th><th>何のためか</th><th>確認する対応値</th></tr></thead>
+            <tbody>
+              <tr><td>VPN接続を追加し、VPNの種類に事前共有キーを使ったL2TP/IPsecを選ぶ。</td><td>YAMAHA RTXへ接続するVPNプロファイルを作るため。</td><td>サーバまたはアドレスはRTXの接続先IPまたはFQDN、事前共有キーはRTX側の認証鍵と一致させる。</td></tr>
+              <tr><td>サインイン情報の種類にユーザ名とパスワードを選ぶ。</td><td>SingleIDのユーザ名とパスワード＋OTPを入力するため。</td><td>資格情報の記憶は、端末運用方針に従って扱う。</td></tr>
+              <tr><td>VPNプロパティのセキュリティで、PAPを許可する。</td><td>この構成でYAMAHA RTXがRADIUSへ送る認証方式に合わせるため。</td><td>端末がPAPを利用できない場合は、この構成の接続端末として対象外である。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 6 / Test And Troubleshooting</p>
+          <h1>VPN接続を試験し、失敗箇所を切り分ける</h1>
+          <p class="a4-training-overview__subtitle">接続時は、SingleIDのパスワードとソフトウェアトークンのワンタイムパスワードをコロンで連結して入力する。</p>
+        </header>
+        <p class="a4-training-overview__note">RADIUS認証ログは、認証実行後から表示まで5分程度かかる場合がある。直後に表示されない場合は、発生時刻とユーザ名を控えて時間を置き、再表示する。待機後も表示されない場合は、RADIUSクライアントIP、共有シークレット、宛先IP・ポート、経路を確認する。</p>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 11</p>
+          <h2>VPNの接続</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>試験で行うこと</th><th>合格条件</th><th>記録する内容</th></tr></thead>
+            <tbody>
+              <tr><td>Windowsで設定したVPNへ接続し、許可したSingleIDユーザ名を入力する。</td><td>YAMAHA RTXを経由してSingleIDのRADIUS認証が行われる。</td><td>接続日時、ユーザ、VPN接続先、YAMAHA RTXの設定対象。</td></tr>
+              <tr><td>パスワードと6桁のワンタイムパスワードを`password:123456`の形式で入力する。</td><td>パスワードとOTPの両方が正しい場合に接続できる。</td><td>コードそのものは残さず、OTP入力と接続結果のみを記録する。</td></tr>
+              <tr><td>SingleIDのRADIUS認証ログを確認する。</td><td>認証要求、NAS-IP-Address、認証結果を確認できる。</td><td>発生時刻とユーザ名を記録し、機器側ログと対応付ける。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <h2>失敗時の切り分け</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>段階</th><th>調査対象</th><th>次に確認すること</th></tr></thead>
+            <tbody>
+              <tr><td>RADIUS認証ログがない</td><td>YAMAHA RTXのRADIUS設定、経路、UDP到達性</td><td>プライマリ／セカンダリIP、専用ポート、シークレット、RADIUS認証の有効化を照合する。</td></tr>
+              <tr><td>サイト識別で止まる</td><td>RADIUSサイト、NAS-IP-Address</td><td>RADIUS認証ログで取得したNAS-IPと、RADIUSサイトの属性値を照合する。グローバルIPを設定していないか確認する。</td></tr>
+              <tr><td>OTPで拒否される</td><td>ユーザ状態、許可グループ、オーセンティケーター</td><td>2要素認証（OTP）のみ許可、トークン登録、パスワードとOTPのコロン連結、コード期限を確認する。</td></tr>
+              <tr><td>接続開始前またはPPPで止まる</td><td>Windows VPN、L2TP/IPsec、PAP、事前共有鍵</td><td>WindowsとRTXでVPN方式、PAP、接続先、事前共有鍵を照合する。</td></tr>
+              <tr><td>一部ユーザだけ接続できない</td><td>RTXのローカルユーザ、SingleIDグループ</td><td>SingleID利用者の名前がローカルユーザと重複していないか、許可グループへ所属しているかを確認する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 7 / Summary</p>
+          <h2>この副読本の読み終わりで説明できること</h2>
+          <p class="a4-training-overview__subtitle">設定値を対応付けて説明し、接続試験時に問題が止まった段階から確認対象を判断できる状態を目指す。</p>
+        </header>
+        <section class="a4-training-overview__panel">
+          <ul class="guide-companion__compact-list">
+            <li>SingleIDの拡張RADIUS、NAS-IP-Address、許可グループが、YAMAHA RTXとどのように対応するか説明できる。</li>
+            <li>WindowsのL2TP/IPsec、PAP、事前共有鍵と、ソフトウェアトークンによるOTPの役割を分けて説明できる。</li>
+            <li>認証失敗時に、RADIUS到達、サイト識別、OTP、VPNクライアント設定、ローカルユーザ重複を分けて確認できる。</li>
+          </ul>
+        </section>
+      </section>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>
