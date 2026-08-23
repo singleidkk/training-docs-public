@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>トレーニングアジェンダ | マルチベンダー認証連携トレーニング</title>
+  <link rel="stylesheet" href="../../css/a4-portrait.css">
+  <link rel="stylesheet" href="../../css/material-nav.css">
+</head>
+<body>
+  <main class="portrait-document portrait-document--overview a4-training-overview" aria-label="マルチベンダー認証連携トレーニング アジェンダ">
+    <article class="portrait-page a4-training-overview__content">
+      <header class="a4-training-overview__title">
+        <p class="a4-training-overview__label">Training Agenda</p>
+        <h1>マルチベンダー認証連携トレーニング</h1>
+        <p class="a4-training-overview__subtitle">Aruba Instantを実機デモの対象とし、YAMAHA RTXとアライドテレシス無線APを比較対象として、SingleID連携の共通点と機器ごとの確認点を整理する。</p>
+      </header>
+
+      <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+        <h2>目的</h2>
+        <p>ネットワーク機器とSingleIDの認証フローを理解し、PoC環境での無線LAN・VPN認証の検証を進めるために必要な資料、設定範囲、確認順を把握する。</p>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>対象と実施形式</h2>
+        <ul>
+          <li>営業担当は、最初の20分の製品概要を対象とする</li>
+          <li>無線LANまたはVPNの認証強化を設計、構築、検証するエンジニア</li>
+          <li>Aruba Instantの構成と設定画面を使うデモ形式。参加者による実機操作のハンズオンは含めない</li>
+          <li>所要時間の目安は120分。質疑応答は状況に応じて実施する</li>
+        </ul>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>アジェンダ</h2>
+        <table class="a4-training-overview__schedule">
+          <tbody>
+            <tr>
+              <th>製品概要</th>
+              <td>20分</td>
+              <td>顧客が抱えるID・パスワード運用の課題、VPN / 無線LAN認証のリスク、クライアント証明書やワンタイムパスワードによる認証強化、既存ネットワーク機器へ導入する際の選定・提案観点を説明する。</td>
+            </tr>
+            <tr>
+              <th>共通フロー</th>
+              <td>30分</td>
+              <td><a href="../sier-technical-handbook/part1-visual/index.html">SingleID 技術説明 図解版</a>と<a href="../device-integrations/index.html">機器連携ガイド</a>で、端末、ネットワーク機器、SingleID間の認証要求と認証結果の方向を確認する。</td>
+            </tr>
+            <tr>
+              <th>無線LAN 1</th>
+              <td>30分</td>
+              <td><a href="../guide-companions/aruba-instant-eap-tls.html">Aruba Instant EAP-TLS 設定ガイド副読本</a>で、実機デモとしてEAP-TLS、拡張RADIUS、NAS-Identifier、接続試験を確認する。</td>
+            </tr>
+            <tr>
+              <th>VPN</th>
+              <td>15分</td>
+              <td><a href="../guide-companions/yamaha-rtx-l2tp-ipsec-otp.html">YAMAHA RTX L2TP/IPsec VPN OTP 設定ガイド副読本</a>で、パスワードとワンタイムパスワード、拡張RADIUS、Windows接続を比較観点として確認する。</td>
+            </tr>
+            <tr>
+              <th>無線LAN 2</th>
+              <td>15分</td>
+              <td><a href="../guide-companions/allied-telesis-ap-eap-tls.html">アライドテレシス無線AP EAP-TLS 設定ガイド副読本</a>で、EAP-TLS、拡張RADIUS、NAS-IP-Address、接続試験を比較観点として確認する。</td>
+            </tr>
+            <tr>
+              <th>まとめ</th>
+              <td>10分</td>
+              <td>PoC開始前の確認事項と、設定後に確認するログ・切り分けの順序を整理する。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="a4-training-overview__panel">
+        <h2>PoC開始前に確認すること</h2>
+        <ul>
+          <li>対象機器の機種、ファームウェア、利用する無線LANまたはVPN方式</li>
+          <li>検証に使用する端末、対象ユーザ、認証方式、証明書またはワンタイムパスワードの準備状況</li>
+          <li>SingleIDの管理者操作、RADIUSサイト識別属性、RADIUS認証ログを確認できる状態</li>
+          <li>実際の設定値と画面操作は、各副読本からリンクする最新の公開設定ガイドを正として確認する</li>
+        </ul>
+      </section>
+
+      <section class="a4-training-overview__panel a4-training-overview__panel--emphasis">
+        <h2>到達点</h2>
+        <p>対象機器ごとの認証方式とRADIUSサイト識別属性の違いを説明し、PoCで確認する順序を決められる状態を目指す。</p>
+      </section>
+
+      <footer class="a4-training-overview__footer">
+        <p><a href="index.html">トレーニング資料トップ</a> ／ <a href="../guide-companions/index.html">設定ガイド副読本一覧</a> ／ <a href="../../index.html#materials">マテリアル一覧</a></p>
+      </footer>
+    </article>
+  </main>
+  <script src="../../js/material-nav.js" defer></script>
+</body>
+</html>

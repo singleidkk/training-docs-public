@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SingleID 学習会資料</title>
+  <title>SingleID トレーニング・マテリアル</title>
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
@@ -13,19 +13,45 @@
   <header class="site-header">
     <div class="container header-inner">
       <p class="eyebrow">SingleID Training Materials</p>
-      <h1>SingleID 学習会資料</h1>
-      <p class="lead">SingleIDに関する技術説明、機器連携、設定ガイド副読本、見積もり・設計観点、FAQ、確認テストを参照できます。</p>
+      <h1>SingleID トレーニング・マテリアル</h1>
+      <p class="lead">アジェンダと資料導線を持つトレーニング、ならびに技術説明、機器連携、設定・見積もりで参照するマテリアルを公開しています。</p>
     </div>
   </header>
 
   <main class="container">
     <section class="section">
-      <h2>資料一覧</h2>
+      <h2>トレーニング</h2>
       <div class="part-grid">
-        <a class="part-card" href="materials/sier-technical-handbook/index.html">
-          <span class="part-number">Material 1</span>
-          <strong>SingleID 技術説明ハンドブック</strong>
-          <span>SingleIDの技術要素、構築見積もり、FAQ、確認テストをまとめたエンジニア向け資料です。</span>
+        <a class="part-card part-card--part1" href="materials/singleid-technical-training/index.html">
+          <span class="part-number">Technical Training</span>
+          <strong>SingleID 技術トレーニング</strong>
+          <span>技術説明、機器連携、設定ガイド副読本、見積もり・設計、FAQへ進むためのアジェンダと資料導線です。</span>
+        </a>
+        <a class="part-card part-card--part1" href="materials/multi-vendor-network-auth-training/index.html">
+          <span class="part-number">Multi-Vendor Training</span>
+          <strong>マルチベンダー認証連携トレーニング</strong>
+          <span>Aruba Instantの実機デモと、YAMAHA RTX・アライドテレシス無線APの比較説明を行うアジェンダと資料導線です。</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="materials">
+      <h2>マテリアル一覧</h2>
+      <div class="part-grid">
+        <a class="part-card part-card--part1" href="materials/sier-technical-handbook/part1.html">
+          <span class="part-number">Technical</span>
+          <strong>SingleID 技術説明</strong>
+          <span>基本アーキテクチャ、ID管理、RADIUS、PKI、認証フロー、トラブルシューティング、運用管理、可用性を確認できます。</span>
+        </a>
+        <a class="part-card part-card--part1" href="materials/sier-technical-handbook/part1-visual/index.html">
+          <span class="part-number">Technical Visual</span>
+          <strong>SingleID 技術説明 図解版</strong>
+          <span>通常版と同じ構成を、関係性、流れ、判断点の図解中心で確認できます。</span>
+        </a>
+        <a class="part-card part-card--part1" href="materials/sier-technical-handbook/time-reference.html">
+          <span class="part-number">Appendix</span>
+          <strong>時間に関する補足資料</strong>
+          <span>RADIUS、ログ、証明書、通知リンクで見込む待ち時間や有効期限を参照できます。</span>
         </a>
         <a class="part-card part-card--part1" href="materials/device-integrations/index.html">
           <span class="part-number">Integrations</span>
@@ -37,17 +63,52 @@
           <strong>設定ガイド副読本</strong>
           <span>機器別の公開設定ガイドを、設定の目的、対応関係、設計・切り分け観点とともに確認できます。</span>
         </a>
+        <a class="part-card part-card--part3" href="materials/sier-technical-handbook/part3.html">
+          <span class="part-number">Design</span>
+          <strong>構築見積もり・設計観点</strong>
+          <span>VPN、無線LAN、証明書、ログ、作業範囲、工数に影響する要素を見積もり観点で確認できます。</span>
+        </a>
+        <a class="part-card part-card--part3" href="materials/sier-technical-handbook/estimation-checksheet.html">
+          <span class="part-number">Sheet</span>
+          <strong>構築見積もりヒアリングシート</strong>
+          <span>見積もり前に決める利用シーン、対象規模、認証方式、作業範囲、未確定項目を記入できます。</span>
+        </a>
+        <a class="part-card part-card--part3" href="downloads/estimation-checksheet.xlsx" download>
+          <span class="part-number">Excel</span>
+          <strong>構築見積もりヒアリングシート Excel版</strong>
+          <span>ヒアリング内容をExcelで記入・共有できます。</span>
+        </a>
+        <a class="part-card part-card--part3" href="materials/sier-technical-handbook/singleid-settings-sheet.html">
+          <span class="part-number">Sheet</span>
+          <strong>SingleID 設定情報シート</strong>
+          <span>SingleID側のユーザ、グループ、RADIUS、証明書を設定するための入力情報を記入できます。</span>
+        </a>
+        <a class="part-card part-card--part3" href="downloads/singleid-settings-sheet.xlsx" download>
+          <span class="part-number">Excel</span>
+          <strong>SingleID 設定情報シート Excel版</strong>
+          <span>設定作業に必要なパラメータをExcelで記入・共有できます。</span>
+        </a>
+        <a class="part-card part-card--part4" href="materials/sier-technical-handbook/part4.html">
+          <span class="part-number">FAQ</span>
+          <strong>FAQ・質疑応答</strong>
+          <span>PoC、本番移行、RADIUS選定、証明書、ログ、機器展開に関する質問と回答例を確認できます。</span>
+        </a>
+        <a class="part-card part-card--part4" href="materials/sier-technical-handbook/assessment.html">
+          <span class="part-number">Check</span>
+          <strong>理解度テスト</strong>
+          <span>SingleID、RADIUS、PKI、機器連携の要点を説明できるか確認できます。</span>
+        </a>
         <a class="part-card part-card--case" href="materials/case-studies/index.html">
           <span class="part-number">Case Studies</span>
           <strong>ケーススタディ</strong>
-          <span>ハンドブックで学んだ内容を、具体的な案件前提、構成、設定方針、記入例に落とし込んだ適用例です。</span>
+          <span>各資料で学んだ内容を、具体的な案件前提、構成、設定方針、記入例に落とし込んだ適用例です。</span>
         </a>
       </div>
     </section>
 
     <section class="section">
       <h2>資料について</h2>
-      <p class="note">必要な章やシートを選んで参照できます。設定値や機器仕様は、最新のSingleID公式ドキュメントと機器別設定ガイドを正として扱います。</p>
+      <p class="note">トレーニングはアジェンダと参照順を示す入口です。設定値や機器仕様は、各マテリアルからリンクする最新のSingleID公式ドキュメントと機器別設定ガイドを正として扱います。</p>
     </section>
   </main>
 </body>
