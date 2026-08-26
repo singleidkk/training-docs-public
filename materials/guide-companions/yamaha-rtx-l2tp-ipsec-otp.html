@@ -80,8 +80,8 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 3 / SingleID Authentication Foundation</p>
-          <h1>拡張RADIUSとRADIUSサイトを対応付ける</h1>
-          <p class="a4-training-overview__subtitle">YAMAHA RTXはNAS-IP-Addressで識別する。実際に送信される値をRADIUS認証ログで確認してから、RADIUSサイトの属性値を確定する。</p>
+          <h1>YAMAHA RTXが接続する拡張RADIUSを準備する</h1>
+          <p class="a4-training-overview__subtitle">YAMAHA RTXから認証要求を受ける拡張RADIUSサーバを先に登録し、IPアドレス、専用ポート、共有シークレットを記録する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
@@ -96,18 +96,6 @@
           </table>
         </section>
 
-        <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 4-5</p>
-          <h2>サイト識別する属性の確認とRADIUSサイトの登録</h2>
-          <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>確認観点</th></tr></thead>
-            <tbody>
-              <tr><td>YAMAHA RTXシリーズのRADIUSサイトを一時値で登録し、サイト識別する属性にNAS-IP-Addressを選ぶ。</td><td>認証要求を実行し、YAMAHA RTXが送るNAS-IP-Addressを確認するため。</td><td>一時値では認証が失敗する。RADIUS認証ログのNAS-IPを実測値として確認する。</td></tr>
-              <tr><td>確認したNAS-IP-AddressをRADIUSサイトの属性値へ設定する。</td><td>YAMAHA RTXからの要求を正しいサイトへ対応付けるため。</td><td>グローバルIPアドレスを設定しない。機器の設定により値が変わる場合があるため、変更時は再確認する。</td></tr>
-              <tr><td>VPNアクセスの認証で許可ユーザ／グループを登録し、2要素認証（OTP）のみ許可を有効にする。</td><td>OTP以外の認証方式を拒否し、VPNの許可範囲を限定するため。</td><td>設定反映には最大15分かかる場合がある。試験は反映後に実施する。</td></tr>
-            </tbody>
-          </table>
-        </section>
       </section>
 
       <section class="portrait-page">
@@ -118,7 +106,7 @@
         </header>
 
         <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 6</p>
+          <p class="guide-companion__meta">設定ガイド見出し 4</p>
           <h2>YAMAHA RTXのRADIUSサーバの設定</h2>
           <table class="guide-companion__table">
             <thead><tr><th>YAMAHA RTXで行うこと</th><th>何のためか</th><th>確認する対応値</th></tr></thead>
@@ -131,7 +119,7 @@
         </section>
 
         <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 7</p>
+          <p class="guide-companion__meta">設定ガイド見出し 5</p>
           <h2>YAMAHA RTXのリモートアクセスユーザの認証の設定</h2>
           <table class="guide-companion__table">
             <thead><tr><th>YAMAHA RTXで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
@@ -146,7 +134,38 @@
 
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
-          <p class="a4-training-overview__label">Section 5 / Client Configuration</p>
+          <p class="a4-training-overview__label">Section 5 / RADIUS Site Identification</p>
+          <h1>NAS-IP-Addressを確認してRADIUSサイトを確定する</h1>
+          <p class="a4-training-overview__subtitle">YAMAHA RTXのRADIUSとVPNを設定した後に認証を試行し、RADIUS認証ログのNAS-IPから実際に送信される値を確認する。</p>
+        </header>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 6</p>
+          <h2>サイト識別する属性の確認</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>確認観点</th></tr></thead>
+            <tbody>
+              <tr><td>YAMAHA RTXシリーズのRADIUSサイトを一時値で登録し、サイト識別する属性にNAS-IP-Addressを選ぶ。</td><td>設定済みのYAMAHA RTXから認証要求を実行し、送信されるNAS-IP-Addressを確認するため。</td><td>一時値では認証が失敗する。RADIUS認証ログのNAS-IPを実測値として確認する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="a4-training-overview__panel">
+          <p class="guide-companion__meta">設定ガイド見出し 7</p>
+          <h2>RADIUSサイトの属性値と許可条件を確定する</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>確認観点</th></tr></thead>
+            <tbody>
+              <tr><td>確認したNAS-IP-AddressをRADIUSサイトの属性値へ設定する。</td><td>YAMAHA RTXからの要求を正しいサイトへ対応付けるため。</td><td>グローバルIPアドレスを設定しない。機器の設定により値が変わる場合があるため、変更時は再確認する。</td></tr>
+              <tr><td>VPNアクセスの認証で許可ユーザ／グループを登録し、2要素認証（OTP）のみ許可を有効にする。</td><td>OTP以外の認証方式を拒否し、VPNの許可範囲を限定するため。</td><td>設定反映には最大15分かかる場合がある。試験は反映後に実施する。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </section>
+
+      <section class="portrait-page">
+        <header class="a4-training-overview__title a4-training-overview__title--chapter">
+          <p class="a4-training-overview__label">Section 6 / Client Configuration</p>
           <h1>ソフトウェアトークンとWindows VPNを設定する</h1>
           <p class="a4-training-overview__subtitle">OTPはスマートフォンまたはタブレットのソフトウェアトークンで表示し、VPN接続はWindows端末から行う。</p>
         </header>
@@ -180,7 +199,7 @@
 
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
-          <p class="a4-training-overview__label">Section 6 / Test And Troubleshooting</p>
+          <p class="a4-training-overview__label">Section 7 / Test And Troubleshooting</p>
           <h1>VPN接続を試験し、失敗箇所を切り分ける</h1>
           <p class="a4-training-overview__subtitle">接続時は、SingleIDのパスワードとソフトウェアトークンのワンタイムパスワードをコロンで連結して入力する。</p>
         </header>
@@ -216,7 +235,7 @@
 
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
-          <p class="a4-training-overview__label">Section 7 / Summary</p>
+          <p class="a4-training-overview__label">Section 8 / Summary</p>
           <h2>この副読本の読み終わりで説明できること</h2>
           <p class="a4-training-overview__subtitle">設定値を対応付けて説明し、接続試験時に問題が止まった段階から確認対象を判断できる状態を目指す。</p>
         </header>

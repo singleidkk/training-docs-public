@@ -358,11 +358,15 @@
 }
 
 .portrait-document--yamaha-guide .portrait-page::after {
-  content: "YAMAHA RTX L2TP/IPsec OTP / Page " counter(portrait-page) " / 7";
+  content: "YAMAHA RTX L2TP/IPsec OTP / Page " counter(portrait-page) " / 8";
 }
 
 .portrait-document--allied-telesis-ap-guide .portrait-page::after {
   content: "Allied Telesis AP EAP-TLS / Page " counter(portrait-page) " / 7";
+}
+
+.portrait-document--buffalo-airstation-pro-guide .portrait-page::after {
+  content: "Buffalo AirStation Pro EAP-TLS / Page " counter(portrait-page) " / 6";
 }
 
 .portrait-document--part3 .portrait-page::after {

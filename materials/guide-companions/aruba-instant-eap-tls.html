@@ -105,7 +105,7 @@
             <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
             <tbody>
               <tr><td>RADIUSの簡易設定からAruba Instant 無線LANアクセスポイントを選び、サーバに拡張を指定する。</td><td>Aruba Instant用の認証・認可条件を作るため。</td><td>選択するサーバ番号は、拡張RADIUSサーバの登録で作成したものと一致させる。</td></tr>
-              <tr><td>サイト識別する属性にNAS-Identifierを選び、任意の属性値を設定する。</td><td>Aruba Instantから来た要求を、このRADIUSサイトへ対応付けるため。</td><td>属性値はAruba Instant側のNAS-Identifierと同一にし、別のRADIUSサイトで同じ値を使わない。</td></tr>
+              <tr><td>サイト識別する属性にNAS-Identifierを選び、任意の属性値を設定する。</td><td>Aruba Instantから来た要求を、このRADIUSサイトへ対応付けるため。</td><td>属性値はAruba Instant側のNAS-Identifierと同一にする。NAS-Identifierは部分一致で検索されるため、1つの送信値に複数サイトの属性値が一致しない命名にする。</td></tr>
               <tr><td>許可するユーザまたはグループを登録し、証明書認証（EAP-TLS）のみ許可を有効にする。</td><td>証明書認証以外の方式を拒否し、許可範囲を限定するため。</td><td>VLANを返す場合は、この画面でユーザまたはグループごとのVLAN IDも設定する。</td></tr>
             </tbody>
           </table>

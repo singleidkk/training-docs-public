@@ -313,7 +313,7 @@
             <tr>
               <td>サイト識別する属性にNAS-Identifierを選び、属性値を設定する。</td>
               <td>FortiGateから送られるNAS-Identifierを使って、このRADIUSサイトに紐づけるため。</td>
-              <td>FortiGateのホスト名がNAS-Identifierとして送られるため、FortiGate側のホスト名と属性値を一致させる。変更時は両側を見直す。</td>
+              <td>FortiGateのホスト名がNAS-Identifierとして送られるため、FortiGate側のホスト名と属性値を一致させる。NAS-Identifierは部分一致で検索されるため、1つの送信値に複数サイトの属性値が一致しない名前にする。変更時は両側を見直す。</td>
             </tr>
             <tr>
               <td>VPNアクセスの認証タブで、許可したいユーザ / グループを許可へ移動する。</td>
@@ -468,7 +468,7 @@
             <tr>
               <td>FortiGateのホスト名を、SingleIDのRADIUSサイト属性値と一致させる。</td>
               <td>FortiGateはホスト名をNAS-Identifierとして送るため、SingleID側がどのRADIUSサイトの要求か識別できるようにするため。</td>
-              <td>SingleID側のRADIUSサイトで設定した属性値とFortiGateのホスト名を揃える。ホスト名変更時はRADIUSサイトも見直す。</td>
+              <td>SingleID側のRADIUSサイトで設定した属性値とFortiGateのホスト名を揃える。NAS-Identifierは部分一致で検索されるため、複数サイトにまたがって一致しない名前にする。ホスト名変更時はRADIUSサイトも見直す。</td>
             </tr>
             <tr>
               <td>CLIでRADIUS認証の通信ポート番号を、拡張RADIUSサーバの専用ポートへ変更する。</td>
@@ -778,7 +778,7 @@
             <tr>
               <td>サイト識別で止まる</td>
               <td>SingleID RADIUSサイト、FortiGateホスト名</td>
-              <td>FortiGateが送るNAS-Identifierと、RADIUSサイトの属性値を一致させる。</td>
+              <td>FortiGateが送るNAS-Identifierと、RADIUSサイトの属性値を一致させる。部分一致で複数のRADIUSサイトに該当していないかも確認する。</td>
             </tr>
             <tr>
               <td>証明書で止まる</td>
