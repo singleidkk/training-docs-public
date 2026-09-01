@@ -350,7 +350,7 @@
 }
 
 .portrait-document--fortigate-guide .portrait-page::after {
-  content: "FortiGate IKEv2 / Page " counter(portrait-page) " / 13";
+  content: "FortiGate IKEv2 / Page " counter(portrait-page) " / 12";
 }
 
 .portrait-document--aruba-guide .portrait-page::after {

@@ -48,32 +48,32 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 2 / SingleID Identity Preparation</p>
-          <h1>認証するユーザと証明書を準備する</h1>
-          <p class="a4-training-overview__subtitle">EAP-TLSはクライアント証明書を使う。誰に証明書を発行し、どのグループを無線LAN接続で許可するかを先に決める。</p>
+          <h1>認証対象を準備する</h1>
+          <p class="a4-training-overview__subtitle">認証対象のユーザと許可グループを決め、クライアント証明書を発行する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
           <p class="guide-companion__meta">設定ガイド見出し 1・2</p>
-          <h2>SingleIDのグループとユーザの作成</h2>
+          <h2>グループとユーザを準備する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>管理者ポータル＞グループで、無線LAN接続を許可するグループを作成する。</td><td>RADIUSサイトで許可対象をグループ単位で判定するため。</td><td>SSIDの用途が分かる名称にする。異なる接続方針を同じグループに混在させない。</td></tr>
-              <tr><td>管理者ポータル＞ユーザで対象ユーザを登録し、無線LAN用グループへ所属させる。</td><td>証明書の主体とRADIUSの許可条件を対応させるため。</td><td>入社・異動・退職時にグループを誰が管理するかを決める。</td></tr>
-              <tr><td>ユーザが有効で、許可グループに所属していることを確認する。</td><td>証明書が正しくても、ユーザ状態または許可条件で拒否されないようにするため。</td><td>検証用ユーザだけでなく、想定する運用単位のユーザでも試験する。</td></tr>
+              <tr><td>管理者ポータル＞グループで、無線LAN接続を許可するグループを作成する。</td><td>RADIUSサイトで許可対象をグループ単位で判定するため。</td></tr>
+              <tr><td>管理者ポータル＞ユーザで対象ユーザを登録し、無線LAN用グループへ所属させる。</td><td>証明書の主体とRADIUSの許可条件を対応させるため。</td></tr>
+              <tr><td>ユーザが有効で、許可グループに所属していることを確認する。</td><td>証明書が正しくても、ユーザ状態または許可条件で拒否されないようにするため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
           <p class="guide-companion__meta">設定ガイド見出し 3</p>
-          <h2>SingleIDのクライアント証明書の発行</h2>
+          <h2>クライアント証明書を発行する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>ユーザ一覧で対象ユーザを選択し、証明書を発行する。</td><td>端末がEAP-TLS認証時に提示するクライアント証明書を用意するため。</td><td>発行対象と導入先端末を記録する。複数端末への導入可否は証明書配布方針と合わせる。</td></tr>
-              <tr><td>プロファイルと配布形式を選択して発行する。</td><td>用途と配布方法に合う証明書を作成するため。</td><td>Windows端末へ手動導入する場合と、端末管理で配布する場合で、配布形式と利用者案内を分ける。</td></tr>
-              <tr><td>発行通知とダウンロードリンクを使う場合は、利用者の受信・導入手順を確認する。</td><td>端末に証明書が導入されるまでを認証準備に含めるため。</td><td>通知メールとリンクの扱いは、利用者支援と再発行の運用を決めてから展開する。</td></tr>
+              <tr><td>ユーザ一覧で対象ユーザを選択し、証明書を発行する。</td><td>端末がEAP-TLS認証時に提示するクライアント証明書を用意するため。</td></tr>
+              <tr><td>プロファイルと配布形式を選択して発行する。</td><td>用途と配布方法に合う証明書を作成するため。</td></tr>
+              <tr><td>発行通知とダウンロードリンクを使う場合は、利用者の受信・導入手順を確認する。</td><td>端末に証明書が導入されるまでを認証準備に含めるため。</td></tr>
             </tbody>
           </table>
         </section>
@@ -82,33 +82,35 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 3 / SingleID Authentication Foundation</p>
-          <h1>拡張RADIUSとRADIUSサイトを対応付ける</h1>
-          <p class="a4-training-overview__subtitle">拡張RADIUSは専用ポートでAirStation Proからの要求を受ける。RADIUSサイトでは、機器が送るNAS-Identifierと許可条件を対応付ける。</p>
+          <h1>認証基盤を設定する</h1>
+          <p class="a4-training-overview__subtitle">拡張RADIUSサーバを登録し、RADIUSサイトで機器を識別して許可条件を設定する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
           <p class="guide-companion__meta">設定ガイド見出し 4</p>
-          <h2>SingleIDの拡張RADIUSサーバの登録</h2>
+          <h2>拡張RADIUSサーバを登録する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>AirStation Proへ渡す値</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>認証＞RADIUS＞基本設定で、UDPの拡張RADIUSサーバを登録する。</td><td>AirStation Proが認証要求を送る専用のRADIUS入口を作るため。</td><td>プライマリ／セカンダリIPアドレスと、割り当てられた専用RADIUSポート番号。</td></tr>
-              <tr><td>複雑なシークレットを設定する。</td><td>RADIUSクライアントとサーバで同じ共有シークレットを使うため。</td><td>プライマリ／セカンダリのShared Secretに同じ値を設定する。</td></tr>
+              <tr><td>認証＞RADIUS＞基本設定で、UDPの拡張RADIUSサーバを登録し、プライマリ／セカンダリIPアドレスと専用RADIUSポートを控える。</td><td>AirStation Proが認証要求を送る専用のRADIUS入口を作るため。</td></tr>
+              <tr><td>複雑なシークレットを設定し、AirStation Proのプライマリ／セカンダリShared Secretにも同じ値を設定する。</td><td>RADIUSクライアントとサーバで同じ共有シークレットを使うため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
           <p class="guide-companion__meta">設定ガイド見出し 6</p>
-          <h2>SingleIDのRADIUSサイトの登録</h2>
+          <h2>RADIUSサイトを登録する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>RADIUSの簡易設定からBuffalo AirStation Proを選び、サーバに拡張を指定する。</td><td>AirStation Pro用の認証・認可条件を作るため。</td><td>サーバ番号は、拡張RADIUSサーバの登録で作成したものと一致させる。</td></tr>
-              <tr><td>サイト識別する属性にNAS-Identifierを選び、属性値に<code>**BUFFALO**</code>を設定する。</td><td>AirStation Proから来た要求を、このRADIUSサイトへ対応付けるため。</td><td>AirStation Proが送るNAS-IdentifierはMACアドレス形式であり、対応するベンダー機器向けの識別値として公式ガイドの<code>**BUFFALO**</code>を使用する。<code>**BUFFALO**</code>は複数サイトで使わない。サイトを分ける場合は、RADIUS認証ログで各機器のNAS-Identifierを確認して属性値に設定する。</td></tr>
-              <tr><td>許可するユーザまたはグループを登録し、証明書認証（EAP-TLS）のみ許可を有効にする。</td><td>証明書認証以外の方式を拒否し、許可範囲を限定するため。</td><td>接続可能なSSIDを制限する場合は、このRADIUSサイトで許可するSSIDを設定する。</td></tr>
+              <tr><td>RADIUSの簡易設定からBuffalo AirStation Proを選び、サーバに拡張を指定する。</td><td>AirStation Pro用の認証・認可条件を作るため。</td></tr>
+              <tr><td>サイト識別する属性にNAS-Identifierを選び、属性値に<code>**BUFFALO**</code>を設定する。</td><td>AirStation Proから来た要求を、このRADIUSサイトへ対応付けるため。</td></tr>
+              <tr><td>許可するユーザまたはグループを登録し、証明書認証（EAP-TLS）のみ許可を有効にする。</td><td>証明書認証以外の方式を拒否し、許可範囲を限定するため。</td></tr>
+              <tr><td>SSIDを制限する場合は、SSID入力欄に接続を許可するSSIDを設定する。</td><td>許可したSSID以外への接続を制限するため。</td></tr>
             </tbody>
           </table>
+          <p class="a4-training-overview__note">AirStation Proが送るNAS-IdentifierはMACアドレスである。<code>**BUFFALO**</code>は、RADIUS管理者ガイドに掲載されたBuffaloのベンダーコードに一致するMACアドレスを、まとめてこのRADIUSサイトで扱うための特別な値である。対象機器のベンダーコードが一覧外の場合は、RADIUS認証ログで実際のNAS-Identifierを確認し、機器ごとの値を登録する。<code>**BUFFALO**</code>は複数のRADIUSサイトで使用しない。RADIUS管理者ガイド: <a href="https://pubdocs.singleid.jp/singleid-adminguide/radius/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-adminguide/radius/</a></p>
           <p class="a4-training-overview__note">登録後、設定が反映されるまで最大15分かかる場合がある。接続試験は反映待ちを考慮して実施する。</p>
         </section>
       </section>
@@ -116,33 +118,31 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
-          <h1>AirStation ProのSSIDとRADIUS問い合わせ先を作る</h1>
-          <p class="a4-training-overview__subtitle">SSIDごとにWPA2/WPA3 Enterpriseと個別RADIUSサーバを設定し、SingleIDの拡張RADIUS設定と対応付ける。</p>
+          <h1>機器側を設定する</h1>
+          <p class="a4-training-overview__subtitle">SingleIDの拡張RADIUSを参照し、RADIUSサーバとSSIDを設定する。機器を識別する値はRADIUSサイトと対応付ける。</p>
         </header>
 
         <section class="a4-training-overview__panel">
           <p class="guide-companion__meta">設定ガイド見出し 5</p>
-          <h2>SSIDの設定</h2>
+          <h2>RADIUSサーバの設定</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>AirStation Proで行うこと</th><th>何のためか</th><th>確認すること</th></tr></thead>
+            <thead><tr><th>AirStation Proで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>詳細設定＞Wi-Fi設定＞SSID設定でSSIDを追加し、Wi-Fiを有効にする。</td><td>クライアントが接続する無線LAN入口を作るため。</td><td>SSID名と使用デバイス（2.4GHz／5GHz）が設計内容と一致する。</td></tr>
-              <tr><td>Wi-Fiの認証にWPA2/WPA3 Enterpriseを選び、本画面で個別にRADIUSサーバを設定する。</td><td>SSIDごとにSingleIDへEAP-TLS認証要求を送るため。</td><td>PSK方式ではなくEnterpriseを選択している。</td></tr>
-              <tr><td>設定を保存後、設定内容を機器へ適用する。</td><td>保存したSSID・RADIUS設定を無線APへ反映するため。</td><td>適用前の設定だけで接続試験を始めない。</td></tr>
+              <tr><td>SSID設定のRADIUSで、本画面で個別にRADIUSサーバの設定をするを選び、プライマリーRADIUSサーバーにSingleIDのプライマリIP、専用ポート、Shared Secretを設定する。Accountingは使用しない。</td><td>SingleIDへEAP-TLS認証要求を送るため。</td></tr>
+              <tr><td>セカンダリーRADIUSサーバーにSingleIDのセカンダリIP、プライマリと同じ専用ポートとShared Secretを設定する。Accountingは使用しない。</td><td>プライマリへ送れない場合の問い合わせ先を用意するため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
-          <h2>RADIUSサーバと属性形式の設定</h2>
+          <h2>SSIDと認証サーバの設定</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>AirStation Proの項目</th><th>SingleIDの対応値</th><th>確認観点</th></tr></thead>
+            <thead><tr><th>AirStation Proで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>プライマリーRADIUSサーバーのサーバー名／認証ポート</td><td>拡張RADIUSサーバのプライマリIP／専用RADIUSポート</td><td>認証要求がSingleIDの拡張RADIUSへ届くこと。</td></tr>
-              <tr><td>セカンダリーRADIUSサーバーのサーバー名／認証ポート</td><td>拡張RADIUSサーバのセカンダリIP／プライマリと同じ専用RADIUSポート</td><td>プライマリへ到達できない場合の問い合わせ先となる。</td></tr>
-              <tr><td>Shared Secret</td><td>拡張RADIUSサーバのシークレット</td><td>プライマリとセカンダリで同じ共有シークレットを設定する。</td></tr>
-              <tr><td>Accounting</td><td>使用しない</td><td>プライマリとセカンダリの両方で使用する選択を外す。</td></tr>
-              <tr><td>Calling-Station-Id／Called-Station-Id</td><td>ハイフン区切り・大文字／ハイフン区切り・大文字:SSID</td><td>機器が送る端末・SSID情報の形式を公式ガイドに合わせる。</td></tr>
+              <tr><td>詳細設定＞Wi-Fi設定＞SSID設定でSSIDを追加し、Wi-Fiを有効にする。SSID名と使用デバイス（2.4GHz／5GHz）を設計内容に合わせる。</td><td>従業員向けの無線LAN接続を作るため。</td></tr>
+              <tr><td>Wi-Fiの認証にWPA2/WPA3 Enterpriseを選ぶ。</td><td>802.1X/EAP-TLSで認証するため。</td></tr>
+              <tr><td>Calling-Station-Idをハイフン区切り・大文字、Called-Station-Idをハイフン区切り・大文字:SSIDに設定する。</td><td>端末と接続先SSIDの情報をRADIUS認証要求に含めるため。</td></tr>
+              <tr><td>設定を保存後、設定内容を機器へ適用する。</td><td>保存したSSID・RADIUS設定を無線APへ反映するため。</td></tr>
             </tbody>
           </table>
         </section>
@@ -151,28 +151,28 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 5 / Client Configuration</p>
-          <h1>Windows端末で証明書認証を使う</h1>
+          <h1>端末側を設定する</h1>
           <p class="a4-training-overview__subtitle">端末にはクライアント証明書を導入し、対象SSIDへEAP-TLSで接続する。サーバ証明書の検証を省略せずに構成する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
-          <h2>端末側の準備</h2>
+          <h2>クライアント証明書の導入</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>端末側で行うこと</th><th>何のためか</th><th>確認すること</th></tr></thead>
+            <thead><tr><th>端末側で行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>利用するWindowsユーザの証明書ストアへクライアント証明書を導入する。</td><td>EAP-TLS接続時に証明書を提示するため。</td><td>対象ユーザでサインインした状態で、証明書が利用可能であることを確認する。</td></tr>
-              <tr><td>対象SSIDを選び、EAP方式としてEAP-TLSを設定する。</td><td>パスワードではなくクライアント証明書で認証するため。</td><td>接続先SSIDと、利用する証明書が意図したものかを確認する。</td></tr>
-              <tr><td>信頼する認証局と接続先サーバの検証を設定する。</td><td>正しい認証サーバへ接続していることを確認するため。</td><td>検証対象は、SingleIDのRADIUS基本情報に示されるホスト名と証明書チェーンに合わせる。</td></tr>
+              <tr><td>証明書発行通知からクライアント証明書を取得する。</td><td>WindowsがEAP-TLS時に提示する証明書を準備するため。</td></tr>
+              <tr><td>接続するWindowsユーザの証明書ストアへ証明書をインポートする。</td><td>無線LAN接続時に証明書を選択できる状態にするため。</td></tr>
+              <tr><td>端末管理で配布する場合は、対象端末・対象ユーザ・配布失敗時の対応を決める。</td><td>多数端末への導入を一貫して行うため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
-          <h2>端末への展開前に決めること</h2>
+          <h2>SSID接続の確認</h2>
           <ul class="guide-companion__compact-list">
-            <li>SSID名、対象ユーザ、対象端末、証明書の配布方式を、利用者案内の前に確定する。</li>
-            <li>Windowsの無線LAN設定を端末管理で配布するか、利用者が接続時に設定するかを決める。</li>
-            <li>証明書未導入、期限切れ、端末交換時に、利用者がどこへ連絡するかを案内する。</li>
+            <li>対象SSIDを選択し、WindowsのEAP方式としてEAP-TLSを使用する。</li>
+            <li>信頼する認証局と接続先のサーバ名の検証を、公式クライアント接続設定に従って設定する。</li>
+            <li>接続したユーザと提示した証明書が、SingleIDの許可対象と一致することを確認する。</li>
           </ul>
           <p class="a4-training-overview__note">Windows無線LAN接続設定: <a href="https://pubdocs.singleid.jp/singleid-pocguide/clients/windows_setup_wlan_cert2/" target="_blank" rel="noopener noreferrer">https://pubdocs.singleid.jp/singleid-pocguide/clients/windows_setup_wlan_cert2/</a></p>
         </section>
@@ -181,7 +181,7 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 6 / Test And Troubleshooting</p>
-          <h1>接続試験と切り分けを一連で行う</h1>
+          <h1>接続試験と切り分けを行う</h1>
           <p class="a4-training-overview__subtitle">接続可否だけで終わらせず、SingleIDのRADIUS認証ログ、AirStation Proの設定、端末の証明書を対応付けて確認する。</p>
         </header>
         <p class="a4-training-overview__note">RADIUS認証ログは、認証実行後から表示まで5分程度かかる場合がある。直後に表示されない場合は、発生時刻とユーザ名を控えて時間を置き、再表示する。待機後も表示されない場合は、RADIUSクライアントIP、共有シークレット、宛先IP・ポート、経路を確認する。</p>
@@ -189,23 +189,26 @@
         <section class="a4-training-overview__panel">
           <h2>接続試験の合格条件</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>確認すること</th><th>合格条件</th><th>記録する内容</th></tr></thead>
+            <thead><tr><th>確認すること</th><th>合格条件</th></tr></thead>
             <tbody>
-              <tr><td>SSID接続</td><td>許可ユーザがクライアント証明書を使い、対象SSIDへ接続できる。</td><td>SSID、ユーザ、端末、証明書、接続日時。</td></tr>
-              <tr><td>SingleIDのRADIUS認証ログ</td><td>AirStation Proからの認証要求と認証結果を確認できる。</td><td>NAS-Identifier、認証結果、拒否理由。</td></tr>
-              <tr><td>許可条件</td><td>許可ユーザまたはグループの条件で接続でき、SSID制限を設定した場合は意図したSSIDだけへ接続できる。</td><td>ユーザ／グループ、許可SSID、端末のIPアドレスと到達性。</td></tr>
+              <tr><td>SSID接続</td><td>許可ユーザとクライアント証明書で対象SSIDへ接続できる。</td></tr>
+              <tr><td>SingleIDのRADIUS認証ログ</td><td>AirStation Proからの認証要求と認証結果を確認できる。</td></tr>
+              <tr><td>許可条件</td><td>許可ユーザまたはグループの条件で接続でき、SSID制限を設定した場合は意図したSSIDだけへ接続できる。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
-          <h2>切り分けの順序</h2>
-          <ol class="guide-companion__compact-list">
-            <li>AirStation ProのSSIDが有効で、WPA2/WPA3 Enterpriseと個別RADIUSサーバ設定が選ばれているか確認する。</li>
-            <li>プライマリ／セカンダリRADIUS IP、専用ポート、共有シークレット、Accounting無効が拡張RADIUSの値と一致するか確認する。</li>
-            <li>RADIUS認証ログで要求の到達、許可または拒否の理由を確認する。</li>
-            <li>端末のクライアント証明書、EAP-TLS設定、認証局とサーバ名の検証設定を確認する。</li>
-          </ol>
+          <h2>失敗時の切り分け</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>発生状況</th><th>確認すること</th></tr></thead>
+            <tbody>
+              <tr><td>RADIUS認証ログが表示されない</td><td>プライマリ／セカンダリRADIUSサーバーのIP、専用ポート、Shared Secret、Accounting無効、AirStation ProからSingleIDまでの経路を確認する。</td></tr>
+              <tr><td>RADIUSサイトを識別できない</td><td>属性値に<code>**BUFFALO**</code>を設定した場合、ログのMACアドレス形式のNAS-Identifierと文字列が異なることは正常である。対象機器のベンダーコードがRADIUS管理者ガイドの一覧にない場合、RADIUS認証ログの実際のNAS-Identifierを属性値へ設定する。</td></tr>
+              <tr><td>EAP-TLS認証が拒否される</td><td>ユーザの許可グループ、クライアント証明書、EAP-TLS設定、認証局とサーバ名の検証設定を確認する。</td></tr>
+              <tr><td>意図しないSSIDへ接続できる、または接続できない</td><td>RADIUSサイトのSSID条件と、Called-Station-Idに含まれるSSIDを確認する。</td></tr>
+            </tbody>
+          </table>
         </section>
 
         <section class="a4-training-overview__panel">

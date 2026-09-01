@@ -48,32 +48,32 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 2 / SingleID Identity Preparation</p>
-          <h1>認証するユーザと証明書を準備する</h1>
-          <p class="a4-training-overview__subtitle">EAP-TLSはクライアント証明書を使う。誰に証明書を発行し、どのグループを無線LAN接続で許可するかを先に決める。</p>
+          <h1>認証対象を準備する</h1>
+          <p class="a4-training-overview__subtitle">認証対象のユーザと許可グループを決め、クライアント証明書を発行する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 1</p>
-          <h2>SingleIDのグループとユーザの作成</h2>
+          <p class="guide-companion__meta">設定ガイド見出し 1・2</p>
+          <h2>グループとユーザを準備する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>管理者ポータル＞グループで、無線LAN接続を許可するグループを作成する。</td><td>RADIUSサイトで許可対象をグループ単位で判定するため。</td><td>SSIDの用途が分かる名称にする。業務用と来訪者用など、異なる接続方針を同じグループに混在させない。</td></tr>
-              <tr><td>管理者ポータル＞ユーザで対象ユーザを登録し、無線LAN用グループへ所属させる。</td><td>証明書の主体とRADIUSの許可条件を対応させるため。</td><td>手動登録とSCIM連携を混在させず、入社・異動・退職時にグループを誰が管理するか決める。</td></tr>
-              <tr><td>ユーザが有効で、許可グループに所属していることを確認する。</td><td>証明書が正しくても、ユーザ状態または許可条件で拒否されないようにするため。</td><td>検証用ユーザだけでなく、想定する運用単位のユーザでも試験する。</td></tr>
+              <tr><td>管理者ポータル＞グループで、無線LAN接続を許可するグループを作成する。</td><td>RADIUSサイトで許可対象をグループ単位で判定するため。</td></tr>
+              <tr><td>管理者ポータル＞ユーザで対象ユーザを登録し、無線LAN用グループへ所属させる。</td><td>証明書の主体とRADIUSの許可条件を対応させるため。</td></tr>
+              <tr><td>ユーザが有効で、許可グループに所属していることを確認する。</td><td>証明書が正しくても、ユーザ状態または許可条件で拒否されないようにするため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 2</p>
-          <h2>SingleIDのクライアント証明書の発行</h2>
+          <p class="guide-companion__meta">設定ガイド見出し 3</p>
+          <h2>クライアント証明書を発行する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>ユーザ一覧で対象ユーザを選択し、証明書を発行する。</td><td>端末がEAP-TLS認証時に提示するクライアント証明書を用意するため。</td><td>発行対象と導入先端末を記録する。複数端末への導入可否は証明書配布方針と合わせる。</td></tr>
-              <tr><td>プロファイルと配布形式を選択して発行する。</td><td>用途と配布方法に合う証明書を作成するため。</td><td>Windows端末へ手動導入する場合と、端末管理で配布する場合で、配布形式と利用者案内を分ける。</td></tr>
-              <tr><td>発行通知とダウンロードリンクを使う場合は、利用者の受信・導入手順を確認する。</td><td>端末に証明書が導入されるまでを認証準備に含めるため。</td><td>通知メールとリンクの扱いは、利用者支援と再発行の運用を決めてから展開する。</td></tr>
+              <tr><td>ユーザ一覧で対象ユーザを選択し、証明書を発行する。</td><td>端末がEAP-TLS認証時に提示するクライアント証明書を用意するため。</td></tr>
+              <tr><td>プロファイルと配布形式を選択して発行する。</td><td>用途と配布方法に合う証明書を作成するため。</td></tr>
+              <tr><td>発行通知とダウンロードリンクを使う場合は、利用者の受信・導入手順を確認する。</td><td>端末に証明書が導入されるまでを認証準備に含めるため。</td></tr>
             </tbody>
           </table>
         </section>
@@ -82,31 +82,31 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 3 / SingleID Authentication Foundation</p>
-          <h1>拡張RADIUSとRADIUSサイトを対応付ける</h1>
-          <p class="a4-training-overview__subtitle">拡張RADIUSは専用ポートとNAS-IdentifierでAruba Instantを識別する。RADIUSサーバとRADIUSサイトは役割を分けて設定する。</p>
+          <h1>認証基盤を設定する</h1>
+          <p class="a4-training-overview__subtitle">拡張RADIUSサーバを登録し、RADIUSサイトで機器を識別して許可条件を設定する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 3</p>
-          <h2>SingleIDの拡張RADIUSサーバの登録</h2>
+          <p class="guide-companion__meta">設定ガイド見出し 4</p>
+          <h2>拡張RADIUSサーバを登録する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>Aruba Instantへ渡す値</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>認証＞RADIUS＞基本設定で、UDPの拡張RADIUSサーバを登録する。</td><td>Aruba Instantが認証要求を送る専用のRADIUS入口を作るため。</td><td>プライマリ／セカンダリIPアドレスと、割り当てられた専用RADIUSポート番号。</td></tr>
-              <tr><td>十分に複雑なシークレットを設定する。</td><td>RADIUSクライアントとサーバで同じ共有シークレットを使うため。</td><td>Shared keyとRetype keyへ同じ値を設定する。値は機器設定と一緒に安全に管理する。</td></tr>
+              <tr><td>認証＞RADIUS＞基本設定で、UDPの拡張RADIUSサーバを登録し、プライマリ／セカンダリIPアドレスと専用RADIUSポートを控える。</td><td>Aruba Instantが認証要求を送る専用のRADIUS入口を作るため。</td></tr>
+              <tr><td>十分に複雑なシークレットを設定し、Aruba InstantのShared keyとRetype keyへ同じ値を設定する。</td><td>RADIUSクライアントとサーバで同じ共有シークレットを使うため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 4</p>
-          <h2>SingleIDのRADIUSサイトの登録</h2>
+          <p class="guide-companion__meta">設定ガイド見出し 5</p>
+          <h2>RADIUSサイトを登録する</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>SingleIDで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>RADIUSの簡易設定からAruba Instant 無線LANアクセスポイントを選び、サーバに拡張を指定する。</td><td>Aruba Instant用の認証・認可条件を作るため。</td><td>選択するサーバ番号は、拡張RADIUSサーバの登録で作成したものと一致させる。</td></tr>
-              <tr><td>サイト識別する属性にNAS-Identifierを選び、任意の属性値を設定する。</td><td>Aruba Instantから来た要求を、このRADIUSサイトへ対応付けるため。</td><td>属性値はAruba Instant側のNAS-Identifierと同一にする。NAS-Identifierは部分一致で検索されるため、1つの送信値に複数サイトの属性値が一致しない命名にする。</td></tr>
-              <tr><td>許可するユーザまたはグループを登録し、証明書認証（EAP-TLS）のみ許可を有効にする。</td><td>証明書認証以外の方式を拒否し、許可範囲を限定するため。</td><td>VLANを返す場合は、この画面でユーザまたはグループごとのVLAN IDも設定する。</td></tr>
+              <tr><td>RADIUSの簡易設定からAruba Instant 無線LANアクセスポイントを選び、サーバに拡張を指定する。</td><td>Aruba Instant用の認証・認可条件を作るため。</td></tr>
+              <tr><td>サイト識別する属性にNAS-Identifierを選び、任意の属性値を設定する。</td><td>Aruba Instantから来た要求を、このRADIUSサイトへ対応付けるため。</td></tr>
+              <tr><td>許可するユーザまたはグループを登録し、証明書認証（EAP-TLS）のみ許可を有効にする。VLANを返す場合は、ユーザまたはグループごとのVLAN IDも設定する。</td><td>証明書認証以外の方式を拒否し、許可範囲を限定するため。</td></tr>
             </tbody>
           </table>
           <p class="a4-training-overview__note">登録後、設定が反映されるまで最大15分かかる場合がある。接続試験は反映待ちを考慮して実施する。</p>
@@ -116,93 +116,61 @@
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
-          <h1>Aruba InstantのRADIUS問い合わせ先を作る</h1>
-          <p class="a4-training-overview__subtitle">Aruba Instantのプライマリ／セカンダリRADIUSサーバは、SingleIDの同じ拡張RADIUSサーバ設定から取得した値で作る。</p>
-        </header>
-
-        <section class="a4-training-overview__panel">
-          <p class="guide-companion__meta">設定ガイド見出し 5</p>
-          <h2>RADIUSサーバの設定</h2>
-          <table class="guide-companion__table">
-            <thead><tr><th>Aruba Instantで行うこと</th><th>何のためか</th><th>確認する対応値</th></tr></thead>
-            <tbody>
-              <tr><td>Configuration＞Security＞Authentication ServersでプライマリRADIUSサーバを登録する。</td><td>SingleIDへEAP-TLS認証要求を送るため。</td><td>IP AddressはSingleIDのプライマリIP、Auth portは拡張RADIUSの専用ポート、Shared keyは共有シークレット。</td></tr>
-              <tr><td>RadSecを無効にし、Timeoutを10秒に設定する。</td><td>公開ガイドの前提に合わせたRADIUS通信にするため。</td><td>RadSec有効や短いタイムアウトが残っていないかを確認する。</td></tr>
-              <tr><td>NAS-IdentifierにRADIUSサイトと同じ文字列を設定する。</td><td>SingleIDが正しいRADIUSサイトを識別するため。</td><td>RADIUSサイトの属性値と完全に同じ文字列を使う。</td></tr>
-              <tr><td>同じ条件でセカンダリRADIUSサーバを登録する。</td><td>プライマリへ送れない場合の問い合わせ先を用意するため。</td><td>セカンダリIPを使い、NAS-Identifierはプライマリと同一にする。</td></tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section class="a4-training-overview__panel">
-          <h2>値の対応を先に照合する</h2>
-          <table class="guide-companion__table">
-            <thead><tr><th>SingleID</th><th>Aruba Instant</th><th>不一致時の影響</th></tr></thead>
-            <tbody>
-              <tr><td>拡張RADIUSのプライマリ／セカンダリIPと専用ポート</td><td>IP AddressとAuth port</td><td>RADIUS認証ログに要求が届かない。</td></tr>
-              <tr><td>シークレット</td><td>Shared key／Retype key</td><td>RADIUS通信が成立しない。</td></tr>
-              <tr><td>RADIUSサイトのNAS-Identifier</td><td>NAS-Identifier</td><td>サイト識別で認証を判定できない。</td></tr>
-            </tbody>
-          </table>
-        </section>
-      </section>
-
-      <section class="portrait-page">
-        <header class="a4-training-overview__title a4-training-overview__title--chapter">
-          <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
-          <h1>SSIDでEAP-TLSと認可情報を使う</h1>
-          <p class="a4-training-overview__subtitle">SSIDはEnterprise認証にし、EAP-TLSをSingleIDで処理する。VLANやローミング設定は無線LANの運用方針に合わせて判断する。</p>
+          <h1>機器側を設定する</h1>
+          <p class="a4-training-overview__subtitle">SingleIDの拡張RADIUSを参照し、RADIUSサーバ、SSID、再認証を設定する。機器を識別する値はRADIUSサイトと対応付ける。</p>
         </header>
 
         <section class="a4-training-overview__panel">
           <p class="guide-companion__meta">設定ガイド見出し 6</p>
-          <h2>SSIDと認証サーバの設定</h2>
+          <h2>RADIUSサーバの設定</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>Aruba Instantで行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>Aruba Instantで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>Configuration＞NetworksでSSIDを作成し、TypeをWireless、Primary usageをEmployeeにする。</td><td>業務利用者向けの無線LAN接続を作るため。</td><td>SSID名と利用対象を決め、既存SSIDとの移行や端末配布の計画に含める。</td></tr>
-              <tr><td>Security LevelをEnterpriseにし、WPA2-EnterpriseまたはWPA3-Enterprise (CCM 128)を選ぶ。</td><td>802.1X/EAP-TLSで認証するため。</td><td>端末の対応状況を確認して方式を選ぶ。混在環境の可否は対象機器・端末で要確認。</td></tr>
-              <tr><td>Authentication server 1と2に、登録したプライマリ／セカンダリRADIUSサーバを選ぶ。</td><td>SSIDの認証をSingleIDへ送るため。</td><td>RADIUSサーバをSSIDに割り当てただけでは、SingleID側の許可条件は作られない。両側を確認する。</td></tr>
-              <tr><td>EAP Offloadが無効であることを確認する。</td><td>EAP-TLSをSingleIDのRADIUSサーバで処理するため。</td><td>有効にすると、意図した認証経路にならないため無効のままにする。</td></tr>
+              <tr><td>Configuration＞Security＞Authentication Serversで、SingleIDのプライマリIP、拡張RADIUSの専用ポート、共有シークレットを使いプライマリRADIUSサーバを登録する。</td><td>SingleIDへEAP-TLS認証要求を送るため。</td></tr>
+              <tr><td>RadSecを無効にする。</td><td>公開ガイドに従い、SingleIDの拡張RADIUSへUDPで認証要求を送るため。</td></tr>
+              <tr><td>Timeoutを10秒に設定する。</td><td>クラウドRADIUSとの通信遅延を考慮し、応答待ち時間を確保するため。</td></tr>
+              <tr><td>NAS-Identifierに、RADIUSサイトを一意に識別できる文字列を設定する。1つの送信値に複数サイトの属性値が一致しないようにする。</td><td>SingleIDが正しいRADIUSサイトを識別するため。</td></tr>
+              <tr><td>セカンダリIPを使い、プライマリと同じNAS-IdentifierでセカンダリRADIUSサーバを登録する。</td><td>プライマリへ送れない場合の問い合わせ先を用意するため。</td></tr>
             </tbody>
           </table>
         </section>
 
-        <section class="a4-training-overview__panel">
-          <h2>再認証とローミングの扱い</h2>
-          <table class="guide-companion__table">
-            <thead><tr><th>項目</th><th>設定の目的</th><th>確認観点</th></tr></thead>
-            <tbody>
-              <tr><td>Reauth interval: 1440分</td><td>接続中クライアントを24時間ごとに再認証する。</td><td>再認証失敗時は切断される。業務時間帯と端末の証明書更新・失効運用を考慮する。</td></tr>
-              <tr><td>Opportunistic Key Caching (OKC): 有効</td><td>同一Instantクラスタ内のローミング時にPMKキャッシュを利用する。</td><td>対応端末のローミングで完全な802.1X認証が高頻度に起きることを抑える。</td></tr>
-              <tr><td>802.11r／k／v</td><td>無線LANのローミング動作を調整する。</td><td>SingleID連携の必須設定ではない。端末対応と無線LAN運用方針により判断する。</td></tr>
-            </tbody>
-          </table>
-        </section>
       </section>
 
       <section class="portrait-page">
-        <header class="a4-training-overview__title a4-training-overview__title--chapter">
-          <p class="a4-training-overview__label">Section 4 / Device Configuration</p>
-          <h1>VLANとSSID識別を混同しない</h1>
-          <p class="a4-training-overview__subtitle">VLAN IDは認証後の認可情報、Called-Station-Idは認証要求に含めるSSID識別情報である。設定場所と目的を分けて確認する。</p>
-        </header>
-
         <section class="a4-training-overview__panel">
-          <h2>RADIUS属性でVLANを割り当てる場合</h2>
+          <p class="guide-companion__meta">設定ガイド見出し 6</p>
+          <h2>SSIDと認証サーバの設定</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>設定場所</th><th>行うこと</th><th>理由</th></tr></thead>
+            <thead><tr><th>Aruba Instantで行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>SingleIDのRADIUSサイト</td><td>許可するユーザまたはグループへVLAN IDを設定する。</td><td>RADIUS応答で対象のVLAN情報を返すため。</td></tr>
-              <tr><td>Aruba InstantのSSID VLANステップ</td><td>Client IP assignmentをNetwork assigned、Client VLAN assignmentをDynamicにする。</td><td>SingleIDが返すTunnel-Type、Tunnel-Medium-Type、Tunnel-Private-Group-Idに基づくVLAN割り当てを受けるため。</td></tr>
-              <tr><td>Aruba InstantのVLAN Assignment Rules</td><td>この構成では追加しない。</td><td>RADIUS応答とは別の条件でAruba Instant側がVLANを割り当てる設定と混同しないため。</td></tr>
+              <tr><td>Configuration＞NetworksでSSIDを作成し、TypeをWireless、Primary usageをEmployeeにする。</td><td>従業員向けの無線LAN接続を作るため。</td></tr>
+              <tr><td>Security LevelをEnterpriseにし、WPA2-EnterpriseまたはWPA3-Enterprise (CCM 128)を選ぶ。</td><td>802.1X/EAP-TLSで認証するため。</td></tr>
+              <tr><td>Authentication server 1と2に、登録したプライマリ／セカンダリRADIUSサーバを選ぶ。</td><td>SSIDの認証をSingleIDへ送るため。</td></tr>
+              <tr><td>EAP Offloadが無効であることを確認する。</td><td>EAP-TLSをSingleIDのRADIUSサーバで処理するため。</td></tr>
+              <tr><td>SSIDのVLAN設定で、Client VLAN assignmentをDynamicにする。</td><td>SingleIDのRADIUSサイトが返すVLAN情報に基づいて、接続先VLANを割り当てるため。</td></tr>
             </tbody>
           </table>
         </section>
 
         <section class="a4-training-overview__panel">
-          <h2>Called-Station-Idの設定</h2>
-          <p>対象SSIDプロファイルのCLIで、Called-Station-IdへSSIDを含め、AP MACアドレスとSSIDの区切りにコロンを使う。RADIUS認証ログでSSIDを含む識別情報を確認しやすくするための設定である。</p>
+          <h2>再認証と接続継続の扱い</h2>
+          <table class="guide-companion__table">
+            <thead><tr><th>Aruba Instantで行うこと</th><th>何のためか</th></tr></thead>
+            <tbody>
+              <tr><td>Reauth intervalを1440分に設定する。</td><td>接続中クライアントを24時間ごとに再認証する。再認証失敗時は切断されるため、利用時間帯と端末の証明書更新・失効運用を考慮する。</td></tr>
+              <tr><td>Opportunistic Key Caching（OKC）を有効にする。</td><td>同一Instantクラスタ内のローミング時にPMKキャッシュを利用し、対応端末で完全な802.1X認証が高頻度に起きることを抑える。</td></tr>
+              <tr><td>802.11r／k／vは端末対応と無線LAN運用方針に応じて設定する。</td><td>無線LANのローミング動作を調整する。SingleID連携の必須設定ではない。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+      </section>
+
+      <section class="portrait-page">
+        <section class="a4-training-overview__panel">
+          <h2>SSIDをCalled-Station-Idに含める</h2>
+          <p>対象SSIDプロファイルのCLIで、Called-Station-IdへSSIDを含め、AP MACアドレスとSSIDの区切りにコロンを使う。認証要求にどのSSIDへの接続かを含めるための設定であり、VLANを割り当てる設定ではない。</p>
           <pre class="guide-companion__code"><code>configure terminal
 wlan ssid-profile &lt;SSIDプロファイル名&gt;
  called-station-id type macaddr
@@ -211,23 +179,24 @@ end
 commit apply</code></pre>
           <p class="a4-training-overview__note">SSIDプロファイル名と実際の設定対象は環境ごとに異なる。CLI適用前に対象SSIDを確認する。</p>
         </section>
+
       </section>
 
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 5 / Client Configuration</p>
-          <h1>Windows端末で証明書とSSIDを準備する</h1>
+          <h1>端末側を設定する</h1>
           <p class="a4-training-overview__subtitle">端末側では、EAP-TLSで提示するクライアント証明書と、接続先を検証する無線LANプロファイルを準備する。</p>
         </header>
 
         <section class="a4-training-overview__panel">
           <h2>クライアント証明書の導入</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>端末側で行うこと</th><th>何のためか</th><th>設計上の注意</th></tr></thead>
+            <thead><tr><th>端末側で行うこと</th><th>何のためか</th></tr></thead>
             <tbody>
-              <tr><td>証明書発行通知からクライアント証明書を取得する。</td><td>WindowsがEAP-TLS時に提示する証明書を準備するため。</td><td>利用者と端末を対応付け、証明書ファイルとパスワードを安全に扱う。</td></tr>
-              <tr><td>接続するWindowsユーザの証明書ストアへ証明書をインポートする。</td><td>無線LAN接続時に証明書を選択できる状態にするため。</td><td>別ユーザまたは別ストアへ導入すると、接続時に証明書が選べないことがある。</td></tr>
-              <tr><td>端末管理で配布する場合は、対象端末・対象ユーザ・配布失敗時の対応を決める。</td><td>多数端末への導入を一貫して行うため。</td><td>手動配布と自動配布を同じ運用単位で混在させない。</td></tr>
+              <tr><td>証明書発行通知からクライアント証明書を取得する。</td><td>WindowsがEAP-TLS時に提示する証明書を準備するため。</td></tr>
+              <tr><td>接続するWindowsユーザの証明書ストアへ証明書をインポートする。</td><td>無線LAN接続時に証明書を選択できる状態にするため。</td></tr>
+              <tr><td>端末管理で配布する場合は、対象端末・対象ユーザ・配布失敗時の対応を決める。</td><td>多数端末への導入を一貫して行うため。</td></tr>
             </tbody>
           </table>
         </section>
@@ -246,7 +215,7 @@ commit apply</code></pre>
       <section class="portrait-page">
         <header class="a4-training-overview__title a4-training-overview__title--chapter">
           <p class="a4-training-overview__label">Section 6 / Test And Troubleshooting</p>
-          <h1>接続試験と切り分けを一連で行う</h1>
+          <h1>接続試験と切り分けを行う</h1>
           <p class="a4-training-overview__subtitle">接続可否だけで終わらせず、RADIUS認証ログ、Aruba Instant設定、端末の証明書・プロファイルを対応付けて記録する。</p>
         </header>
         <p class="a4-training-overview__note">RADIUS認証ログは、認証実行後から表示まで5分程度かかる場合がある。直後に表示されない場合は、発生時刻とユーザ名を控えて時間を置き、再表示する。待機後も表示されない場合は、RADIUSクライアントIP、共有シークレット、宛先IP・ポート、経路を確認する。</p>
@@ -254,12 +223,12 @@ commit apply</code></pre>
         <section class="a4-training-overview__panel">
           <h2>接続試験の合格条件</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>確認すること</th><th>合格条件</th><th>記録する内容</th></tr></thead>
+            <thead><tr><th>確認すること</th><th>合格条件</th></tr></thead>
             <tbody>
-              <tr><td>SSID接続</td><td>許可ユーザとクライアント証明書で対象SSIDへ接続できる。</td><td>SSID、ユーザ、端末、証明書、接続日時。</td></tr>
-              <tr><td>SingleIDのRADIUS認証ログ</td><td>Aruba Instantからの要求と認証結果を確認できる。</td><td>NAS ID、SSID、認証結果、エラーメッセージ。</td></tr>
-              <tr><td>VLAN割り当て</td><td>VLANを設定した場合、想定したネットワークへ接続される。</td><td>対象ユーザ／グループ、返却VLAN ID、端末の接続先ネットワーク。</td></tr>
-              <tr><td>再認証とローミング</td><td>運用方針に応じ、再認証とAP間移動で想定外の切断がない。</td><td>Reauth interval、OKC、対象端末、試験結果。</td></tr>
+              <tr><td>SSID接続</td><td>許可ユーザとクライアント証明書で対象SSIDへ接続できる。</td></tr>
+              <tr><td>SingleIDのRADIUS認証ログ</td><td>Aruba Instantからの要求と認証結果を確認できる。</td></tr>
+              <tr><td>VLAN割り当て</td><td>VLANを設定した場合、想定したネットワークへ接続される。</td></tr>
+              <tr><td>再認証とローミング</td><td>運用方針に応じ、再認証とAP間移動で想定外の切断がない。</td></tr>
             </tbody>
           </table>
         </section>
@@ -267,13 +236,13 @@ commit apply</code></pre>
         <section class="a4-training-overview__panel">
           <h2>失敗時の切り分け</h2>
           <table class="guide-companion__table">
-            <thead><tr><th>段階</th><th>調査対象</th><th>次に確認すること</th></tr></thead>
+            <thead><tr><th>発生状況</th><th>確認すること</th></tr></thead>
             <tbody>
-              <tr><td>RADIUS認証ログがない</td><td>Aruba InstantのRADIUSサーバ設定、経路、UDP到達性</td><td>プライマリ／セカンダリIP、専用ポート、Shared key、Aruba InstantからSingleIDへの経路を照合する。</td></tr>
-              <tr><td>サイト識別で止まる</td><td>SingleIDのRADIUSサイト、Aruba InstantのNAS-Identifier</td><td>サイトの属性値と、プライマリ／セカンダリに設定したNAS-Identifierが同じか確認する。</td></tr>
-              <tr><td>EAP-TLSで拒否される</td><td>ユーザ状態、グループ、クライアント証明書、Windowsプロファイル</td><td>EAP-TLSのみ許可、許可グループ、証明書の導入先、認証局・サーバ名検証を確認する。</td></tr>
-              <tr><td>認証成功後に期待したネットワークへ接続しない</td><td>RADIUSサイトのVLAN ID、SSIDのDynamic VLAN設定</td><td>SingleIDのVLAN設定、Client VLAN assignment、Aruba Instant側のVLAN構成を確認する。</td></tr>
-              <tr><td>ローミングまたは再認証で切断する</td><td>Reauth interval、OKC、端末対応状況</td><td>接続切断時刻とRADIUS認証ログを照合し、無線LAN運用方針に合わせて設定を見直す。</td></tr>
+              <tr><td>RADIUS認証ログがない</td><td>Aruba InstantのRADIUSサーバ設定、経路、UDP到達性を確認する。プライマリ／セカンダリIP、専用ポート、Shared key、Aruba InstantからSingleIDへの経路を照合する。</td></tr>
+              <tr><td>サイト識別で止まる</td><td>SingleIDのRADIUSサイトとAruba InstantのNAS-Identifierを確認する。サイトの属性値と、プライマリ／セカンダリに設定したNAS-Identifierを照合する。</td></tr>
+              <tr><td>EAP-TLSで拒否される</td><td>ユーザ状態、グループ、クライアント証明書、Windowsプロファイルを確認する。EAP-TLSのみ許可、許可グループ、証明書の導入先、認証局・サーバ名検証を照合する。</td></tr>
+              <tr><td>認証成功後に期待したネットワークへ接続しない</td><td>RADIUSサイトのVLAN IDとSSIDのDynamic VLAN設定を確認する。SingleIDのVLAN設定、Client VLAN assignment、Aruba Instant側のVLAN構成を照合する。</td></tr>
+              <tr><td>ローミングまたは再認証で切断する</td><td>Reauth interval、OKC、端末対応状況を確認する。接続切断時刻とRADIUS認証ログを照合し、無線LAN運用方針に合わせて設定を見直す。</td></tr>
             </tbody>
           </table>
         </section>
